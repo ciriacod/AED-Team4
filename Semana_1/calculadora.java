@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import imagen.java;
 
 public class Calculadora {
     public static void main(String[] args) {
@@ -44,5 +45,7 @@ public class Calculadora {
         }
         
         scanner.close();
+
+        mostrarImagen();
     }
 }
