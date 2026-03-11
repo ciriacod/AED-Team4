@@ -1,7 +1,10 @@
 import java.util.Scanner;
 import imagen.java;
 
-public class Calculadora {
+public class Calculadora{
+
+    imagen imagenobj = new imagen();
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         
@@ -46,6 +49,6 @@ public class Calculadora {
         
         scanner.close();
 
-        mostrarImagen();
+        
     }
 }
