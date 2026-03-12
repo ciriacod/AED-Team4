@@ -1,7 +1,6 @@
 import java.util.*;
 
-public class Rectangulo {
-    public static void main(String[] args) {
+public class Rectangulo extends Coordenada {
         private Coordenada esquina1;
         private Coordenada esquina2;
 
