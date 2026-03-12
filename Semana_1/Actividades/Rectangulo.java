@@ -9,12 +9,12 @@ public class Rectangulo {
             this.esquina2 = c2;
         }
 
-        public void setEsquina1(Coordenada c) {
-            this.esquina1 = c;
+        public void setEsquina1(Coordenada coo) {
+            this.esquina1 = coo;
         }
 
-        public void setEsquina2(Coordenada c) {
-            this.esquina2 = c;
+        public void setEsquina2(Coordenada coo) {
+            this.esquina2 = coo;
         }
 
         public Coordenada getEsquina1() {

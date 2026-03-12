@@ -19,10 +19,10 @@ public class Principal {
         double x2_mayor = scanner(System.in).nextDouble();
         double y2_mayor = scanner(System.in).nextDouble();
 
-        Rectangulo rectangulo1 = new Rectangulo(x1_menor, y1_menor, x1_mayor, y1_mayor);
-        Rectangulo rectangulo2 = new Rectangulo(x2_menor, y2_menor, x2_mayor, y2_mayor);
+        Rectangulo rectangulo1 = new Rectangulo(new Coordenada(x1_menor, y1_menor), new Coordenada(x1_mayor, y1_mayor));
+        Rectangulo rectangulo2 = new Rectangulo(new Coordenada(x2_menor, y2_menor), new Coordenada(x2_mayor, y2_mayor));
 
-        
+
 
     }
 }
