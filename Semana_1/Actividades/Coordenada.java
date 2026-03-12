@@ -17,8 +17,8 @@ public class Coordenada {
     }
 
     public Coordenada(Coordenada c) {
-        this.x = c.x;
-        this.y = c.y;
+        this.x = c.getX();
+        this.y = c.getY();
     }
 
     // Setters
