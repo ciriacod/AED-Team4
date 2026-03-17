@@ -28,6 +28,10 @@ public class AnalizadorMinero {
   }
   
   public void ejecutarAnalisis(int k) {
+    if (k > filas || k > columnas || k <= 0) {
+        System.out.println("Error: Tamaño no permitido");
+        return;
+    }
     double valorMaximo = -1;
     int mejorF = 0, mejorC = 0;
     
