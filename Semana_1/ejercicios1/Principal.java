@@ -1,4 +1,4 @@
-package PyPooEje1;
+package Semana_1.ejercicios1;
 import java.util.Scanner;
 
 public class Principal {

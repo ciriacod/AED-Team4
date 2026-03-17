@@ -1,4 +1,4 @@
-package PyPooEje1;
+package Semana_1.ejercicios1;
 
 public class Rectangulo {
         private Coordenada esquina1;

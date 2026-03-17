@@ -1,4 +1,4 @@
-package pyPooAct1;
+package Semana_1.ejercicios1;
 
 public class Coordenada 
 {
