@@ -11,7 +11,7 @@ public class Main {
             String ruta = lector.nextLine();
             analizador.cargarDesdeArchivo(ruta);
             
-            System.out.print("Ingrese el tamaño de la subregión: ");
+            System.out.print("Ingrese el tamaño de la subregión (terreno de 3x3): ");
             int k = lector.nextInt();
             
             analizador.ejecutarAnalisis(k);
