@@ -1,7 +1,7 @@
 import java.util.Scanner;
-import imagen.java;
+//import imagen.java;
 
-public class Calculadora{
+public class calculadora{
 
     imagen imagenobj = new imagen();
 

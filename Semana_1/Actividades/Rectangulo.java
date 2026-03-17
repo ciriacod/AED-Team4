@@ -1,5 +1,3 @@
-import java.util.*;
-
 public class Rectangulo {
         private Coordenada esquina1;
         private Coordenada esquina2;
@@ -27,5 +25,11 @@ public class Rectangulo {
 
         public String toString() {
             return "Rectangulo: Esquina 1: " + this.esquina1.toString() + ", Esquina 2: " + this.esquina2.toString();
+        }
+
+        public double calculoArea(){
+            double base = Math.abs(this.esquina2.getX() - this.esquina1.getX());
+            double altura = Math.abs(this.esquina2.getY() - this.esquina1.getY());
+            return base * altura;
         }
 }

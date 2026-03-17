@@ -1,5 +1,3 @@
-package pyPooAct1;
-
 public class Coordenada {
     // Atributos
     private double x;
@@ -41,14 +39,14 @@ public class Coordenada {
 
     // Métodos
     public double distancia(Coordenada c) {
-        double dx = this.x - c.x;
-        double dy = this.y - c.y;
+        double dx = this.getX() - c.getX();
+        double dy = this.getY() - c.getY();
         return Math.sqrt(dx * dx + dy * dy);
     }
 
     public static double distancia(Coordenada c1, Coordenada c2) {
-        double dx = c1.x - c2.x;
-        double dy = c1.y - c2.y;
+        double dx = c1.getX() - c2.getX();
+        double dy = c1.getY() - c2.getY();
         return Math.sqrt(dx * dx + dy * dy);
     }
 
