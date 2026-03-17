@@ -1,3 +1,5 @@
+package Semana_1.ejercicios2;
+
 import java.util.*;
 import java.io.*;
 

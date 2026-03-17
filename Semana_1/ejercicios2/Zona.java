@@ -1,3 +1,5 @@
+package Semana_1.ejercicios2;
+
 public class Zona {
   private String mineral;
   private double cantidad;
