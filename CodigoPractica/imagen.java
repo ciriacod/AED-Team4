@@ -2,14 +2,23 @@ import javax.swing.*;
 import java.awt.*;
 
 public class imagen {
-    ImageIcon imageIcon = new ImageIcon("https://oechsle.vteximg.com.br/arquivos/ids/18022678-1000-1000/imageUrl_1.jpg?v=638514346876130000");
-      
-    JFrame frame = new JFrame("Visor de Imagen");
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      
-    JLabel label = new JLabel(imageIcon);
-    frame.getContentPane().add(label, BorderLayout.CENTER);
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Imagen");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 400);
         
-    frame.pack();
-    frame.setVisible(true);
+        // Crear un panel para dibujar la imagen
+        JPanel panel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                // Dibujar un rectángulo rojo
+                g.setColor(Color.RED);
+                g.fillRect(50, 50, 300, 300);
+            }
+        };
+        
+        frame.add(panel);
+        frame.setVisible(true);
+    }
 }
