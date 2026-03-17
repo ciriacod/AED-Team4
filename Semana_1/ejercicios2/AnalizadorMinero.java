@@ -67,16 +67,15 @@ public class AnalizadorMinero {
 
     String predominante = "";
     int maxFreq = -1;
-  }
-  
-  for (Map.Entry<String, Integer> entry : conteo.entrySet()) {
+
+    for (Map.Entry<String, Integer> entry : conteo.entrySet()) {
         if (entry.getValue() > maxFreq) {
             maxFreq = entry.getValue();
             predominante = entry.getKey();
         }
     }
   
-  System.out.println("Valor total estimado: " + total);
-  System.out.println("Mineral predominante en la región: " + predominante);
-}
+    System.out.println("Valor total estimado: " + total);
+    System.out.println("Mineral predominante en la región: " + predominante);
+  }
 }
