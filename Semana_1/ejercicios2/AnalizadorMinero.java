@@ -55,23 +55,26 @@ public class AnalizadorMinero {
     System.out.println("Tamaño de la región: " + k + "x" + k);
     System.out.println("Zonas analizadas:");
     
-    Map conteo = new HashMap<>();
+    Map<String, Integer> conteo = new HashMap<>(); 
+    
     for (int i = f; i < f + k; i++) {
-      for (int j = c; j < c + k; j++) {
-        System.out.println(terreno[i][j]);
-        String min = terreno[i][j].getMineral();
-        conteo.put(min, conteo.getOrDefault(min, 0) + 1);
+        for (int j = c; j < c + k; j++) {
+            System.out.println(terreno[i][j]);
+            String min = terreno[i][j].getMineral();
+            conteo.put(min, conteo.getOrDefault(min, 0) + 1);
+        }
     }
+
+    String predominante = "";
+    int maxFreq = -1;
   }
   
-  String predominante = "";
-  int maxFreq = -1;
-  for (var entry : conteo.entrySet()) {
-    if (entry.getValue() > maxFreq) {
-      maxFreq = entry.getValue();
-      predominante = entry.getKey();
+  for (Map.Entry<String, Integer> entry : conteo.entrySet()) {
+        if (entry.getValue() > maxFreq) {
+            maxFreq = entry.getValue();
+            predominante = entry.getKey();
+        }
     }
-  }
   
   System.out.println("Valor total estimado: " + total);
   System.out.println("Mineral predominante en la región: " + predominante);
