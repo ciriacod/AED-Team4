@@ -11,16 +11,16 @@ public class Zona {
     this.pureza = pureza;
     }
 
-  public double calcularValor() {
+  public double calcularValor() {                                                        //Método que calcula el valor del mineral mediante su cantidad y pureza
     return this.cantidad * this.pureza;
   }
 
-  public String getMineral() {
-    return mineral;
+  public String getMineral() {                                                           //Método que retorna el tipo del mineral
+    return mineral;                                                                      
   }
 
   @Override
-  public String toString() {
+  public String toString() {                                                             //Sobrecarga del método toString()para la muestra del mensaje de la clase
     return "[" + mineral + ", cantidad: " + cantidad + ", pureza: " + pureza + "]";
   }
 }
