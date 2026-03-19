@@ -61,18 +61,18 @@ public class AnalizadorMinero {
     
     Map<String, Integer> conteo = new HashMap<>();                                      //Se almacena la informacion dentro de un Map para mostrarlo por consola
     
-    for (int i = f; i < f + k; i++) {
+    for (int i = f; i < f + k; i++) {                                                   //Bucle que permite mostrar todos los datos del terreno seleccionado
         for (int j = c; j < c + k; j++) {
             System.out.println(terreno[i][j]);
             String min = terreno[i][j].getMineral();
-            conteo.put(min, conteo.getOrDefault(min, 0) + 1);
+            conteo.put(min, conteo.getOrDefault(min, 0) + 1);                           //Función de Map que permite almacenar los datos en un dato estructurado
         }
     }
 
     String predominante = "";
     int maxFreq = -1;
 
-    for (Map.Entry<String, Integer> entry : conteo.entrySet()) {
+    for (Map.Entry<String, Integer> entry : conteo.entrySet()) {                        //Bucle que permite escojer dentro del Map el valor predominante
         if (entry.getValue() > maxFreq) {
             maxFreq = entry.getValue();
             predominante = entry.getKey();
