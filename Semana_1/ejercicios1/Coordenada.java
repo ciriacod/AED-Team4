@@ -19,7 +19,7 @@ public class Coordenada
 		this.x=c.x;
 		this.y=c.y;
 	}
-
+//get y set
 	void setX(double x) {
 		this.x=x;
 		
