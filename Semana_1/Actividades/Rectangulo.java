@@ -26,6 +26,7 @@ public class Rectangulo {
         public String toString() {
             return "Rectangulo: Esquina 1: " + this.esquina1.toString() + ", Esquina 2: " + this.esquina2.toString();
         }
+        //metodo para hallar area mediante las coordenadas ya definidas antes
 
         public double calculoArea(){
             double base = Math.abs(this.esquina2.getX() - this.esquina1.getX());
