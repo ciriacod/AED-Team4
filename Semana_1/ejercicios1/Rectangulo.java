@@ -29,13 +29,13 @@ public class Rectangulo {
         public String toString() {
             return "(" + this.esquina1.toString() + ", " + this.esquina2.toString() + ")";
         }
-        //calculos que pidieron
+        //calculo de area con valor absoluto entre 2 esquinas
         public double calcularArea() {
             double base = Math.abs(esquina2.getX() - esquina1.getX());
             double altura = Math.abs(esquina2.getY() - esquina1.getY());
             return base * altura;
         }
-        
+        //calculamos en ejes x, y en la ecuacion de euclides para hallar la distancia
         public double calcularDistancia() {
             double dx = esquina2.getX() - esquina1.getX();
             double dy = esquina2.getY() - esquina1.getY();
