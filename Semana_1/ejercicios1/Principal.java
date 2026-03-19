@@ -5,7 +5,7 @@ public class Principal {
     public static void main(String[] args) 
     {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Ingrese el numero maximo para almacenar");
+        System.out.println("Ingrese el numero maximo para almacenar"); //ingresamos la cantidad max de coordenadas que peude haber
         int nmax = scanner.nextInt();
         ContainerRect contenedor = new ContainerRect(nmax);
         
