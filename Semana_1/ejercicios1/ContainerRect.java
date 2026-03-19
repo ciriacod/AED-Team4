@@ -15,7 +15,7 @@ public class ContainerRect
 		this.areas = new double[n];
 	}
 	
-	public boolean addRectangulo(Rectangulo r)
+	public boolean addRectangulo(Rectangulo r) //agregamos en los arreglos la distancia, el area de las coodenadas
 	{
 		if(numRec <= n) {
 			rectangulos[numRec] = r;
@@ -33,7 +33,7 @@ public class ContainerRect
 	public String toString() { 
 		String resultado = "Rectangulo Coordenadas Distancia Area\n";
 		for(int i = 0; i < numRec; i++) {
-			resultado += (i+1) + " " + rectangulos[i].toString() + " " +  ///sale bien el formato de mustra usando este 3f y 2f
+			resultado += (i+1) + " " + rectangulos[i].toString() + " " +  ///sale bien el formato de muestra usando este 3f y 2f
 						String.format("%.3f", distancias[i]) + " " + 
 						String.format("%.2f", areas[i]) + "\n";
 		}
