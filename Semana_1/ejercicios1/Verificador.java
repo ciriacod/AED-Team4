@@ -26,7 +26,7 @@ public class Verificador {
         return (contactoX && alineadoY) || (contactoY && alineadoX);
     }
 
-    // Caso 3: No están ni sobrepuestos ni juntos [cite: 259, 263]
+    // Caso 3: No están ni sobrepuestos ni juntos
     public static boolean esDisjunto(Rectangulo r1, Rectangulo r2) {
         return !esSobrePos(r1, r2) && !esJunto(r1, r2);
     }
