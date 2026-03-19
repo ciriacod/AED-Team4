@@ -36,7 +36,7 @@ public class Coordenada
 		return this.y;
 		
 	}
-	//metodos
+	//metodos de instancia que necesita tener un objeto concreto ya creado antes
 	double distancia(Coordenada c)
 	{
 		double dx= this.x - c.x;
@@ -44,6 +44,7 @@ public class Coordenada
 		return Math.sqrt(dx*dx + dy*dy);
 		
 	}
+	//metodo de clase que accede a los datos creados de la clase misma
 	static double distancia(Coordenada c1, Coordenada c2) 
 	{
 		double cx=c1.x-c2.x;
