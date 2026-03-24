@@ -2,7 +2,7 @@ package Semana_2.Ejercicios.Ejercicio1_7;
 
 import java.util.Objects;                                                           //Se importa librerias externas para el funcionamiento de ciertos métodos
 
-public class Golosina implements Compare<T>{
+public class Golosina{
     private String nombre;
     private double peso;
 

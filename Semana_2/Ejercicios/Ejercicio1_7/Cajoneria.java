@@ -3,7 +3,7 @@ package Semana_2.Ejercicios.Ejercicio1_7;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Cajoneria<T implements Compare<T>> implements Iterable<Caja<T>> {                        //Permite guardar objetos tipo Caja 
+public class Cajoneria<T> implements Iterable<Caja<T>> {                        //Permite guardar objetos tipo Caja 
     private ArrayList<Caja<T>> lista = new ArrayList<>();
     private int tope;
 
