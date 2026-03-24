@@ -1,4 +1,4 @@
-package ejercicio9;
+package Semana_2.Ejercicios.Ejercicio9;
 //La interfaz que pide el programa obligatoria usar en las otras clases 
 public interface Cargable
 {

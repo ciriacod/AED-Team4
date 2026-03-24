@@ -1,4 +1,4 @@
-package ejercicio9;
+package Semana_2.Ejercicios.Ejercicio9;
 
 // Clase que representa una Laptop que puede ser cargada
 public class Laptop implements Cargable

@@ -1,5 +1,4 @@
-
-package com.Ejercicio1_7;
+package Semana_2.Ejercicios.Ejercicio1_7;
 
 import java.util.ArrayList;
 import java.util.Iterator;

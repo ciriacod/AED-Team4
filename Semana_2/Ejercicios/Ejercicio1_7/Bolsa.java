@@ -1,5 +1,4 @@
-
-package com.Ejercicio1_7;
+package Semana_2.Ejercicios.Ejercicio1_7;
 
 import java.util.ArrayList;                                                     //Librerias importadas para manejar el uso de datos agrupados
 import java.util.Iterator;

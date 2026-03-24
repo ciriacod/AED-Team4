@@ -1,4 +1,4 @@
-package ejercicio9;
+package Semana_2.Ejercicios.Ejercicio9;
 
 public class TestStation
 {

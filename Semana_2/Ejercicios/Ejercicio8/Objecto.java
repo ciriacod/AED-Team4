@@ -1,4 +1,4 @@
-package com.Ejercicio8;
+package Semana_2.Ejercicios.Ejercicio8;
 
 public class Objecto {
     private String name;

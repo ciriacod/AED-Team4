@@ -1,5 +1,4 @@
-
-package com.Ejercicio8;
+package Semana_2.Ejercicios.Ejercicio8;
 
 public class Swap {
     public static <T> void swap(T[] arreglo, int i, int j) {

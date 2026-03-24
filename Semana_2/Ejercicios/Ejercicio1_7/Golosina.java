@@ -1,5 +1,4 @@
-
-package com.Ejercicio1_7;
+package Semana_2.Ejercicios.Ejercicio1_7;
 
 import java.util.Objects;                                                           //Se importa librerias externas para el funcionamiento de ciertos métodos
 
