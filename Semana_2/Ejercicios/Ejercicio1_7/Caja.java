@@ -1,6 +1,6 @@
 package Semana_2.Ejercicios.Ejercicio1_7;
 
-public class Caja<T> {
+public class Caja<T extends Comparable<T>> {
     private String color;
     private T contenido;
 
