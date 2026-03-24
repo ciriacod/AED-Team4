@@ -85,10 +85,4 @@ public class Laptop implements Cargable
 		return this.modelolap.equals(otro.modelolap) && 
 		       this.consumoVatioslap == otro.consumoVatioslap; // comparación de atributos
 	}
-	
-	@Override
-	public int hashCode() // genera código hash consistente con equals
-	{
-	    return modelolap.hashCode() + (int) consumoVatioslap;
-	}
 }

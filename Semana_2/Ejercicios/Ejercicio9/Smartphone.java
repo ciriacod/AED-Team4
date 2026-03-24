@@ -84,11 +84,5 @@ public class Smartphone implements Cargable
 		
 		return this.modelo.equals(otro.modelo) && this.consumoVatios == otro.consumoVatios;
 	}
-	// Método hashCode que genera un código hash basado en los atributos del objeto
-	// Debe ser consistente con equals para garantizar correcto funcionamiento en colecciones
-	@Override
-	public int hashCode() {
-	    return modelo.hashCode() + (int) consumoVatios;
-	}
 }
 
