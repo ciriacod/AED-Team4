@@ -3,7 +3,7 @@ package Semana_2.Ejercicios.Ejercicio1_7;
 import java.util.ArrayList;                                                     //Librerias importadas para manejar el uso de datos agrupados
 import java.util.Iterator;
 
-public class Bolsa<T> implements Iterable<T> {                                  //Clase que implementa Iterable para poder usar
+public class Bolsa<T extends Compare<T>> implements Iterable<T> {                                  //Clase que implementa Iterable para poder usar
     private ArrayList<T> lista = new ArrayList<>();                             //la bolsa en bucles for-each
     private int tope;
 
