@@ -1,0 +1,41 @@
+Ejercicio 6: Análisis de Complejidad de Función de Recurrencia
+
+Enunciado
+A partir de la siguiente función de recurrencia de un algoritmo, halle el orden de complejidad correspondiente:
+
+T(n) = T(n/2) + 3  (si n >= 2)
+T(n) = 7           (si n = 1)
+
+Resolución: Método de Iteración
+
+Paso 1: Expandir la ecuación
+Sustituimos T(n/2) dentro de la misma fórmula:
+T(n) = [T(n/4) + 3] + 3 
+T(n) = T(n/2^2) + 2(3)
+
+Expandimos una vez más sustituyendo T(n/4):
+T(n) = [T(n/8) + 3] + 2(3)
+T(n) = T(n/2^3) + 3(3)
+
+Paso 2: Generalizar a k iteraciones
+Siguiendo el patrón, después de k iteraciones la ecuación toma la forma:
+T(n) = T(n/2^k) + 3k
+
+Paso 3: Encontrar el caso base
+El caso base es T(1) = 7. Para llegar a este punto, igualamos el argumento de T a 1:
+n / 2^k = 1  =>  n = 2^k
+
+Aplicando logaritmo en base 2 para despejar k:
+k = log2(n)
+
+Paso 4: Sustituir y resolver
+Reemplazamos k en nuestra ecuación generalizada:
+T(n) = T(1) + 3 * log2(n)
+T(n) = 7 + 3 * log2(n)
+
+Respuesta Final
+
+Al expresarlo en notación asintótica (Big O), se desprecian las constantes, ya que no afectan la tasa de crecimiento principal cuando n tiende al infinito.
+
+Por lo tanto, la complejidad del algoritmo es logarítmica:
+O(log n)
