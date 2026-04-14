@@ -1,4 +1,4 @@
-package act6;
+package Semana_4.Actividades.Actividad_6;
 
 public class dpSolution {
 

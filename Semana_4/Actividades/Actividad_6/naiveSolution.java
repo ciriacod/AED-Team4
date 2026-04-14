@@ -1,4 +1,4 @@
-package act6;
+package Semana_4.Actividades.Actividad_6;
 
 public class naiveSolution {
 
@@ -22,6 +22,7 @@ public class naiveSolution {
     }
 
     public static void main(String[] args) {
+
         // Arreglo de valores por longitud de corte
         int[] values = new int[]{3, 7, 1, 3, 9};
 
