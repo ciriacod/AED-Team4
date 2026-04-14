@@ -1,4 +1,4 @@
-package act4;
+package Semana_4.Actividades.Actividad_4;
 
 public class MergeSort {
 
