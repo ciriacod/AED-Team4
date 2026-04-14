@@ -1,4 +1,4 @@
-package Semana_2.Ejercicios.Ejercicio1_7;
+package com.Ejercicio1_7;
 
 import java.util.Objects;                                                           //Se importa librerias externas para el funcionamiento de ciertos métodos
 
@@ -17,6 +17,12 @@ public class Golosina{
 
     public double getPeso() {
         return peso;
+    }
+    
+    @Override
+    public int compareTo(Golosina otra) {
+        // Compara por peso, por ejemplo
+        return Double.compare(this.peso, otra.peso);
     }
     
     // --- Caso del ejercicio n°5 ---

@@ -1,6 +1,7 @@
-package Semana_2.Ejercicios.Ejercicio1_7;
 
-public class Chocolatina {
+package com.Ejercicio1_7;
+
+public class Chocolatina  {
     private String marca;
 
     public Chocolatina(String marca) {

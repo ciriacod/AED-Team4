@@ -1,4 +1,4 @@
-package Semana_2.Ejercicios.Ejercicio1_7;
+package com.Ejercicio1_7;
 
 public class TestGen {
     public static <T> boolean exist(T[] arreglo, T elemento) {
