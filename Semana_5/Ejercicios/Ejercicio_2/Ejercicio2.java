@@ -1,4 +1,4 @@
-package laboratorio5;
+package Semana_5.Ejercicios.Ejercicio_2;
 class Node<T>{
 	T data;
 	Node<T> next;
