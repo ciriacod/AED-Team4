@@ -1,3 +1,42 @@
+package laboratorio5;
+class Node<T>{
+	T data;
+	Node<T> next;
+	Node(T data){
+		this.data = data;
+		this.next = null;
+	}
+	
+}
+
+class ListLinked<T>{
+	Node<T> head;
+	ListLinked(){
+		this.head=null;
+	}
+	
+	boolean isEmptyList() {
+		return head == null;
+	}
+	
+	void insertFirst(T x) {
+		Node<T> temp = new Node<> (x);
+		temp.next = head;
+		head=temp;
+				}
+	void print() {
+	    Node<T> curr = head;
+
+	    while (curr != null) {
+	        System.out.print(curr.data + " ");
+	        curr = curr.next;
+	    }
+
+	    System.out.println();
+	}
+}
+
+
 class InvertirLista<T>
 {
 	public static <T> ListLinked<T> invertirLista(ListLinked<T> lista)
@@ -24,8 +63,7 @@ class Main {
         lista.insertFirst(30);
         lista.print();
 
-        System.out.println(BuscarElemento.buscarElement(lista, 20)); 
-        System.out.println(BuscarElemento.buscarElement(lista, 5));  
+      
 
         ListLinked<Integer> invertida = InvertirLista.invertirLista(lista);
 
