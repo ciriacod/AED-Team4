@@ -1,4 +1,3 @@
-
 package Ejercicio4;
 
 public class LaberintoBacktracking {
@@ -39,7 +38,7 @@ public class LaberintoBacktracking {
     }
 
     private static boolean esSeguro(int[][] laberinto, int x, int y) {          //Funcion que verifica estar dentro de los límites 
-        return (x >= 0 && x < N && y >= 0 && y < N && laberinto[x][y] == 1);    // y no ser una pared (0)
+        return (x >= 0 && x < N && y >= 0 && y < N && laberinto[x][y] == 0);    // y no ser una pared (0)
     }
 
     private static void imprimirSolucion(int[][] solucion) {                    //Metodo que imprime el laberinto
@@ -53,10 +52,10 @@ public class LaberintoBacktracking {
     
     public static void main(String[] args) {
         int[][] laberinto = {
-            { 1, 0, 0, 0 },
-            { 1, 1, 0, 1 },
             { 0, 1, 0, 0 },
-            { 1, 1, 1, 1 }
+            { 0, 1, 0, 1 },
+            { 0, 0, 0, 1 },
+            { 0, 1, 0, 0 }
         };
 
         resolver(laberinto);
