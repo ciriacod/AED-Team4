@@ -1,4 +1,4 @@
-package complejidadnoiterativa; 
+package Semana_3.actividad; 
 
 public class Potencial {
     public static double potencial(double x, int y) {    

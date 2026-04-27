@@ -1,4 +1,4 @@
-package com.Ejercicio1_7;
+
 
 import java.util.Objects;                                                           //Se importa librerias externas para el funcionamiento de ciertos métodos
 
@@ -19,7 +19,6 @@ public class Golosina{
         return peso;
     }
     
-    @Override
     public int compareTo(Golosina otra) {
         // Compara por peso, por ejemplo
         return Double.compare(this.peso, otra.peso);

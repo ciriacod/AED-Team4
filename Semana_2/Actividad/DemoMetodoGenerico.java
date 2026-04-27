@@ -1,6 +1,7 @@
 package Semana_2.Actividad;
 
 public class DemoMetodoGenerico{
+    @SuppressWarnings("unlikely-arg-type")
     static <T extends Comparable<T>> boolean igualArrays (T[] x, T[] y){
         if(x.length != y.length){
             return false;

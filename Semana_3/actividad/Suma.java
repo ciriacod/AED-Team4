@@ -1,4 +1,4 @@
-package complejidadalgoritmica;
+package Semana_3.actividad;
 
 public class Suma {
     public static int suma(int [] arreglo) { // O(1)
