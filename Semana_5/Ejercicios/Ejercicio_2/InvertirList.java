@@ -41,8 +41,8 @@ class InvertirLista<T>
 {
 	public static <T> ListLinked<T> invertirLista(ListLinked<T> lista)
 	{
-		ListLinked<T> nueva = new ListLinked<> (); // nueva lista vacia
-		Node<T> curr = lista.head; //empezar desde la cabeza
+		ListLinked<T> nueva = new ListLinked<> (); // crea una lsiat enlazada vacia
+		Node<T> curr = lista.head; //creamos un cursor que apunte a la cabeza de la lista
 		while (curr !=null) { //inserta al inico invertimos el orden
 			nueva.insertFirst(curr.data); 
 			curr = curr.next; //avanzamos
