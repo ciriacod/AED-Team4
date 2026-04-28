@@ -51,56 +51,55 @@ public class ColaReproduccion<T extends Cancion> {
         }
         return (actual != null) ? actual.dato : null; // Si la cancion anterior es nula, solo se verifica si la cancion actual no es nula y retorna la cancion actual
     }
-//------------------------------------------------------------------------------------------------------------------------//
-    // Metodo contarNodos para obtener el numero de nodos presentes en la lista
-    private int contarNodos() {
-        int count = 0;
-        NodeDoble<T> aux = head;    // Se inicializa un Nodo auxiliar
-        
-        // Mientras el nodo no sea nulo, se incrementa el contador
-        while (aux != null) {
-            count++;
-            aux = aux.next; 
-        }
-        return count;  // Retorna el numero total de nodos presentes en la lista
-    }
-
-    // Metodo que obtiene el Nodo presente en una posicion dada
-    private NodeDoble<T> obtenerNodoEnPosicion(int posicion) {
-        NodeDoble<T> aux = head;    // Se inicializa un Nodo auxiliar
-        int index = 0;              // Se inicializa un contador de indice
-        
-        // Mientras el nodo no sea nulo y el indice sea menor a la posicion deseada, se avanza al siguiente nodo e incrementa el indice
-        while (aux != null && index < posicion) {
-            aux = aux.next;
-            index++;
-        }
-        return aux;    // Retorna el Nodo presente en la posicion dada
-    }
-//------------------------------------------------------------------------------------------------------------------------//
-    // Metodo que mezcla las canciones utilizando el metodo Fisher-Yates
+// Metodo que mezacla las canciones utilizando el algoritmo de Fisher-Yates
     public void mezclar() {
-        int n = contarNodos();
-        if (n < 2) return;
+        if (head == null) return;
 
-        Random rnd = new Random();
-        
-        // Recorremos de atras hacia adelante (i = n-1 hasta 1)
-        for (int i = n - 1; i > 0; i--) {
-            //Elegir un indice aleatorio j entre 0 e i
-            int j = rnd.nextInt(i + 1);
+        // Crear lista temporal
+        ColaReproduccion<T> copia = new ColaReproduccion<>();
+        NodeDoble<T> aux = head;            //Se asigna Head a un Nodo auxiliar
 
-            //Obtener los nodos en las posiciones i y j
-            NodeDoble<T> nodoI = obtenerNodoEnPosicion(i);
-            NodeDoble<T> nodoJ = obtenerNodoEnPosicion(j);
-
-            //Intercambiar los datos (SWAP)
-            T temp = nodoI.dato;
-            nodoI.dato = nodoJ.dato;
-            nodoJ.dato = temp;
+        //Mientras el Nodo auxiliar sea nulo, sigue recorriendo la lista
+        while (aux != null) {
+            copia.agregarCancion(aux.dato);         //Agrega las canciones a la nueva lista
+            aux = aux.next;         //Recorre al siguiente Nodo
         }
-        // Al terminar, reseteamos el puntero 'actual' al inicio
-        actual = head;
+        
+        NodeDoble<T> temp = copia.head;     //Se crea un nodo temporal
+        int n = 0;      //Asignacion de la variable para calcular el tamaño del nodo Temp
+
+        // Mientras el Nodo temporal no se nulo sigue recorriendo
+        while (temp != null) {
+            n++;
+            temp = temp.next;
+        }
+
+        // Se realiza el algoritmo de Fisher-Yates para el ordenamiento aleatorio de la lista
+        for (int i = n - 1; i > 0; i--) {           // Comienza desde el ultimo elemento hasta el primero
+            int j = (int) (Math.random() * (i + 1));           // Se genera una posicion aleatoria desdes 0 hasta el valor actual del nodo
+
+            NodeDoble<T> nodoI = copia.head;        //Se asignan el nodoI para simular el comportamiento de la variable i desde Head
+            for (int k = 0; k < i; k++) nodoI = nodoI.next;     //Recorre el nuevo Nodo asignando segun la posicion J
+
+            NodeDoble<T> nodoJ = copia.head;        //Se asigna el nodoJ para simular el comportamiento de la variable j desde Head
+            for (int k = 0; k < j; k++) nodoJ = nodoJ.next;     //Recorre el nuevo Nodo asignado segun la posicion J
+
+            // Intercambio de datos
+            T tempDato = nodoI.dato;
+            nodoI.dato = nodoJ.dato;
+            nodoJ.dato = tempDato;
+        }
+
+        // Reconstruye la lista original
+        head = tail = actual = null;
+
+        NodeDoble<T> recorrer = copia.head;     //Se llama a la cabeza de la lista copiada
+
+        //Mientras el nodo de la lista copia sea nulo, este recorre mientras agrega una nueva cancion
+        while (recorrer != null) {
+            agregarCancion(recorrer.dato);
+            recorrer = recorrer.next;
+        }
     }
     
     // Metodo que utiliza el atributo duracionSeg de Cancion
