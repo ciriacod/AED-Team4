@@ -51,7 +51,33 @@ public class ColaReproduccion<T extends Cancion> {
         }
         return (actual != null) ? actual.dato : null; // Si la cancion anterior es nula, solo se verifica si la cancion actual no es nula y retorna la cancion actual
     }
-    
+//------------------------------------------------------------------------------------------------------------------------//
+    // Metodo contarNodos para obtener el numero de nodos presentes en la lista
+    private int contarNodos() {
+        int count = 0;
+        NodeDoble<T> aux = head;    // Se inicializa un Nodo auxiliar
+        
+        // Mientras el nodo no sea nulo, se incrementa el contador
+        while (aux != null) {
+            count++;
+            aux = aux.next; 
+        }
+        return count;  // Retorna el numero total de nodos presentes en la lista
+    }
+
+    // Metodo que obtiene el Nodo presente en una posicion dada
+    private NodeDoble<T> obtenerNodoEnPosicion(int posicion) {
+        NodeDoble<T> aux = head;    // Se inicializa un Nodo auxiliar
+        int index = 0;              // Se inicializa un contador de indice
+        
+        // Mientras el nodo no sea nulo y el indice sea menor a la posicion deseada, se avanza al siguiente nodo e incrementa el indice
+        while (aux != null && index < posicion) {
+            aux = aux.next;
+            index++;
+        }
+        return aux;    // Retorna el Nodo presente en la posicion dada
+    }
+//------------------------------------------------------------------------------------------------------------------------//
     // Metodo que mezcla las canciones utilizando el metodo Fisher-Yates
     public void mezclar() {
         int n = contarNodos();

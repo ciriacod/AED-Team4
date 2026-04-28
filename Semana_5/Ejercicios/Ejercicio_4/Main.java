@@ -74,7 +74,7 @@ class contarNodo<T> {
 }
 
 // Clase principal para probar
-public class contarNodo {
+public class Main {
  public static void main(String[] args) {
     ListLinked<Integer> lista = new ListLinked<>();
     lista.insertFirst(10);
