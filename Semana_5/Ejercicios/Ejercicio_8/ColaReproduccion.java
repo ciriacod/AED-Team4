@@ -48,22 +48,36 @@ public class ColaReproduccion<T extends Cancion> {
 
     // Metodo que mezcla las canciones sin usar ArrayList ni Collections
     public void mezclar() {
-        if (head == null || head.next == null) return;
+        int n = contarNodos();
+        if (n < 2) return;
 
-        int cantidad = contarNodos();
+        Random rnd = new Random();
+        
+        // Recorremos de atrás hacia adelante (i = n-1 hasta 1)
+        for (int i = n - 1; i > 0; i--) {
+            // 1. Elegir un índice aleatorio j entre 0 e i
+            int j = rnd.nextInt(i + 1);
 
-        for (int i = cantidad - 1; i > 0; i--) {
-            int j = (int) (Math.random() * (i + 1));
+            // 2. Obtener los nodos en las posiciones i y j
+            NodeDoble<T> nodoI = obtenerNodoEnPosicion(i);
+            NodeDoble<T> nodoJ = obtenerNodoEnPosicion(j);
 
-            NodeDoble<T> nodoI = obtenerNodo(i);
-            NodeDoble<T> nodoJ = obtenerNodo(j);
-
+            // 3. Intercambiar los datos (SWAP)
             T temp = nodoI.dato;
             nodoI.dato = nodoJ.dato;
             nodoJ.dato = temp;
         }
-
+        // Al terminar, reseteamos el puntero 'actual' al inicio
         actual = head;
+    }
+
+    // Método auxiliar para obtener un nodo específico recorriendo la lista
+    private NodeDoble<T> obtenerNodoEnPosicion(int index) {
+        NodeDoble<T> temp = head;
+        for (int i = 0; i < index && temp != null; i++) {
+            temp = temp.next;
+        }
+        return temp;
     }
 
     // Metodo que cuenta cuantos nodos tiene la lista
