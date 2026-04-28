@@ -28,7 +28,7 @@ class ListLinked<T> {
     void insertFirst(T x) {
         Node<T> temp = new Node<>(x);
         temp.next = head;
-        head = temp;
+        head = temp; //ahora temp con dato x es el primero en la lista enlazada
     }
 
     // Inserta un elemento al final de la lista
@@ -37,9 +37,9 @@ class ListLinked<T> {
         if (head == null) {
             head = newNode;
         } else {
-            Node<T> curr = head;
+            Node<T> curr = head; //aqui el nodo cursor pasa a estar ->al mismo que lapunta head
             while (curr.next != null) {
-                curr = curr.next;
+                curr = curr.next; //la
             }
             curr.next = newNode;
         }
