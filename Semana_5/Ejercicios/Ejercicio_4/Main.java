@@ -54,8 +54,7 @@ class ListLinked<T> {
         System.out.println();
     }
 }
-
-// Clase InsertarFinal
+//CONTARNODOS
 class contarNodo<T> {
    // Metodo generico para contar nodos en una lista enlazada
     public static <T> int contarNodos(Node<T> head) {
