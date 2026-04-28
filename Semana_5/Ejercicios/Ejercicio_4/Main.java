@@ -1,5 +1,4 @@
 package LAB5DOS;
-
 // Clase Nodo generico
 class Node<T> {
     T data;          // dato almacenado en el nodo
@@ -57,30 +56,34 @@ class ListLinked<T> {
 }
 
 // Clase InsertarFinal
-class InsertarFinal<T> {
-    // Metodo estatico que inserta directamente al final de la lista original
-    public static <T> void insertarFinal(ListLinked<T> lista, T x) {
-        lista.insertLast(x);
+class contarNodo<T> {
+   // Metodo generico para contar nodos en una lista enlazada
+    public static <T> int contarNodos(Node<T> head) {
+        int contador = 0;          // inicializamos el contador en cero
+        Node<T> curr = head;       // empezamos desde la cabeza de la lista
+
+        // mientras no lleguemos al final de la lista
+        while (curr != null) {
+            contador++;            // sumamos uno por cada nodo
+            curr = curr.next;      // avanzamos al siguiente nodo
+        }
+
+        return contador;           // devolvemos el total de nodos
     }
+
 }
 
 // Clase principal para probar
-public class ejer3 {
-    public static void main(String[] args) {
-        ListLinked<Integer> lista = new ListLinked<>();
+public class ejer4 {
+ public static void main(String[] args) {
+    ListLinked<Integer> lista = new ListLinked<>();
+    lista.insertFirst(10);
+    lista.insertFirst(20);
+    lista.insertFirst(30);
 
-        // Insertamos elementos al inicio
-        lista.insertFirst(10);
-        lista.insertFirst(20);
-        lista.insertFirst(30);
+    // llamamos al metodo contarNodos pasando la cabeza
+    int total = contarNodo.contarNodos(lista.head);
+    System.out.println("Numero de nodos: " + total);
+}
 
-        System.out.println("Lista original:");
-        lista.print();
-
-        // Insertamos un elemento al final
-        InsertarFinal.insertarFinal(lista, 40);
-
-        System.out.println("Lista con elemento al final:");
-        lista.print();
-    }
 }
