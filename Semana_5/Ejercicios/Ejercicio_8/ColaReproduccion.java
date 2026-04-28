@@ -46,7 +46,7 @@ public class ColaReproduccion<T extends Cancion> {
         return (actual != null) ? actual.dato : null;
     }
 
-    // Metodo que mezcla las canciones sin usar ArrayList ni Collections
+    // Metodo que mezcla las canciones utilizando el metodo Fisher-Yates
     public void mezclar() {
         int n = contarNodos();
         if (n < 2) return;
@@ -55,14 +55,14 @@ public class ColaReproduccion<T extends Cancion> {
         
         // Recorremos de atrás hacia adelante (i = n-1 hasta 1)
         for (int i = n - 1; i > 0; i--) {
-            // 1. Elegir un índice aleatorio j entre 0 e i
+            //Elegir un índice aleatorio j entre 0 e i
             int j = rnd.nextInt(i + 1);
 
-            // 2. Obtener los nodos en las posiciones i y j
+            //Obtener los nodos en las posiciones i y j
             NodeDoble<T> nodoI = obtenerNodoEnPosicion(i);
             NodeDoble<T> nodoJ = obtenerNodoEnPosicion(j);
 
-            // 3. Intercambiar los datos (SWAP)
+            //Intercambiar los datos (SWAP)
             T temp = nodoI.dato;
             nodoI.dato = nodoJ.dato;
             nodoJ.dato = temp;
