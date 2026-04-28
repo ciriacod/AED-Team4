@@ -1,4 +1,4 @@
-package LAB5DOS;
+package Semana_5.Ejercicios.Ejercicio_4;
 // Clase Nodo generico
 class Node<T> {
     T data;          // dato almacenado en el nodo
@@ -74,7 +74,7 @@ class contarNodo<T> {
 }
 
 // Clase principal para probar
-public class ejer4 {
+public class contarNodo {
  public static void main(String[] args) {
     ListLinked<Integer> lista = new ListLinked<>();
     lista.insertFirst(10);

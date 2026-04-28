@@ -1,4 +1,4 @@
-package LAB5DOS;
+package Semana_5.Ejercicios.Ejercicio_3;
 
 // Clase Nodo generico
 class Node<T> {
@@ -65,7 +65,7 @@ class InsertarFinal<T> {
 }
 
 // Clase principal para probar
-public class ejer3 {
+public class insertarFinal {
     public static void main(String[] args) {
         ListLinked<Integer> lista = new ListLinked<>();
 

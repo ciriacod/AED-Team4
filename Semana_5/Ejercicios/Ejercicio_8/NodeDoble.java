@@ -1,5 +1,5 @@
 
-package Ejercicio8;
+package Semana_5.Ejercicios.Ejercicio_8;
 
 public class NodeDoble<T> {
     T dato;
