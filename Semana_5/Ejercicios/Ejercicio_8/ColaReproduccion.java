@@ -1,51 +1,57 @@
+
 package Ejercicio8;
 
 /*
  ***********************************************************************************************
- *************  ----------------------   Ejercicio N 8   ------------------  *******************
+ *************  ----------------------   Ejercicio N°8   ------------------  *******************
  ***********************************************************************************************
  */
 
-// Al poner extends Cancion T sabe que es Cancion y puede usar sus metodos
-public class ColaReproduccion<T extends Cancion> {
+//Se importan librerias de java para el uso del algoritmo Fisher-Yates
+import java.util.Random;
 
+// Al poner "extends Cancion", T sabe que es Cancion por lo que puede usar sus metodos
+public class ColaReproduccion<T extends Cancion> {
     private NodeDoble<T> head;
     private NodeDoble<T> tail;
-    private NodeDoble<T> actual; // Indica que cancion se esta reproduciendo
-
-    // Metodo que agrega canciones a la lista doble
+    private NodeDoble<T> actual; // Atributo que indica que la playlist se esta reproduciendo
+    
+    // Metodo que agrega Nodos a la lista
     public void agregarCancion(T cancion) {
-        NodeDoble<T> nuevo = new NodeDoble<>(cancion);
-
+        NodeDoble<T> nuevo = new NodeDoble<>(cancion);      // Instancia de una lista doble
+        
+        // Verifica si la lista se encuentra vacia para agregar un Nodo
         if (head == null) {
-            head = tail = actual = nuevo;
+            head = tail = actual = nuevo;     
         } else {
-            tail.next = nuevo;
-            nuevo.prev = tail;
-            tail = nuevo;
+            tail.next = nuevo;      // Nuevo se asigna al siguiente de la cola
+            nuevo.prev = tail;      // La cola se asigna al anterior del nuevo
+            tail = nuevo;       //Ahora nuevo sera laa cola
         }
     }
-
-    // Metodo que avanza al siguiente nodo y retorna la cancion
+    
+    // Metodo que avanza al siguiente Nodo y retorna la cancion
     public T reproducirSiguiente() {
+        
+        // Verifica si la cancion actual y la siguiente no son nulas
         if (actual != null && actual.next != null) {
             actual = actual.next;
-            return actual.dato;
+            return actual.dato;     // Retorna la cancion del siguiente Nodo
         }
-
-        return (actual != null) ? actual.dato : null;
+        return (actual != null) ? actual.dato : null; // Si la cancion siguiente es nula, solo se verifica si la cancion actual no es nula y retorna la cancion actual
     }
-
-    // Metodo que retrocede al nodo anterior y retorna la cancion
+    
+    // Metodo que retrocede al siguiente Nodo y retorna la cancion
     public T reproducirAnterior() {
+        
+        // Verifica si la cancion actual y la anterior no son nulas
         if (actual != null && actual.prev != null) {
             actual = actual.prev;
-            return actual.dato;
+            return actual.dato;     // Retorna la cancion del anterior Nodo
         }
-
-        return (actual != null) ? actual.dato : null;
+        return (actual != null) ? actual.dato : null; // Si la cancion anterior es nula, solo se verifica si la cancion actual no es nula y retorna la cancion actual
     }
-
+    
     // Metodo que mezcla las canciones utilizando el metodo Fisher-Yates
     public void mezclar() {
         int n = contarNodos();
@@ -53,9 +59,9 @@ public class ColaReproduccion<T extends Cancion> {
 
         Random rnd = new Random();
         
-        // Recorremos de atrás hacia adelante (i = n-1 hasta 1)
+        // Recorremos de atras hacia adelante (i = n-1 hasta 1)
         for (int i = n - 1; i > 0; i--) {
-            //Elegir un índice aleatorio j entre 0 e i
+            //Elegir un indice aleatorio j entre 0 e i
             int j = rnd.nextInt(i + 1);
 
             //Obtener los nodos en las posiciones i y j
@@ -70,61 +76,27 @@ public class ColaReproduccion<T extends Cancion> {
         // Al terminar, reseteamos el puntero 'actual' al inicio
         actual = head;
     }
-
-    // Método auxiliar para obtener un nodo específico recorriendo la lista
-    private NodeDoble<T> obtenerNodoEnPosicion(int index) {
-        NodeDoble<T> temp = head;
-        for (int i = 0; i < index && temp != null; i++) {
-            temp = temp.next;
-        }
-        return temp;
-    }
-
-    // Metodo que cuenta cuantos nodos tiene la lista
-    private int contarNodos() {
-        int contador = 0;
-        NodeDoble<T> aux = head;
-
-        while (aux != null) {
-            contador++;
-            aux = aux.next;
-        }
-
-        return contador;
-    }
-
-    // Metodo que obtiene un nodo segun su posicion
-    private NodeDoble<T> obtenerNodo(int posicion) {
-        NodeDoble<T> aux = head;
-        int contador = 0;
-
-        while (aux != null && contador < posicion) {
-            aux = aux.next;
-            contador++;
-        }
-
-        return aux;
-    }
-
-    // Metodo que calcula la duracion total de todas las canciones
+    
+    // Metodo que utiliza el atributo duracionSeg de Cancion
     public int duracionTotal() {
         int total = 0;
-        NodeDoble<T> aux = head;
-
+        NodeDoble<T> aux = head;    // Se inicializa un Nodo auxiliar
+        
+        // mIentras el nodo no sea nulo, se acumula el tiempo de las canciones en una sola variable total
         while (aux != null) {
-            total += aux.dato.getDuracionSeg();
-            aux = aux.next;
+            
+            // Al utilizar <T extends Cancion> ya no se necesita castear ni usar instanceof
+            total += aux.dato.getDuracionSeg(); 
+            aux = aux.next; 
         }
-
-        return total;
+        return total;  // Retorna la suma total del tiempo de todas las canciones
     }
-
-    // Metodo que muestra los elementos presentes en la lista
+    
+    //Metodo que muestra los elementos presentes en la lista
     public void mostrarCola() {
         NodeDoble<T> aux = head;
-
         while (aux != null) {
-            String indicador = (aux == actual) ? "-> " : "   ";
+            String indicador = (aux == actual) ? "► " : "  ";
             System.out.println(indicador + aux.dato);
             aux = aux.next;
         }
