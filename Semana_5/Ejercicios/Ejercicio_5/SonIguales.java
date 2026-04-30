@@ -1,4 +1,5 @@
-package Semana_5.Ejercicios.Ejercicio_5;
+
+package Ejercicio5;
 
 /*
  ***********************************************************************************************
@@ -10,25 +11,49 @@ public class SonIguales {
     
     //Metodo que verifica si 2 listas son completamente iguales
     public static <T> boolean sonIguales(ListLinked<T> lista1, ListLinked<T> lista2) {
-    
-    // Se instancia los Head de ambas listas
-    Nodo<T> actual1 = lista1.getHead();
-    Nodo<T> actual2 = lista2.getHead();
 
-    // Se recorre ambas listas mientras tengan Nodos
-    while (actual1 != null && actual2 != null) {
-        
-        // Se compara los datos de los nodos actuales con el uso de equals() para manejar los genericos
-        if (!actual1.dato.equals(actual2.dato)) {
-            return false;    // Si un dato es diferente, las listas no son iguales
+        // Se instancia los Head de ambas listas
+        Nodo<T> actual1 = lista1.getHead();
+        Nodo<T> actual2 = lista2.getHead();
+
+        // Se recorre ambas listas mientras tengan Nodos
+        while (actual1 != null && actual2 != null) {
+
+            // Se compara los datos de los nodos actuales con el uso de equals() para manejar los genericos
+            if (!actual1.dato.equals(actual2.dato)) {
+                return false;    // Si un dato es diferente, las listas no son iguales
+            }
+
+            // Avanza al siguiente Nodo en ambas listas
+            actual1 = actual1.next;
+            actual2 = actual2.next;
         }
-        
-        // Avanza al siguiente Nodo en ambas listas
-        actual1 = actual1.next;
-        actual2 = actual2.next;
-    }
 
-    // Verifica en este return si ambas listas resultaron de ser del mismo tamaño.
-    return actual1 == null && actual2 == null;
-}
+        // Verifica en este return si ambas listas resultaron de ser del mismo tamaño.
+        return actual1 == null && actual2 == null;
+    }
+    
+    public static void main(String[] args) {
+        // --- PREPARACIÓN DE DATOS ---
+        ListLinked<Integer> L1 = new ListLinked<>();
+        L1.insertLast(10);
+        L1.insertLast(20);
+        L1.insertLast(30);
+
+        ListLinked<Integer> L2 = new ListLinked<>();
+        L2.insertLast(10);
+        L2.insertLast(20);
+        L2.insertLast(30);
+
+        ListLinked<Integer> L3 = new ListLinked<>();
+        L3.insertLast(40);
+        L3.insertLast(50);
+
+        // --- PRUEBA EJERCICIO 5: SON IGUALES ---
+        System.out.println("=== EJERCICIO 5: COMPARACION ===");
+        System.out.println("L1 es igual a L2? " + sonIguales(L1, L2)); // Debería ser true
+        System.out.println("L1 es igual a L3? " + sonIguales(L1, L3)); // Debería ser false
+        System.out.println();
+
+    }
 }
