@@ -1,5 +1,5 @@
 
-package Semana_5.Ejercicios.Ejercicio_6;
+package Ejercicio6;
 
 /*
  ***********************************************************************************************
@@ -32,5 +32,31 @@ public class ConcatenarListas {
         }
 
         return listaResultante;         // Retorna la nueva lista concatenada con las listas pasadas por parametro.
+    }
+    
+    public static void main(String[] args) {
+        // --- PREPARACIÓN DE DATOS ---
+        ListLinked<Integer> L1 = new ListLinked<>();
+        L1.insertLast(10);
+        L1.insertLast(20);
+        L1.insertLast(30);
+
+        ListLinked<Integer> L2 = new ListLinked<>();
+        L2.insertLast(10);
+        L2.insertLast(20);
+        L2.insertLast(30);
+
+        ListLinked<Integer> L3 = new ListLinked<>();
+        L3.insertLast(40);
+        L3.insertLast(50);
+
+        // --- PRUEBA EJERCICIO 6: CONCATENAR ---
+        System.out.println("=== EJERCICIO 6: CONCATENACION ===");
+        ListLinked<Integer> L_Resultante = concatenarListas(L1, L3);
+        
+        System.out.print("Lista 1: "); L1.mostrar();
+        System.out.print("Lista 3: "); L3.mostrar();
+        System.out.print("Resultado Concatenacion: "); L_Resultante.mostrar();
+        System.out.println("(Verifica que L1 y L3 no cambiaron)");
     }
 }
