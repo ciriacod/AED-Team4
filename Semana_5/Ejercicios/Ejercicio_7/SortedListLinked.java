@@ -1,5 +1,5 @@
 
-package Semana_5.Ejercicios.Ejercicio_7;
+package Ejercicio7;
 
 /*
  ***********************************************************************************************
@@ -32,5 +32,28 @@ public class SortedListLinked<T extends Comparable<T>> extends ListLinked<T> {
         // Inserta el nodo entre el Nodo 'actual' y 'actual.next'
         nuevo.next = actual.next;
         actual.next = nuevo;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println("=== EJERCICIO 7: LISTA ENLAZADA ORDENADA ===");
+        
+        SortedListLinked<Integer> listaOrdenada = new SortedListLinked<>();
+        
+        // Insertamos en desorden
+        System.out.println("Insertando: 50, 10, 30, 20, 40...");
+        listaOrdenada.insertOrden(50);
+        listaOrdenada.insertOrden(10);
+        listaOrdenada.insertOrden(30);
+        listaOrdenada.insertOrden(20);
+        listaOrdenada.insertOrden(40);
+        
+        System.out.print("Resultado final (debe estar ordenado): ");
+        listaOrdenada.mostrar();
+        
+        // Prueba con un elemento repetido o extremo
+        listaOrdenada.insertOrden(5);
+        listaOrdenada.insertOrden(100);
+        System.out.print("Agregando 5 y 100: ");
+        listaOrdenada.mostrar();
     }
 }
