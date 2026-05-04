@@ -1,26 +1,26 @@
-public class ColaPrioridad {
-    private Cola[] colas;// Array de colas para cada nivel de prioridad
+public class ColaPrioridad<T> {
+    private Cola<T>[] colas; // Array de colas para cada nivel de prioridad
 
-    public ColaPrioridad(int niveles) { // Constructor para inicializar las colas de prioridad
+    public ColaPrioridad(int niveles) {// Constructor para inicializar las colas de prioridad
         colas = new Cola[niveles];// Crear un array de colas con el número de niveles de prioridad
         for (int i = 0; i < niveles; i++) {// Inicializar cada cola en el array
-            colas[i] = new Cola();// Inicializar cada cola en el array
+            colas[i] = new Cola<>();// Inicializar cada cola en el array
         }
     }
 
-    public void insertar(int dato, int prioridad) {// Metodo para insertar un elemento con una prioridad dada
-        if (prioridad < 0 || prioridad >= colas.length) {// Verificar si la prioridad es válida
+    public void insertar(T dato, int prioridad) {
+        if (prioridad < 0 || prioridad >= colas.length) {
             throw new RuntimeException("Prioridad inválida");
         }
-        colas[prioridad].encolar(dato);// Encolar el dato en la cola correspondiente a su prioridad
+        colas[prioridad].encolar(dato);
     }
 
-    public int eliminar() {// Metodo para eliminar y retornar el elemento de mayor prioridad
-        for (int i = 0; i < colas.length; i++) {// Recorrer las colas desde la de mayor prioridad hasta la de menor
-            if (!colas[i].estaVacia()) {// Si la cola no esta vacia, desencolar y retornar el elemento
-                return colas[i].desencolar();// Si la cola no esta vacia, desencolar y retornar el elemento
-            }
+    public T eliminar() {// Eliminar el elemento de mayor prioridad (la cola más alta que no esté vacía)
+    for (int i = colas.length - 1; i >= 0; i--) {// Recorrer las colas desde la más alta hasta la más baja
+        if (!colas[i].estaVacia()) {// Si la cola no esta vacía, eliminar y retornar el elemento
+            return colas[i].desencolar();
         }
-        throw new RuntimeException("Cola vacía");
     }
+    throw new RuntimeException("Cola vacia"); // Si todas las colas están vacías, lanzar una excepción
+}
 }
