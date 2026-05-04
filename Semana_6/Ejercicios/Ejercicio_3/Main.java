@@ -1,11 +1,11 @@
  public class Main {
     public static void main(String[] args) {
-        ColaPrioridad cp = new ColaPrioridad(7); // 7 niveles de prioridad (0-6)
+        ColaPrioridad cp = new ColaPrioridad(4); // Crear una cola de prioridad con 4 niveles (0 a 3)
 
-        cp.insertar(10, 0); // baja prioridad
-        cp.insertar(20, 6); // alta prioridad
-        cp.insertar(30, 5);
-
+        cp.insertar("A", 0); // baja prioridad
+        cp.insertar("B", 2); // alta prioridad
+        cp.insertar("C", 1);
+        cp.insertar("D", 2); // alta prioridad
         System.out.println(cp.eliminar()); 
         System.out.println(cp.eliminar()); 
         System.out.println(cp.eliminar()); 
