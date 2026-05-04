@@ -1,38 +1,39 @@
-public class Cola {
-    private Nodo frente; // Referencia al frente de la cola
-    private Nodo fin; // Referencia al fin de la cola
+public class Cola<T> { //
+    private Nodo<T> frente;// Referencia al frente de la cola
+    private Nodo<T> fin;// Referencia al fin de la cola
 
-    public Cola() { // Constructor para inicializar la cola vacía
-        frente = fin = null;
+    public Cola() {
+        this.frente = null;// Inicializar el frente de la cola como null
+        this.fin = null;// Inicializar el fin de la cola como null
     }
 
-    public boolean estaVacia() { // Metodo para verificar si la cola esta vacia
+    public boolean estaVacia() {
         return frente == null;
     }
 
-    public void encolar(int dato) {// Metodo para agregar un nuevo elemento al final de la cola
-        Nodo nuevo = new Nodo(dato); // Crear un nuevo nodo con el dato dado
+    public void encolar(T dato) { // Metodo para agregar un elemento al final de la cola
+        Nodo<T> nuevo = new Nodo<>(dato); // Crear un nuevo nodo con el dato a encolar
 
         if (estaVacia()) {
-            frente = fin = nuevo; // Si la cola esta vacia, el nuevo nodo es tanto el frente como el fin
+            frente = fin = nuevo;
         } else {
-            fin.siguiente = nuevo; // Enlazar el nuevo nodo al final de la cola
-            fin = nuevo;    // Actualizar la referencia al fin de la cola
+            fin.siguiente = nuevo;// Enlazar el nuevo nodo al final de la cola
+            fin = nuevo;// Actualizar la referencia al fin de la cola
         }
     }
 
-    public int desencolar() {// Metodo para eliminar y retornar el elemento al frente de la cola
+    public T desencolar() { //retorna 
         if (estaVacia()) {
-            throw new RuntimeException("Cola vacia");// Si la cola esta vacia, lanzar una excepcion
+            throw new RuntimeException("Cola vacia");
         }
 
-        int dato = frente.dato; // Obtener el dato del nodo al frente de la cola
-        frente = frente.siguiente; // Actualizar la referencia al frente de la cola
+        T dato = frente.dato; // Obtener el dato del nodo frente
+        frente = frente.siguiente;// Actualizar el frente de la cola al siguiente nodo
 
-        if (frente == null) {// Si la cola queda vacia despues de desencolar, actualizar la referencia al fin
-            fin = null;// Si la cola queda vacia despues de desencolar, actualizar la referencia al fin
+        if (frente == null) {
+            fin = null;
         }
 
-        return dato;// Retornar el dato del nodo desencolado
+        return dato;// Retornar el dato desencolado
     }
 }
