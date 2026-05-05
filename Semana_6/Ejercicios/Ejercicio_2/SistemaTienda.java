@@ -12,7 +12,7 @@ public class SistemaTienda {
             this.capacidad = capacidad;
             this.cola = new int[capacidad];
             this.frente = 0;
-            this.finalCola = -1;
+            this.finalCola = -1; //sera circular necesitamos incrementar antes de inserta 
             this.tamano = 0;
         }
 
