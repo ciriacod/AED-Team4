@@ -128,6 +128,8 @@ public class PriorityQueueHybrid<E> {
         pq.enqueue("B", 2, 1);
         pq.enqueue("C", 1, 3);
         pq.enqueue("D", 2, 3);
+        //Nivel 2: (B,1) → (D,3) → (A,5)
+//Nivel 1: (C,3)
         
         // Muestra el proceso de estructura de la cola
         System.out.println("--- Estado Interno ---");
