@@ -10,7 +10,7 @@ public class ColaPrioridad<T> {
 
     public void insertar(T dato, int prioridad) {
         if (prioridad < 0 || prioridad >= colas.length) {
-            throw new RuntimeException("Prioridad inválida");
+            throw new RuntimeException("Prioridad invalida");
         }
         colas[prioridad].encolar(dato);
     }
