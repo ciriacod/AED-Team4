@@ -1,4 +1,4 @@
-package actividadPilaLista;
+package Semana_6.Ejercicios.Ejercicio_1;
 
 public class StackLink<E> implements Stack<E> {
     private Node<E> top;

@@ -2,7 +2,7 @@ package Semana_6.Actividades.Actividad_3;
 
 import Semana_6.Actividades.Actividad_1.ExceptionIsEmpty;
 
-public class PriorityQueueLinkSort<E, N> implements PriorityQueue<E, N> {
+public class PriorityQueueLinkSort<E, N extends Comparable<N>> implements PriorityQueue<E, N> {
     
     class EntryNode {
         E data;
@@ -21,31 +21,54 @@ public class PriorityQueueLinkSort<E, N> implements PriorityQueue<E, N> {
 
     @Override
     public void enqueue(E x, N pr) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'enqueue'");
+        Node<EntryNode> novo = new Node<>(new EntryNode(x, pr));
+        if (isEmpty()) first = last = novo;
+        else {
+            if (pr.compareTo(first.getData().priority) > 0){
+                novo.setNext(first);
+                first = novo;
+                return;
+            }
+
+            Node<EntryNode> iterador = first;
+            while (iterador.getNext() != null && 
+            iterador.getNext().getData().priority.compareTo(pr) >= 0){
+                iterador = iterador.getNext();
+            }
+
+            novo.setNext(iterador.getNext());
+            iterador.setNext(novo);
+
+            if (novo.getNext() == null) last = novo;
+        }
     }
 
     @Override
     public E dequeue() throws ExceptionIsEmpty {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'dequeue'");
+        if (isEmpty()) throw new ExceptionIsEmpty("Cola Vacia");
+
+        Node<EntryNode> morto = first;
+        first = first.getNext();
+
+        if (first == null) last = null;
+
+        return morto.getData().data;
     }
 
     @Override
     public E front() throws ExceptionIsEmpty {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'front'");
+        if (isEmpty()) throw new ExceptionIsEmpty("Cola Vacia");
+        return first.getData().data;
     }
 
     @Override
     public E back() throws ExceptionIsEmpty {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'back'");
+        if (isEmpty()) throw new ExceptionIsEmpty("Cola Vacia");
+        return last.getData().data;
     }
 
     @Override
     public boolean isEmpty() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isEmpty'");
+        return first == null && last == null;
     }
 }
