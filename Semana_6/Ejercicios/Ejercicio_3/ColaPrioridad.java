@@ -1,6 +1,7 @@
 public class ColaPrioridad<T> {
     private Cola<T>[] colas; // Array de colas para cada nivel de prioridad
 
+    @SuppressWarnings("unchecked")
     public ColaPrioridad(int niveles) {// Constructor para inicializar las colas de prioridad
         colas = new Cola[niveles];// Crear un array de colas con el número de niveles de prioridad
         for (int i = 0; i < niveles; i++) {// Inicializar cada cola en el array
