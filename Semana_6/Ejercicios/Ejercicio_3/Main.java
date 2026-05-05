@@ -1,4 +1,5 @@
  public class Main {
+    @SuppressWarnings("rawtypes")
     public static void main(String[] args) {
         ColaPrioridad cp = new ColaPrioridad(4); // Crear una cola de prioridad con 4 niveles (0 a 3)
 
