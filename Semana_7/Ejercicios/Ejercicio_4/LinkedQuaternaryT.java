@@ -1,4 +1,4 @@
-package Arbol;
+package Semana_7.Ejercicios.Ejercicio_4;
 
 public class LinkedQuaternaryT<E extends Comparable<E>> {
 
