@@ -1,6 +1,5 @@
 package Semana_7.Ejercicios.Ejercicio_4;
 
-package Arbol;
 
 public class Main {
     public static void main(String[] args) {
