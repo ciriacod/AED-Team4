@@ -12,7 +12,7 @@ public class Prueba {
     public static void printTreeStats(String nombre, LinkedBST<Integer> tree) {
         System.out.println(">>> " + nombre);
         System.out.println("Estructura visual:");
-        System.out.println(tree.toString()); // Usa tu buildString recursivo
+        System.out.println(tree.toString()); // Usa tu buildString recursivo //funcion auxiliar
         System.out.println("Resultado areaBST(): " + tree.areaBST());
         System.out.println("----------------------------------------\n");
     }
