@@ -54,7 +54,7 @@ public class LinkedQuaternaryT<E extends Comparable<E>> {
 
         ChildNode current = node.children;
         while (current != null) {
-            Node found = searchRec(current.child, data);
+            Node found = searchRec(current.child, data); //aqui baja al subarbol
             if (found != null) return found;
             current = current.next;
         }
