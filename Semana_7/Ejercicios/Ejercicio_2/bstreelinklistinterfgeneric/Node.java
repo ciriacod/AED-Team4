@@ -1,5 +1,5 @@
 
-package bstreelinklistinterfgeneric2;
+package bstreelinklistinterfgeneric;
 
 public class Node <T> {
     T data;
