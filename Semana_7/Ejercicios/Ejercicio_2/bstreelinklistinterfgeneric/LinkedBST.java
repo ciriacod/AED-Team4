@@ -1,5 +1,6 @@
-
 package bstreelinklistinterfgeneric;
+
+import bstreelinklistinterfgeneric.LinkedBST;
 
 /*
  ***********************************************************************************************

@@ -1,4 +1,3 @@
-
 package bstreelinklistinterfgeneric;
 
 public class Node <T> {

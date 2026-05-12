@@ -1,6 +1,6 @@
 package Semana_7.Actividades;
 
-import Importar.BinarySearchTree;
+import Importar.Estructuras.BinarySearchTree;
 import Importar.Exceptions.ExceptionIsEmpty;
 import Importar.Exceptions.ItemDuplicated;
 import Importar.Exceptions.ItemNoFound;
