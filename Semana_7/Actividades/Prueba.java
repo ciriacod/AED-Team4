@@ -13,20 +13,13 @@ public class Prueba {
 
 //-+~¬-+~¬--+~¬-+~¬-+~¬-+~|INSERTANDO DATOS|~¬-+~¬-+~¬-+~¬-+~¬
 
-        // Nivel 1
         arbol.insert(50);
-
-        // Nivel 2
         arbol.insert(30);
         arbol.insert(70);
-
-        // Nivel 3
         arbol.insert(20);
         arbol.insert(40);
         arbol.insert(60);
         arbol.insert(80);
-
-        // Nivel 4
         arbol.insert(10);
         arbol.insert(25);
         arbol.insert(35);
