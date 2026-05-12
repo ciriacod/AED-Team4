@@ -1,5 +1,11 @@
 
-package bstreelinklistinterfgeneric3;
+package bstreelinklistinterfgeneric;
+
+/*
+ ***********************************************************************************************
+ *************  ----------------------   Ejercicio N°3   ------------------  *******************
+ ***********************************************************************************************
+ */
 
 //Arbol con operaciones genericas
 public class LinkedBST<T extends Comparable<T>> {
@@ -24,14 +30,17 @@ public class LinkedBST<T extends Comparable<T>> {
         while (!queue.isEmpty()) {
             int levelSize = queue.size();   // Instancia del tamaño de la cola
             height++;
-
-            for (int i = 0; i < levelSize; i++) {
-                Node<T> current = queue.poll();
-
+            
+            // Recorre el tamaño de la cola
+            for (int i = 0; i < levelSize; i++) {   
+                Node<T> current = queue.poll();     // Instancia el primer Nodo de la Cola
+                
+                // Recorre el arbol rama por rama hasta llegar a las Hojas
                 if (current.left == null && current.right == null) {
                     leaves++;
                 }
-
+                
+                // Reingreso de Nodos
                 if (current.left != null) {
                     queue.enqueue(current.left);
                 }
@@ -41,17 +50,20 @@ public class LinkedBST<T extends Comparable<T>> {
                 }
             }
         }
-
+        
+        // Retorna el area
         return leaves * height;
     }
-
+    
+    // Sobrecarga del metodo para una mejor impresion de datos en consola
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         buildString(root, 0, sb);
         return sb.toString();
     }
-
+    
+    // Se formula el arbol a imprimir
     private void buildString(Node<T> node, int level, StringBuilder sb) {
         if (node != null) {
             buildString(node.right, level + 1, sb);
@@ -63,23 +75,37 @@ public class LinkedBST<T extends Comparable<T>> {
         }
     }
 
-    // Método auxiliar para que el main funcione (debe estar definido en tu clase Node)
+    // Metodo para agregar Nodos al Arbol
     public void insert(T data) {
         root = insertRecursive(root, data);
     }
-
+    
+    // Metodo recursivo que recorre rama por rama hasta llegar a las hojas
     private Node<T> insertRecursive(Node<T> root, T data) {
         if (root == null) return new Node<>(data);
         if (data.compareTo(root.data) < 0) root.left = insertRecursive(root.left, data);
         else if (data.compareTo(root.data) > 0) root.right = insertRecursive(root.right, data);
         return root;
     }
-
+    
+    // Metodo que imprime el toString()
     public void drawBST() {
         System.out.print(this.toString());
     }
     
-    // ----------------------------------------------------------------
+    /* 
+       ----------------------------------------------------------------
+       Se utiliza una Cola para el recorrido en anchura, debido a que
+       permite gestionar la secuencia de nodos pendientes por visitar
+       
+       - Se inicia visitando la raíz y se agregan sus hijos a la cola.
+       - Se extrae el primer elemento de la cola, se procesa y se 
+         agregan sus hijos al final.
+       - Esto asegura que los nodos se procesen nivel por nivel, 
+         manteniendo el orden correcto de generación
+       ----------------------------------------------------------------
+    */
+
     // Clase Nodo de Cola interna de la clase LinkedBST
     private static class QNode<T> {
         Node<T> treeNode;   // Nodo hoja del arbol
@@ -130,53 +156,34 @@ public class LinkedBST<T extends Comparable<T>> {
             return size;
         }
     }
-    // --------------------------------------------
+    // -------------------------------------------------------------------
     
+    
+    // ==============================  Main  ==============================================
     public static void main(String[] args) {
-        // Creamos tres tipos de árboles para ver cómo varía el área
-        LinkedBST<Integer> tree1 = new LinkedBST<>(); // Árbol Balanceado
-        LinkedBST<Integer> tree2 = new LinkedBST<>(); // Árbol Degenerado (hacia la derecha)
-        LinkedBST<Integer> tree3 = new LinkedBST<>(); // Árbol con muchas hojas
+        
+        LinkedBST<Integer> tree1 = new LinkedBST<>();
+        LinkedBST<Integer> tree2 = new LinkedBST<>();
+        LinkedBST<Integer> tree3 = new LinkedBST<>();
 
-        // ===== CASO 1: Árbol Balanceado (Como el original) =====
-        // Altura: 2, Hojas: 4 -> Area: 8
         int[] datos1 = {50, 30, 70, 20, 40, 60, 90};
         for (int n : datos1) tree1.insert(n);
 
-        // ===== CASO 2: Árbol "Skewed" o Degenerado (Tipo Lista) =====
-        // Altura: 4, Hojas: 1 -> Area: 4
         int[] datos2 = {10, 20, 30, 40, 50};
         for (int n : datos2) tree2.insert(n);
 
-        // ===== CASO 3: Árbol con más niveles =====
-        // Altura: 3, Hojas: 4 -> Area: 12
         int[] datos3 = {100, 50, 150, 25, 75, 125, 175, 10, 60};
         for (int n : datos3) tree3.insert(n);
 
-        // --- PRESENTACIÓN DE RESULTADOS ---
-
         System.out.println("========================================");
-        System.out.println("REPORTE DE ESTRUCTURAS Y ÁREAS");
+        System.out.println("REPORTE DE ESTRUCTURAS Y AREAS");
         System.out.println("========================================\n");
 
-        printTreeStats("ÁRBOL 1 (Balanceado)", tree1);
-        printTreeStats("ÁRBOL 2 (Línea recta)", tree2);
-        printTreeStats("ÁRBOL 3 (Complejo)", tree3);
+        Prueba.printTreeStats("ARBOL 1 (Balanceado)", tree1);
+        Prueba.printTreeStats("ARBOL 2 (Linea recta)", tree2);
+        Prueba.printTreeStats("ARBOL 3 (Complejo)", tree3);
 
-        // Comparación lógica
         System.out.println("----------------------------------------");
-        System.out.println("¿Árbol 1 y Árbol 2 tienen la misma área?: " + 
-                          (tree1.areaBST() == tree2.areaBST() ? "SÍ" : "NO"));
-    }
-
-    /**
-     * Método auxiliar para imprimir estadísticas de forma limpia
-     */
-    private static void printTreeStats(String nombre, LinkedBST<Integer> tree) {
-        System.out.println(">>> " + nombre);
-        System.out.println("Estructura visual:");
-        System.out.println(tree.toString()); // Usa tu buildString recursivo
-        System.out.println("Resultado areaBST(): " + tree.areaBST());
-        System.out.println("----------------------------------------\n");
+        System.out.println("Arbol 1 y Arbol 2 tienen la misma area?: " + (tree1.areaBST() == tree2.areaBST() ? "Si" : "NO"));
     }
 }
