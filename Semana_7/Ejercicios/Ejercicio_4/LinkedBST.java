@@ -1,4 +1,4 @@
-package Semana_7.Ejercicios.Ejercicio_4;
+package Semana_7.Ejercicios.Ejercicio_4; //aqui en resumen vemos los metodos que se puede hacer de un BST con inorden y recursividad
 public class LinkedBST<E extends Comparable<E>> {
 
     class Node {
