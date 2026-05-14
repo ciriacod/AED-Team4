@@ -1,4 +1,6 @@
-package Semana_6.Ejercicios.Ejercicio_1;
+package Importar.IEstructuras;
+
+import Importar.Exceptions.ExceptionIsEmpty;;
 
 public interface Stack<E> { //Implementamos una interfaz con los metodos
     void push(E x);        //ingresar elemento en el tope

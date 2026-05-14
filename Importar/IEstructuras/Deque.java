@@ -1,6 +1,6 @@
-package Importar.Estructuras;
+package Importar.IEstructuras;
 
-import Semana_6.Actividades.Actividad_1.ExceptionIsEmpty;
+import Importar.Exceptions.ExceptionIsEmpty;
 
 public interface Deque<E> {
     void addFirst(E x);

@@ -1,5 +1,5 @@
-package Semana_6.Actividades.Actividad_3;
-import Semana_6.Actividades.Actividad_1.ExceptionIsEmpty;
+package Importar.IEstructuras;
+import Importar.Exceptions.ExceptionIsEmpty;;
 
 public interface PriorityQueue<E, N> {
     void enqueue (E x, N pr);

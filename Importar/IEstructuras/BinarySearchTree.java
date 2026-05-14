@@ -1,4 +1,4 @@
-package Importar.Estructuras;
+package Importar.IEstructuras;
 
 import Importar.Exceptions.*;
 

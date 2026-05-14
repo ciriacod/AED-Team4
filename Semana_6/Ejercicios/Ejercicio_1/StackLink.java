@@ -1,5 +1,7 @@
 package Semana_6.Ejercicios.Ejercicio_1;
 
+import Importar.IEstructuras.Stack;
+
 public class StackLink<E> implements Stack<E> {
     private Node<E> top;
 

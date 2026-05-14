@@ -1,7 +1,7 @@
 package Importar;
 
 public class Node<T> {
-    T dato;
+    private T dato;
     public Node<T> next;
 
     public Node(T dato) {
@@ -11,6 +11,14 @@ public class Node<T> {
     
     public T getDato(){
         return this.dato;
+    }
+
+    public Node<T> getNext(){
+        return this.next;
+    }
+
+    public void setNext(Node<T> nnext){
+        this.next = nnext;
     }
     
 }

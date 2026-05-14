@@ -1,6 +1,7 @@
 package Semana_6.Actividades.Actividad_3;
 
-import Semana_6.Actividades.Actividad_1.ExceptionIsEmpty;
+import Importar.IEstructuras.PriorityQueue;
+import Importar.Exceptions.ExceptionIsEmpty;;
 
 public class PriorityQueueLinkSort<E, N extends Comparable<N>> implements PriorityQueue<E, N> {
     

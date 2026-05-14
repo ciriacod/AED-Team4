@@ -1,5 +1,6 @@
 package Semana_6.Actividades.Actividad_3;
 
+import Importar.IEstructuras.PriorityQueue;
 import Semana_6.Actividades.Actividad_1.ExceptionIsEmpty;
 
 public class Main {

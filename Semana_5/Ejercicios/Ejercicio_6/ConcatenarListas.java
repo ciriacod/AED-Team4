@@ -1,5 +1,6 @@
 
-package Ejercicio6;
+package Semana_5.Ejercicios.Ejercicio_6;
+import Importar.Node;
 
 /*
  ***********************************************************************************************
