@@ -8,7 +8,6 @@ package Semana_5.Ejercicios.Ejercicio_8;
  */
 
 //Se importan librerias de java para el uso del algoritmo Fisher-Yates
-import java.util.Random;
 
 // Al poner "extends Cancion", T sabe que es Cancion por lo que puede usar sus metodos
 public class ColaReproduccion<T extends Cancion> {
