@@ -1,25 +1,27 @@
 
 package Semana_5.Ejercicios.Ejercicio_5;
 
+import Importar.Node;
+
 public class ListLinked<T> {
-    private Nodo<T> head;
+    private Node<T> head;
 
     public ListLinked() {
         head = null;
     }
 
     // Getter para poder recorrer la lista en métodos estáticos
-    public Nodo<T> getHead() {
+    public Node<T> getHead() {
         return head;
     }
 
     // Método para insertar al final (Requisito del lab)
     public void insertLast(T x) {
-        Nodo<T> nuevoNodo = new Nodo<>(x);
+        Node<T> nuevoNodo = new Node<>(x);
         if (head == null) {
             head = nuevoNodo;
         } else {
-            Nodo<T> aux = head;
+            Node<T> aux = head;
             while (aux.next != null) {
                 aux = aux.next;
             }

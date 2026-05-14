@@ -1,4 +1,5 @@
 package Importar.IEstructuras;
+
 import Importar.Exceptions.ExceptionIsEmpty;;
 
 public interface PriorityQueue<E, N> {

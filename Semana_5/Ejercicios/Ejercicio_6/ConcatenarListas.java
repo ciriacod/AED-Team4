@@ -15,11 +15,11 @@ public class ConcatenarListas {
         ListLinked<T> listaResultante = new ListLinked<>();    // Instancia de la clase ListLinked
 
         // Copia de elementos de la primera lista
-        Nodo<T> actual = lista1.getHead();     // Instancia de una variable de tipo Nodo con el valor Head de una primera lista
+        Node<T> actual = lista1.getHead();     // Instancia de una variable de tipo Nodo con el valor Head de una primera lista
         
         // Verifica si el Nodo de lista1 en algun momento se vuelve nulo
         while (actual != null) {
-            listaResultante.insertLast(actual.dato);        //Se almacena el Nodo de lista1 a la nueva lista creada
+            listaResultante.insertLast(actual.getData());        //Se almacena el Nodo de lista1 a la nueva lista creada
             actual = actual.next;           // Se asigna al Nodo siguiente como el Nodo actual
         }
         
@@ -28,7 +28,7 @@ public class ConcatenarListas {
         
         // Verifica si el Nodo de lista2 en algun momento se vuelve nulo
         while (actual != null) {
-            listaResultante.insertLast(actual.dato);        //Se almacena el Nodo de lista2 a la nueva lista creada
+            listaResultante.insertLast(actual.getData());        //Se almacena el Nodo de lista2 a la nueva lista creada
             actual = actual.next;           // Se asigna al Nodo siguiente como el Nodo actual
         }
 
