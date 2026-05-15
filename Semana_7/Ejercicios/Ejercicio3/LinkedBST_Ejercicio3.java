@@ -1,6 +1,8 @@
 
 package Ejercicio3;
 
+import Actividades.*;
+
 /*
  ***********************************************************************************************
  *************  ----------------------   Ejercicio N°3   ------------------  *******************
@@ -9,8 +11,8 @@ package Ejercicio3;
 
 //Arbol con operaciones genericas
 public class LinkedBST_Ejercicio3<T extends Comparable<T>> {
-    // 03a. Área del BST (Hojas * Altura) [cite: 117, 118]
-    // Ejercicio 3: Área (Hojas * Altura Total)
+    
+    // Área del BST (Hojas * Altura)
     public int areaBST() {
         if (root == null) return 0;
 
