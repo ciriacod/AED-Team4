@@ -15,8 +15,7 @@ public class LinkedBST_Ejercicio2<T extends Comparable<T>> {
         if (isEmpty()) throw new ExceptionIsEmpty();
         root = null;
     }
-
-    // Contar nodos no-hoja
+    
     // Metodo que cuenta el total de Nodos del Arbol
     public int countAllNodes() {
         return countAllNodes(root);
@@ -40,11 +39,9 @@ public class LinkedBST_Ejercicio2<T extends Comparable<T>> {
         return 1 + countNodes(node.left) + countNodes(node.right);      // Suma de los Nodos derechos e izquierdos y la raiz(+1)
     }
 
-    // 02d. Altura iterativa de un subárbol [cite: 111, 112]
-    // Ejercicio 2 Mejorado
-    // Ejercicio 2: Altura de un nodo específico
+    // Altura iterativa de un subárbol
     public int height(E x) {
-        // 1. Localizar el nodo utilizando la lógica de búsqueda del BST
+        // Localizar el nodo utilizando la lógica de búsqueda del BST
         Node<E> current = root;
         Node<E> startNode = null;
 
@@ -59,7 +56,7 @@ public class LinkedBST_Ejercicio2<T extends Comparable<T>> {
 
         if (startNode == null) return -1; // El nodo no existe en el árbol
 
-        // 2. Calcular altura por niveles usando la cola personalizada
+        // Calcular altura por niveles usando la cola personalizada
         MyQueue<Node<E>> queue = new MyQueue<>();
         queue.enqueue(startNode);
 
@@ -77,7 +74,6 @@ public class LinkedBST_Ejercicio2<T extends Comparable<T>> {
         return h;
     }
     
-    // Metodo que halla la anchura del arbol de forma iterativa y eficiente
     // Método para hallar la anchura máxima (amplitud)
     public int amplitude() {
         if (root == null) return 0;
