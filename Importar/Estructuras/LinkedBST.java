@@ -3,14 +3,18 @@ package Importar.Estructuras;
 import Importar.IEstructuras.BinarySearchTree;
 import Importar.Exceptions.*;
 
+public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E> {
 
-public class LinkedBST <E extends Comparable<E>> implements BinarySearchTree<E> {
-    protected class Node<E> {
-        public E data;
-        public Node<E> left, right;
+    protected class Node<T> {
+        private T data;
+        private Node<T> left;
+        private Node<T> right;
 
-        public Node(E data) { this(data, null, null); }
-        public Node(E data, Node<E> left, Node<E> right) {
+        public Node(T data) {
+            this(data, null, null);
+        }
+
+        public Node(T data, Node<T> left, Node<T> right) {
             this.data = data;
             this.left = left;
             this.right = right;
@@ -19,318 +23,440 @@ public class LinkedBST <E extends Comparable<E>> implements BinarySearchTree<E> 
 
     protected Node<E> root;
 
-    public LinkedBST() { this.root = null; }
+    public LinkedBST() {
+        this.root = null;
+    }
+
+    // =========================================================
+    // OPERACIONES BÁSICAS
+    // =========================================================
 
     @Override
-    public boolean isEmpty() { return this.root == null; }
+    public boolean isEmpty() {
+        return this.root == null;
+    }
 
-    // ACTIVIDAD 6: Inserción
-    public void insert(E x) throws ItemDuplicated {
+    @Override
+    public void insert(E x) {
         this.root = insertRec(x, this.root);
     }
 
-    protected Node<E> insertRec(E x, Node<E> actual) throws ItemDuplicated {
-        Node<E> res = actual;
-        if (actual == null) {
-            res = new Node<E>(x); // Caso base: crea el nodo si es null
-        } else {
-            int resC = actual.data.compareTo(x); // Comparación de datos
-            if (resC == 0) {
-                throw new ItemDuplicated("x " + x + " esta duplicado"); // Error si ya existe
-            }
-            if (resC < 0) {
-                res.right = insertRec(x, actual.right); // Menor que x: subárbol derecho
-            } else {
-                res.left = insertRec(x, actual.left); // Mayor que x: subárbol izquierdo
-            }
+    private Node<E> insertRec(E x, Node<E> node) {
+        if (node == null) {
+            return new Node<>(x);
         }
-        return res;
-    }
 
-    // ACTIVIDAD 6: Búsqueda 
-    @Override
-    public E search(E x) throws ItemNotFound {
-    Node<E> res = searchRec(x, this.root); // Inicia búsqueda desde la raíz
-    if (res == null)
-        throw new ItemNotFound(x + " no se encuentra");
-    return res.data;
-    }
+        int cmp = node.data.compareTo(x);
 
-    protected Node<E> searchRec(E x, Node<E> actual) {
-        if (actual == null) return null;
-        int cmp = actual.data.compareTo(x);
-        if (cmp == 0) return actual; // Elemento encontrado 
-        return (cmp < 0) ? searchRec(x, actual.right) : searchRec(x, actual.left);
-    }
-
-    // ACTIVIDAD 6: Eliminación
-    @Override
-    public void delete(E x) throws ExceptionIsEmpty {
-    this.root = removeRec(x, this.root); // Actualiza la raíz tras la eliminación
-}
-
-    protected Node<E> removeRec(E x, Node<E> actual) throws ExceptionIsEmpty {
-        if (actual == null) throw new ExceptionIsEmpty(x + " no esta"); // Caso no encontrado
-
-        Node<E> res = actual;
-        int cmp = actual.data.compareTo(x);
+        if (cmp == 0) {
+            throw new ItemDuplicated("Elemento duplicado: " + x);
+        }
 
         if (cmp < 0) {
-            res.right = removeRec(x, actual.right); // Busca en la derecha
+            node.right = insertRec(x, node.right);
+        } else {
+            node.left = insertRec(x, node.left);
+        }
+
+        return node;
+    }
+
+    @Override
+    public E search(E x) {
+        Node<E> result = searchRec(x, root);
+
+        if (result == null) {
+            throw new ItemNotFound("Elemento no encontrado: " + x);
+        }
+
+        return result.data;
+    }
+
+    private Node<E> searchRec(E x, Node<E> node) {
+        if (node == null) {
+            return null;
+        }
+
+        int cmp = node.data.compareTo(x);
+
+        if (cmp == 0) {
+            return node;
+        }
+
+        return (cmp < 0)
+                ? searchRec(x, node.right)
+                : searchRec(x, node.left);
+    }
+
+    @Override
+    public void delete(E x) {
+        this.root = removeRec(x, this.root);
+    }
+
+    private Node<E> removeRec(E x, Node<E> node) {
+        if (node == null) {
+            throw new ItemNotFound("Elemento no encontrado: " + x);
+        }
+
+        int cmp = node.data.compareTo(x);
+
+        if (cmp < 0) {
+            node.right = removeRec(x, node.right);
         } else if (cmp > 0) {
-            res.left = removeRec(x, actual.left); // Busca en la izquierda 
-        } else { // actual.data == x [cite: 72, 79]
-            if (actual.left != null && actual.right != null) { // Caso: dos hijos
-                // Reemplaza con el mínimo del subárbol derecho (sucesor inorden)
-                res.data = findMin(actual.right).data;
-                actual.right = findMin(actual.right); // Elimina el nodo duplicado
-            } else { // Caso: uno o ningún hijo
-                res = (actual.left != null) ? actual.left : actual.right;
+            node.left = removeRec(x, node.left);
+        } else {
+
+            if (node.left != null && node.right != null) {
+
+                Node<E> min = findMin(node.right);
+
+                node.data = min.data;
+                node.right = removeRec(min.data, node.right);
+
+            } else {
+
+                node = (node.left != null)
+                        ? node.left
+                        : node.right;
             }
         }
-        return res;
-    }
-    
-    // Sobrecarga del metodo toString()
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        buildString(root, 0, sb);
-        return sb.toString();
-    }
-    
-    // Metodo que facilida el modelado grafico del arbol
-    private void buildString(Node<E> node, int level, StringBuilder sb) {
-        if (node != null) {
-            buildString(node.right, level + 1, sb);
-            for (int i = 0; i < level; i++) sb.append("    ");
-            sb.append(node.data).append("\n");
-            buildString(node.left, level + 1, sb);
-        }
+
+        return node;
     }
 
-    // ********************************************************************************************************** //
-    // RECORRIDOS (Actividades 7, 8, 9)
-    // Método público para iniciar el recorrido
+    // =========================================================
+    // RECORRIDOS
+    // =========================================================
+
+    @Override
     public void inOrder() {
-        inOrder(this.root);
+        inOrder(root);
         System.out.println();
     }
 
-    // Implementación privada recursiva
     private void inOrder(Node<E> node) {
         if (node != null) {
-            inOrder(node.left);        // Recorrer subárbol izquierdo 
-            System.out.print(node.data + " "); // Visitar la raíz
-            inOrder(node.right);       // Recorrer subárbol derecho 
+            inOrder(node.left);
+            System.out.print(node.data + " ");
+            inOrder(node.right);
         }
     }
-    
-    // Método público para iniciar el recorrido
+
+    @Override
     public void preOrder() {
-        preOrder(this.root);
+        preOrder(root);
         System.out.println();
     }
 
-    // Implementación privada recursiva
     private void preOrder(Node<E> node) {
         if (node != null) {
-            System.out.print(node.data + " "); // Visitar la raíz primero
-            preOrder(node.left);               // Luego subárbol izquierdo
-            preOrder(node.right);              // Finalmente subárbol derecho
+            System.out.print(node.data + " ");
+            preOrder(node.left);
+            preOrder(node.right);
         }
     }
-    
-    // Método público para iniciar el recorrido
+
+    @Override
     public void postOrder() {
-        postOrder(this.root);
+        postOrder(root);
         System.out.println();
     }
 
-    // Implementación privada recursiva
     private void postOrder(Node<E> node) {
         if (node != null) {
-            postOrder(node.left);              // Recorrer subárbol izquierdo
-            postOrder(node.right);             // Recorrer subárbol derecho
-            System.out.print(node.data + " "); // Visitar la raíz al final 
+            postOrder(node.left);
+            postOrder(node.right);
+            System.out.print(node.data + " ");
         }
     }
 
-// ********************************************************************************************************** //
-    // Actividad 10
-    private Node<E> findMin(Node<E> node) {
-        Node<E> current = node;
-        // El menor valor siempre es el nodo más a la izquierda
-        while (current.left != null) {
-            current = current.left;
-        }
-        return current;
-    }
+    // =========================================================
+    // INFORMACIÓN DEL ÁRBOL
+    // =========================================================
 
-    // Encuentra el valor máximo en el subárbol
-    @SuppressWarnings("unused")
-    private Node<E> findMax(Node<E> node) {
-        Node<E> current = node;
-        // El mayor valor siempre es el nodo más a la derecha 
-        while (current.right != null) {
-            current = current.right;
-        }
-        return current;
-    } 
-
-// ********************************************************************************************************** //
-    // EJERCICIOS ADICIONALES
-    
-    // 02a. Eliminar todos los nodos
-    public void destroyNodes() throws ExceptionIsEmpty {
-        if (isEmpty()) throw new ExceptionIsEmpty();
-        root = null;
-    }
-
-    // 02c. Contar nodos no-hoja
-    // Metodo que cuenta el total de Nodos del Arbol
+    @Override
     public int countAllNodes() {
-        return countAllNodes(root);     // LLamada al metodo recursivo
-    }
-    
-    // Sobrecarga del metodo recursivo que cuenta la cantidad de Nodos total del Arbol
-    private int countAllNodes(Node<E> node) {
-        if (node == null) return 0;     // Caso base
-        return 1 + countAllNodes(node.left) + countAllNodes(node.right);    // Suma de los Nodos derechos e izquierdos desde la raiz (+1) hasta las hojas
-    }
-    
-    // Metodo que cuenta el total de Nodos total del Arbol sin contar las Hojas
-    public int countNodes() {
-        return countNodes(root);        // Llamada al metodo recursivo
-    }
-    
-    // Sobrecarga del metodo recursivo que cuenta la cantidad de Nodos total del Arbol sin contar las Hojas
-    private int countNodes(Node<E> node) {
-        if (node == null) return 0;     // Caso Base
-        if (node.left == null && node.right == null) return 0;      // Caso alterno cuando se llega a la base del Arbol
-        return 1 + countNodes(node.left) + countNodes(node.right);      // Suma de los Nodos derechos e izquierdos y la raiz(+1)
+        return countAllNodes(root);
     }
 
-    // 02d. Altura iterativa de un subárbol
-    // Ejercicio 2: Altura de un nodo específico
-    public int height(E x) throws ExceptionIsEmpty {
-        // 1. Localizar el nodo utilizando la lógica de búsqueda del BST
+    private int countAllNodes(Node<E> node) {
+        if (node == null) {
+            return 0;
+        }
+
+        return 1
+                + countAllNodes(node.left)
+                + countAllNodes(node.right);
+    }
+
+    @Override
+    public int countNodes() {
+        return countNodes(root);
+    }
+
+    private int countNodes(Node<E> node) {
+
+        if (node == null) {
+            return 0;
+        }
+
+        if (node.left == null && node.right == null) {
+            return 0;
+        }
+
+        return 1
+                + countNodes(node.left)
+                + countNodes(node.right);
+    }
+
+    @Override
+    public int countLeaves() {
+        return countLeaves(root);
+    }
+
+    private int countLeaves(Node<E> node) {
+
+        if (node == null) {
+            return 0;
+        }
+
+        if (node.left == null && node.right == null) {
+            return 1;
+        }
+
+        return countLeaves(node.left)
+                + countLeaves(node.right);
+    }
+
+    @Override
+    public int height(E x) {
+
         Node<E> current = root;
         Node<E> startNode = null;
 
         while (current != null) {
+
             int cmp = x.compareTo(current.data);
+
             if (cmp == 0) {
                 startNode = current;
                 break;
             }
-            current = (cmp < 0) ? current.left : current.right;
+
+            current = (cmp < 0)
+                    ? current.left
+                    : current.right;
         }
 
-        if (startNode == null) return -1; // El nodo no existe en el árbol
+        if (startNode == null) {
+            return -1;
+        }
 
-        // 2. Calcular altura por niveles usando la cola personalizada
-        LinkedQueue<Node<E>> cola = new LinkedQueue<Node<E>>();
-        cola.enqueue(startNode);
+        LinkedQueue<Node<E>> queue = new LinkedQueue<>();
+        queue.enqueue(startNode);
 
-        int h = -1;
-        while (!cola.isEmpty()) {
-            int levelSize = cola.size();
-            h++; // Aumenta la altura por cada nivel encontrado
+        int height = -1;
+
+        while (!queue.isEmpty()) {
+
+            int levelSize = queue.size();
+            height++;
 
             for (int i = 0; i < levelSize; i++) {
-                Node<E> node = cola.dequeue();
-                if (node.left != null) cola.enqueue(node.left);
-                if (node.right != null) cola.enqueue(node.right);
+
+                Node<E> node = queue.dequeue();
+
+                if (node.left != null) {
+                    queue.enqueue(node.left);
+                }
+
+                if (node.right != null) {
+                    queue.enqueue(node.right);
+                }
             }
         }
-        return h;
-    }
-    
-    // Metodo que halla la anchura del arbol de forma iterativa y eficiente
-    // Método para hallar la anchura máxima (amplitud)
-    public int amplitude() throws ExceptionIsEmpty {
-        if (isEmpty()) throw new ExceptionIsEmpty("Sin Elementos");
 
-        LinkedQueue<Node<E>> cola = new LinkedQueue<>();
-        cola.enqueue(root);
+        return height;
+    }
+
+    @Override
+    public int amplitude() {
+
+        if (isEmpty()) {
+            throw new ExceptionIsEmpty("Árbol vacío");
+        }
+
+        LinkedQueue<Node<E>> queue = new LinkedQueue<>();
+        queue.enqueue(root);
 
         int maxNodes = 0;
 
-        while (!cola.isEmpty()) {
-            // La cantidad de elementos en la cola representa el ancho del nivel actual
-            int nodesInCurrentLevel = cola.size();
+        while (!queue.isEmpty()) {
 
-            if (nodesInCurrentLevel > maxNodes) {
-                maxNodes = nodesInCurrentLevel;
-            }
+            int currentLevel = queue.size();
 
-            // Vaciamos el nivel actual y cargamos el siguiente
-            for (int i = 0; i < nodesInCurrentLevel; i++) {
-                Node<E> current = cola.dequeue();
-                if (current.left != null) cola.enqueue(current.left);
-                if (current.right != null) cola.enqueue(current.right);
+            maxNodes = Math.max(maxNodes, currentLevel);
+
+            for (int i = 0; i < currentLevel; i++) {
+
+                Node<E> node = queue.dequeue();
+
+                if (node.left != null) {
+                    queue.enqueue(node.left);
+                }
+
+                if (node.right != null) {
+                    queue.enqueue(node.right);
+                }
             }
         }
+
         return maxNodes;
     }
-// ********************************************************************************************************** //
-    // 03a. Área del BST (Hojas * Altura)
-    // Ejercicio 3: Área (Hojas * Altura Total)
-    public int areaBST() throws ExceptionIsEmpty {
-        if (isEmpty()) throw new ExceptionIsEmpty("Arbol Vacio");
 
-        // Calculamos la altura total llamando al método height desde la raíz
+    @Override
+    public int areaBST() {
+
+        if (isEmpty()) {
+            throw new ExceptionIsEmpty("Árbol vacío");
+        }
+
         int totalHeight = height(root.data);
 
-        // Contamos las hojas de forma iterativa con la cola
         LinkedQueue<Node<E>> queue = new LinkedQueue<>();
         queue.enqueue(root);
-        int leavesCount = 0;
+
+        int leaves = 0;
 
         while (!queue.isEmpty()) {
+
             Node<E> current = queue.dequeue();
 
-            // Un nodo es hoja si ambos hijos son nulos
             if (current.left == null && current.right == null) {
-                leavesCount++;
+                leaves++;
             }
 
-            if (current.left != null) queue.enqueue(current.left);
-            if (current.right != null) queue.enqueue(current.right);
+            if (current.left != null) {
+                queue.enqueue(current.left);
+            }
+
+            if (current.right != null) {
+                queue.enqueue(current.right);
+            }
         }
 
-        return leavesCount * totalHeight;
+        return leaves * totalHeight;
     }
-    
+
+    // =========================================================
+    // VALIDACIONES
+    // =========================================================
+
+    @Override
+    public boolean isValidBST() {
+
+        if (isEmpty()) {
+            throw new ExceptionIsEmpty("Árbol vacío");
+        }
+
+        StackLink<Node<E>> stack = new StackLink<>();
+
+        Node<E> current = root;
+        E prevData = null;
+
+        while (current != null || !stack.isEmpty()) {
+
+            while (current != null) {
+                stack.push(current);
+                current = current.left;
+            }
+
+            current = stack.pop();
+
+            if (prevData != null
+                    && current.data.compareTo(prevData) <= 0) {
+                return false;
+            }
+
+            prevData = current.data;
+            current = current.right;
+        }
+
+        return true;
+    }
+
+    // =========================================================
+    // CONSULTAS
+    // =========================================================
+
+    @Override
+    public void searchRange(E min, E max) {
+        searchRange(root, min, max);
+        System.out.println();
+    }
+
+    private void searchRange(Node<E> node, E min, E max) {
+
+        if (node == null) {
+            return;
+        }
+
+        if (node.data.compareTo(min) > 0) {
+            searchRange(node.left, min, max);
+        }
+
+        if (node.data.compareTo(min) >= 0
+                && node.data.compareTo(max) <= 0) {
+
+            System.out.print(node.data + " ");
+        }
+
+        if (node.data.compareTo(max) < 0) {
+            searchRange(node.right, min, max);
+        }
+    }
+
+    @Override
+    public void printDescending() {
+        printDescending(root);
+        System.out.println();
+    }
+
+    private void printDescending(Node<E> node) {
+
+        if (node != null) {
+
+            printDescending(node.right);
+
+            System.out.print(node.data + " ");
+
+            printDescending(node.left);
+        }
+    }
+
+    // =========================================================
+    // VISUALIZACIÓN
+    // =========================================================
+
+    @Override
     public void drawBST() {
-        System.out.println(this.toString());
+        System.out.println(this);
     }
 
-// ********************************************************************************************************** //
-
-    // --- EJERCICIO 04: REPRESENTACIÓN PARENTÉTICA --- 
-    
-    /**
-     * Imprime la representación del árbol con paréntesis y sangría.
-     * Utiliza una estructura jerárquica para visualizar la relación raíz-hijos.
-     */
+    @Override
     public void parenthesize() {
+
         if (isEmpty()) {
             System.out.println("()");
-        } else {
-            parenthesizeRec(this.root, 0);
-            System.out.println(); // Salto de línea final
+            return;
         }
+
+        parenthesizeRec(root, 0);
+        System.out.println();
     }
 
-    /**
-     * Método recursivo para construir la visualización con sangría.
-     * @param node Nodo actual a procesar
-     * @param depth Profundidad actual para manejar la sangría
-     */
     private void parenthesizeRec(Node<E> node, int depth) {
-        // Aplicar sangría basada en la profundidad (4 espacios por nivel) 
+
         for (int i = 0; i < depth; i++) {
             System.out.print("    ");
         }
@@ -340,114 +466,82 @@ public class LinkedBST <E extends Comparable<E>> implements BinarySearchTree<E> 
             return;
         }
 
-        // Imprimir el dato del nodo entre paréntesis
         System.out.print(node.data);
 
-        // Si es una hoja, no abrimos más paréntesis de hijos en nuevas líneas
         if (node.left == null && node.right == null) {
             System.out.println();
             return;
         }
 
-        // Si tiene hijos, abrimos paréntesis y procesamos subárboles
         System.out.println(" (");
-        
-        // Procesar subárbol izquierdo
+
         parenthesizeRec(node.left, depth + 1);
-        
-        // Procesar subárbol derecho
         parenthesizeRec(node.right, depth + 1);
 
-        // Cerrar el paréntesis del nivel actual con su respectiva sangría
         for (int i = 0; i < depth; i++) {
             System.out.print("    ");
         }
+
         System.out.println(")");
     }
-    
-    // 04. Verificar si es un BST válido
-    public boolean isValidBST() throws ExceptionIsEmpty {
-        if (isEmpty()) throw new ExceptionIsEmpty("Arbol Vacio");
 
-        StackLink<Node<E>> stack = new StackLink<>();
-        Node<E> current = root;
-        E prevData = null;
+    @Override
+    public String toString() {
 
-        // Lógica DFS Inorden Iterativo (Izquierda - Raíz - Derecha)
-        while (current != null || !stack.isEmpty()) {
-            // 1. Ir todo a la izquierda
-            while (current != null) {
-                stack.push(current);
-                current = current.left;
+        StringBuilder sb = new StringBuilder();
+
+        buildString(root, 0, sb);
+
+        return sb.toString();
+    }
+
+    private void buildString(Node<E> node,
+                             int level,
+                             StringBuilder sb) {
+
+        if (node != null) {
+
+            buildString(node.right, level + 1, sb);
+
+            for (int i = 0; i < level; i++) {
+                sb.append("    ");
             }
 
-            // 2. Procesar el nodo
-            current = stack.pop();
+            sb.append(node.data).append("\n");
 
-            // Verificamos que el valor actual sea mayor al anterior (Orden Ascendente)
-            if (prevData != null && current.data.compareTo(prevData) <= 0) {
-                return false;
-            }
-            prevData = current.data;
+            buildString(node.left, level + 1, sb);
+        }
+    }
 
-            // 3. Ir a la derecha
+    // =========================================================
+    // UTILIDADES
+    // =========================================================
+
+    @Override
+    public void destroyNodes() {
+        root = null;
+    }
+
+    private Node<E> findMin(Node<E> node) {
+
+        Node<E> current = node;
+
+        while (current.left != null) {
+            current = current.left;
+        }
+
+        return current;
+    }
+
+    @SuppressWarnings("unused")
+    private Node<E> findMax(Node<E> node) {
+
+        Node<E> current = node;
+
+        while (current.right != null) {
             current = current.right;
         }
-        return true;
+
+        return current;
     }
-
-// ********************************************************************************************************** //
-    // a. Inserción: Utilizado en las actividades
-    
-    // b. searchRange(min, max): Retorna productos en un rango de códigos 
-    public void searchRange(E min, E max) {
-        searchRange(root, min, max);
-        System.out.println();
-    }
-
-    private void searchRange(Node<E> node, E min, E max) {
-        if (node == null) return;
-
-        // Si el dato actual es mayor al mínimo, buscar en la izquierda
-        if (node.data.compareTo(min) > 0) {
-            searchRange(node.left, min, max);
-        }
-
-        // Si está en el rango, procesarlo (imprimirlo)
-        if (node.data.compareTo(min) >= 0 && node.data.compareTo(max) <= 0) {
-            System.out.print(node.data + " ");
-        }
-
-        // Si el dato actual es menor al máximo, buscar en la derecha
-        if (node.data.compareTo(max) < 0) {
-            searchRange(node.right, min, max);
-        }
-    }
-
-    // c. countLeaves(): Cuenta productos en nodos hoja
-    public int countLeaves() {
-        return countLeaves(root);
-    }
-
-    private int countLeaves(Node<E> node) {
-        if (node == null) return 0;
-        if (node.left == null && node.right == null) return 1;
-        return countLeaves(node.left) + countLeaves(node.right);
-    }
-
-    // d. printDescending(): Muestra productos de mayor a menor
-    // Se logra con un InOrder inverso: Derecha - Raíz - Izquierda
-    public void printDescending() {
-        printDescending(root);
-        System.out.println();
-    }
-
-    private void printDescending(Node<E> node) {
-        if (node != null) {
-            printDescending(node.right);
-            System.out.print(node.data + " ");
-            printDescending(node.left);
-        }
-    }
-    
 }

@@ -1,5 +1,3 @@
-
-
 import java.util.ArrayList;                                                     //Librerias importadas para manejar el uso de datos agrupados
 import java.util.Iterator;
 
