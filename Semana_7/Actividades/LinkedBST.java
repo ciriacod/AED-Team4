@@ -214,9 +214,8 @@ public class LinkedBST <E extends Comparable<E>> implements BinarySearchTree<E> 
     }
 
     // 02d. Altura iterativa de un subárbol
-
     // Ejercicio 2: Altura de un nodo específico
-    public int height(E x) {
+    public int height(E x) throws ExceptionIsEmpty {
         // 1. Localizar el nodo utilizando la lógica de búsqueda del BST
         Node<E> current = root;
         Node<E> startNode = null;
@@ -233,18 +232,18 @@ public class LinkedBST <E extends Comparable<E>> implements BinarySearchTree<E> 
         if (startNode == null) return -1; // El nodo no existe en el árbol
 
         // 2. Calcular altura por niveles usando la cola personalizada
-        LinkedQueue<Node<E>> queue = new LinkedQueue<Node<E>>();
-        queue.enqueue(startNode);
+        LinkedQueue<Node<E>> cola = new LinkedQueue<Node<E>>();
+        cola.enqueue(startNode);
 
         int h = -1;
-        while (!queue.isEmpty()) {
-            int levelSize = queue.size();
+        while (!cola.isEmpty()) {
+            int levelSize = cola.size();
             h++; // Aumenta la altura por cada nivel encontrado
 
             for (int i = 0; i < levelSize; i++) {
-                Node<E> node = queue.poll();
-                if (node.left != null) queue.enqueue(node.left);
-                if (node.right != null) queue.enqueue(node.right);
+                Node<E> node = cola.dequeue();
+                if (node.left != null) cola.enqueue(node.left);
+                if (node.right != null) cola.enqueue(node.right);
             }
         }
         return h;
@@ -252,17 +251,17 @@ public class LinkedBST <E extends Comparable<E>> implements BinarySearchTree<E> 
     
     // Metodo que halla la anchura del arbol de forma iterativa y eficiente
     // Método para hallar la anchura máxima (amplitud)
-    public int amplitude() {
-        if (root == null) return 0;
+    public int amplitude() throws ExceptionIsEmpty {
+        if (isEmpty()) throw new ExceptionIsEmpty("Sin Elementos");
 
-        LinkedQueue<Node<E>> queue = new LinkedQueue<>();
-        queue.enqueue(root);
+        LinkedQueue<Node<E>> cola = new LinkedQueue<>();
+        cola.enqueue(root);
 
         int maxNodes = 0;
 
-        while (!queue.isEmpty()) {
+        while (!cola.isEmpty()) {
             // La cantidad de elementos en la cola representa el ancho del nivel actual
-            int nodesInCurrentLevel = queue.size();
+            int nodesInCurrentLevel = cola.size();
 
             if (nodesInCurrentLevel > maxNodes) {
                 maxNodes = nodesInCurrentLevel;
@@ -270,11 +269,44 @@ public class LinkedBST <E extends Comparable<E>> implements BinarySearchTree<E> 
 
             // Vaciamos el nivel actual y cargamos el siguiente
             for (int i = 0; i < nodesInCurrentLevel; i++) {
-                Node<E> current = queue.poll();
-                if (current.left != null) queue.enqueue(current.left);
-                if (current.right != null) queue.enqueue(current.right);
+                Node<E> current = cola.dequeue();
+                if (current.left != null) cola.enqueue(current.left);
+                if (current.right != null) cola.enqueue(current.right);
             }
         }
         return maxNodes;
     }
+// ********************************************************************************************************** //
+    // 03a. Área del BST (Hojas * Altura) [cite: 117, 118]
+    // Ejercicio 3: Área (Hojas * Altura Total)
+    public int areaBST() throws ExceptionIsEmpty {
+        if (isEmpty()) throw new ExceptionIsEmpty("Arbol Vacio");
+
+        // Calculamos la altura total llamando al método height desde la raíz
+        int totalHeight = height(root.data);
+
+        // Contamos las hojas de forma iterativa con la cola
+        LinkedQueue<Node<E>> queue = new LinkedQueue<>();
+        queue.enqueue(root);
+        int leavesCount = 0;
+
+        while (!queue.isEmpty()) {
+            Node<E> current = queue.dequeue();
+
+            // Un nodo es hoja si ambos hijos son nulos
+            if (current.left == null && current.right == null) {
+                leavesCount++;
+            }
+
+            if (current.left != null) queue.enqueue(current.left);
+            if (current.right != null) queue.enqueue(current.right);
+        }
+
+        return leavesCount * totalHeight;
+    }
+    
+    public void drawBST() {
+        System.out.println(this.toString());
+    }
+    
 }

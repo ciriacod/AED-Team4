@@ -4,7 +4,7 @@ import Importar.Exceptions.ExceptionIsEmpty;
 import Importar.IEstructuras.Queue;
 import Importar.Node;
 
-public class LinkedQueue<E extends Comparable<E>> implements Queue<E> {
+public class LinkedQueue<E> implements Queue<E> {
 
     private Node<E> first;      // Frente de la cola (de donde se sacan datos)
     private Node<E> last;       // Final de la cola (donde se insertan datos)
