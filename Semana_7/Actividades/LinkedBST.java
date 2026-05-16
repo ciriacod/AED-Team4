@@ -1,4 +1,6 @@
 package Semana_7.Actividades;
+
+import Importar.Estructuras.LinkedQueue;
 import Importar.Exceptions.ExceptionIsEmpty;
 import Importar.Exceptions.ItemDuplicated;
 import Importar.Exceptions.ItemNotFound;
@@ -24,83 +26,71 @@ public class LinkedBST <E extends Comparable<E>> implements BinarySearchTree<E> 
     @Override
     public boolean isEmpty() { return this.root == null; }
 
-    // ACTIVIDAD 6: Inserción [cite: 79, 80]
-    @Override
+    // ACTIVIDAD 6: Inserción
     public void insert(E x) throws ItemDuplicated {
-    this.root = insertRec(x, this.root);
-}
+        this.root = insertRec(x, this.root);
+    }
 
     protected Node<E> insertRec(E x, Node<E> actual) throws ItemDuplicated {
         Node<E> res = actual;
         if (actual == null) {
-            res = new Node<E>(x); // Caso base: crea el nodo si es null [cite: 52]
+            res = new Node<E>(x); // Caso base: crea el nodo si es null
         } else {
-            int resC = actual.data.compareTo(x); // Comparación de datos [cite: 53]
+            int resC = actual.data.compareTo(x); // Comparación de datos
             if (resC == 0) {
-                throw new ItemDuplicated("x " + x + " esta duplicado"); // Error si ya existe [cite: 54]
+                throw new ItemDuplicated("x " + x + " esta duplicado"); // Error si ya existe
             }
             if (resC < 0) {
-                res.right = insertRec(x, actual.right); // Menor que x: subárbol derecho [cite: 55]
+                res.right = insertRec(x, actual.right); // Menor que x: subárbol derecho
             } else {
-                res.left = insertRec(x, actual.left); // Mayor que x: subárbol izquierdo [cite: 56]
+                res.left = insertRec(x, actual.left); // Mayor que x: subárbol izquierdo
             }
         }
         return res;
     }
 
-    // ACTIVIDAD 6: Búsqueda [cite: 81]
+    // ACTIVIDAD 6: Búsqueda 
     @Override
     public E search(E x) throws ItemNotFound {
-    Node<E> res = searchRec(x, this.root); // Inicia búsqueda desde la raíz [cite: 48]
+    Node<E> res = searchRec(x, this.root); // Inicia búsqueda desde la raíz
     if (res == null)
         throw new ItemNotFound(x + " no se encuentra");
     return res.data;
-}
+    }
 
     protected Node<E> searchRec(E x, Node<E> actual) {
         if (actual == null) return null;
         int cmp = actual.data.compareTo(x);
-        if (cmp == 0) return actual; // Elemento encontrado [cite: 61]
+        if (cmp == 0) return actual; // Elemento encontrado 
         return (cmp < 0) ? searchRec(x, actual.right) : searchRec(x, actual.left);
     }
 
-    // ACTIVIDAD 6: Eliminación [cite: 58, 82]
+    // ACTIVIDAD 6: Eliminación
     @Override
     public void delete(E x) throws ExceptionIsEmpty {
-    this.root = removeRec(x, this.root); // Actualiza la raíz tras la eliminación [cite: 64, 65]
+    this.root = removeRec(x, this.root); // Actualiza la raíz tras la eliminación
 }
 
     protected Node<E> removeRec(E x, Node<E> actual) throws ExceptionIsEmpty {
-        if (actual == null) throw new ExceptionIsEmpty(x + " no esta"); // Caso no encontrado [cite: 68]
+        if (actual == null) throw new ExceptionIsEmpty(x + " no esta"); // Caso no encontrado
 
         Node<E> res = actual;
         int cmp = actual.data.compareTo(x);
 
         if (cmp < 0) {
-            res.right = removeRec(x, actual.right); // Busca en la derecha [cite: 70, 77]
+            res.right = removeRec(x, actual.right); // Busca en la derecha
         } else if (cmp > 0) {
-            res.left = removeRec(x, actual.left); // Busca en la izquierda [cite: 71, 78]
+            res.left = removeRec(x, actual.left); // Busca en la izquierda 
         } else { // actual.data == x [cite: 72, 79]
-            if (actual.left != null && actual.right != null) { // Caso: dos hijos [cite: 73, 80]
-                // Reemplaza con el mínimo del subárbol derecho (sucesor inorden) [cite: 81]
+            if (actual.left != null && actual.right != null) { // Caso: dos hijos
+                // Reemplaza con el mínimo del subárbol derecho (sucesor inorden)
                 res.data = findMin(actual.right).data;
-                actual.right = findMin(actual.right); // Elimina el nodo duplicado [cite: 82]
-            } else { // Caso: uno o ningún hijo [cite: 75, 83]
+                actual.right = findMin(actual.right); // Elimina el nodo duplicado
+            } else { // Caso: uno o ningún hijo
                 res = (actual.left != null) ? actual.left : actual.right;
             }
         }
         return res;
-    }
-
-    // Encuentra el valor mínimo en el subárbol [cite: 101]
-
-    private Node<E> findMin(Node<E> node) {
-        Node<E> current = node;
-        // El menor valor siempre es el nodo más a la izquierda [cite: 101]
-        while (current.left != null) {
-            current = current.left;
-        }
-        return current;
     }
     
     // Sobrecarga del metodo toString()
@@ -119,5 +109,172 @@ public class LinkedBST <E extends Comparable<E>> implements BinarySearchTree<E> 
             sb.append(node.data).append("\n");
             buildString(node.left, level + 1, sb);
         }
+    }
+
+    // ********************************************************************************************************** //
+    // RECORRIDOS (Actividades 7, 8, 9)
+    // Método público para iniciar el recorrido
+    public void inOrder() {
+        inOrder(this.root);
+        System.out.println();
+    }
+
+    // Implementación privada recursiva
+    private void inOrder(Node<E> node) {
+        if (node != null) {
+            inOrder(node.left);        // Recorrer subárbol izquierdo 
+            System.out.print(node.data + " "); // Visitar la raíz
+            inOrder(node.right);       // Recorrer subárbol derecho 
+        }
+    }
+    
+    // Método público para iniciar el recorrido
+    public void preOrder() {
+        preOrder(this.root);
+        System.out.println();
+    }
+
+    // Implementación privada recursiva [cite: 94]
+    private void preOrder(Node<E> node) {
+        if (node != null) {
+            System.out.print(node.data + " "); // Visitar la raíz primero
+            preOrder(node.left);               // Luego subárbol izquierdo
+            preOrder(node.right);              // Finalmente subárbol derecho
+        }
+    }
+    
+    // Método público para iniciar el recorrido
+    public void postOrder() {
+        postOrder(this.root);
+        System.out.println();
+    }
+
+    // Implementación privada recursiva [cite: 98]
+    private void postOrder(Node<E> node) {
+        if (node != null) {
+            postOrder(node.left);              // Recorrer subárbol izquierdo
+            postOrder(node.right);             // Recorrer subárbol derecho
+            System.out.print(node.data + " "); // Visitar la raíz al final 
+        }
+    }
+
+// ********************************************************************************************************** //
+    // Actividad 10
+    private Node<E> findMin(Node<E> node) {
+        Node<E> current = node;
+        // El menor valor siempre es el nodo más a la izquierda
+        while (current.left != null) {
+            current = current.left;
+        }
+        return current;
+    }
+
+    // Encuentra el valor máximo en el subárbol [cite: 103]
+    @SuppressWarnings("unused")
+    private Node<E> findMax(Node<E> node) {
+        Node<E> current = node;
+        // El mayor valor siempre es el nodo más a la derecha 
+        while (current.right != null) {
+            current = current.right;
+        }
+        return current;
+    } 
+
+// ********************************************************************************************************** //
+    // EJERCICIOS ADICIONALES
+    
+    // 02a. Eliminar todos los nodos
+    public void destroyNodes() throws ExceptionIsEmpty {
+        if (isEmpty()) throw new ExceptionIsEmpty();
+        root = null;
+    }
+
+    // 02c. Contar nodos no-hoja
+    // Metodo que cuenta el total de Nodos del Arbol
+    public int countAllNodes() {
+        return countAllNodes(root);     // LLamada al metodo recursivo
+    }
+    
+    // Sobrecarga del metodo recursivo que cuenta la cantidad de Nodos total del Arbol
+    private int countAllNodes(Node<E> node) {
+        if (node == null) return 0;     // Caso base
+        return 1 + countAllNodes(node.left) + countAllNodes(node.right);    // Suma de los Nodos derechos e izquierdos desde la raiz (+1) hasta las hojas
+    }
+    
+    // Metodo que cuenta el total de Nodos total del Arbol sin contar las Hojas
+    public int countNodes() {
+        return countNodes(root);        // Llamada al metodo recursivo
+    }
+    
+    // Sobrecarga del metodo recursivo que cuenta la cantidad de Nodos total del Arbol sin contar las Hojas
+    private int countNodes(Node<E> node) {
+        if (node == null) return 0;     // Caso Base
+        if (node.left == null && node.right == null) return 0;      // Caso alterno cuando se llega a la base del Arbol
+        return 1 + countNodes(node.left) + countNodes(node.right);      // Suma de los Nodos derechos e izquierdos y la raiz(+1)
+    }
+
+    // 02d. Altura iterativa de un subárbol
+
+    // Ejercicio 2: Altura de un nodo específico
+    public int height(E x) {
+        // 1. Localizar el nodo utilizando la lógica de búsqueda del BST
+        Node<E> current = root;
+        Node<E> startNode = null;
+
+        while (current != null) {
+            int cmp = x.compareTo(current.data);
+            if (cmp == 0) {
+                startNode = current;
+                break;
+            }
+            current = (cmp < 0) ? current.left : current.right;
+        }
+
+        if (startNode == null) return -1; // El nodo no existe en el árbol
+
+        // 2. Calcular altura por niveles usando la cola personalizada
+        LinkedQueue<Node<E>> queue = new LinkedQueue<Node<E>>();
+        queue.enqueue(startNode);
+
+        int h = -1;
+        while (!queue.isEmpty()) {
+            int levelSize = queue.size();
+            h++; // Aumenta la altura por cada nivel encontrado
+
+            for (int i = 0; i < levelSize; i++) {
+                Node<E> node = queue.poll();
+                if (node.left != null) queue.enqueue(node.left);
+                if (node.right != null) queue.enqueue(node.right);
+            }
+        }
+        return h;
+    }
+    
+    // Metodo que halla la anchura del arbol de forma iterativa y eficiente
+    // Método para hallar la anchura máxima (amplitud)
+    public int amplitude() {
+        if (root == null) return 0;
+
+        LinkedQueue<Node<E>> queue = new LinkedQueue<>();
+        queue.enqueue(root);
+
+        int maxNodes = 0;
+
+        while (!queue.isEmpty()) {
+            // La cantidad de elementos en la cola representa el ancho del nivel actual
+            int nodesInCurrentLevel = queue.size();
+
+            if (nodesInCurrentLevel > maxNodes) {
+                maxNodes = nodesInCurrentLevel;
+            }
+
+            // Vaciamos el nivel actual y cargamos el siguiente
+            for (int i = 0; i < nodesInCurrentLevel; i++) {
+                Node<E> current = queue.poll();
+                if (current.left != null) queue.enqueue(current.left);
+                if (current.right != null) queue.enqueue(current.right);
+            }
+        }
+        return maxNodes;
     }
 }

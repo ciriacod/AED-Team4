@@ -2,14 +2,14 @@ package Importar.Estructuras;
 import Importar.IEstructuras.Queue;
 import Importar.Exceptions.ExceptionIsEmpty;
 
-public class QueueArray<E> implements Queue<E> {
+public class ArrayQueue<E> implements Queue<E> {
     private E[] array;
     private int front;
     private int rear;
     private int size;
 
     @SuppressWarnings("unchecked")
-    public QueueArray(int n){
+    public ArrayQueue(int n){
         array = (E[]) new Object[n];
         front = 0;
         rear = -1;
