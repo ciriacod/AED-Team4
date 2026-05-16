@@ -37,7 +37,7 @@ public class DequeLink<E> implements Deque<E> {
         else{
             first = last = null;
         }
-        return morto.getDato();
+        return morto.getData();
     }
     @Override
     public E removeLast() throws ExceptionIsEmpty {
@@ -52,17 +52,17 @@ public class DequeLink<E> implements Deque<E> {
             last = iterador;
             last.next = null;
         }
-        return morto.getDato();
+        return morto.getData();
     }
     @Override
     public E getFirst() throws ExceptionIsEmpty {
         if(isEmpty()) throw new ExceptionIsEmpty("Deque Vacia");
-        return first.getDato();
+        return first.getData();
     }
     @Override
     public E getLast() throws ExceptionIsEmpty {
         if(isEmpty()) throw new ExceptionIsEmpty("Deque Vacia");
-        return last.getDato();
+        return last.getData();
     }
     @Override
     public boolean isEmpty() {
