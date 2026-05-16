@@ -1,6 +1,6 @@
 package Importar.Exceptions;
 
-public class ItemNotFound extends Exception {
+public class ItemNotFound extends RuntimeException {
     public ItemNotFound(String msg){
         super(msg);
     }
