@@ -1,10 +1,10 @@
 package Semana_7.Actividades;
 
+import Importar.IEstructuras.BinarySearchTree;
 import Importar.Estructuras.LinkedQueue;
-import Importar.Exceptions.ExceptionIsEmpty;
-import Importar.Exceptions.ItemDuplicated;
-import Importar.Exceptions.ItemNotFound;
-import Importar.IEstructuras.*;
+import Importar.Estructuras.StackLink;
+import Importar.Exceptions.*;
+
 
 public class LinkedBST <E extends Comparable<E>> implements BinarySearchTree<E> {
     protected class Node<E> {
@@ -134,7 +134,7 @@ public class LinkedBST <E extends Comparable<E>> implements BinarySearchTree<E> 
         System.out.println();
     }
 
-    // Implementación privada recursiva [cite: 94]
+    // Implementación privada recursiva
     private void preOrder(Node<E> node) {
         if (node != null) {
             System.out.print(node.data + " "); // Visitar la raíz primero
@@ -149,7 +149,7 @@ public class LinkedBST <E extends Comparable<E>> implements BinarySearchTree<E> 
         System.out.println();
     }
 
-    // Implementación privada recursiva [cite: 98]
+    // Implementación privada recursiva
     private void postOrder(Node<E> node) {
         if (node != null) {
             postOrder(node.left);              // Recorrer subárbol izquierdo
@@ -169,7 +169,7 @@ public class LinkedBST <E extends Comparable<E>> implements BinarySearchTree<E> 
         return current;
     }
 
-    // Encuentra el valor máximo en el subárbol [cite: 103]
+    // Encuentra el valor máximo en el subárbol
     @SuppressWarnings("unused")
     private Node<E> findMax(Node<E> node) {
         Node<E> current = node;
@@ -277,7 +277,7 @@ public class LinkedBST <E extends Comparable<E>> implements BinarySearchTree<E> 
         return maxNodes;
     }
 // ********************************************************************************************************** //
-    // 03a. Área del BST (Hojas * Altura) [cite: 117, 118]
+    // 03a. Área del BST (Hojas * Altura)
     // Ejercicio 3: Área (Hojas * Altura Total)
     public int areaBST() throws ExceptionIsEmpty {
         if (isEmpty()) throw new ExceptionIsEmpty("Arbol Vacio");
@@ -307,6 +307,149 @@ public class LinkedBST <E extends Comparable<E>> implements BinarySearchTree<E> 
     
     public void drawBST() {
         System.out.println(this.toString());
+    }
+
+// ********************************************************************************************************** //
+
+    // --- EJERCICIO 04: REPRESENTACIÓN PARENTÉTICA --- 
+    
+    /**
+     * Imprime la representación del árbol con paréntesis y sangría.
+     * Utiliza una estructura jerárquica para visualizar la relación raíz-hijos.
+     */
+    public void parenthesize() {
+        if (isEmpty()) {
+            System.out.println("()");
+        } else {
+            parenthesizeRec(this.root, 0);
+            System.out.println(); // Salto de línea final
+        }
+    }
+
+    /**
+     * Método recursivo para construir la visualización con sangría.
+     * @param node Nodo actual a procesar
+     * @param depth Profundidad actual para manejar la sangría
+     */
+    private void parenthesizeRec(Node<E> node, int depth) {
+        // Aplicar sangría basada en la profundidad (4 espacios por nivel) 
+        for (int i = 0; i < depth; i++) {
+            System.out.print("    ");
+        }
+
+        if (node == null) {
+            System.out.println("()");
+            return;
+        }
+
+        // Imprimir el dato del nodo entre paréntesis
+        System.out.print(node.data);
+
+        // Si es una hoja, no abrimos más paréntesis de hijos en nuevas líneas
+        if (node.left == null && node.right == null) {
+            System.out.println();
+            return;
+        }
+
+        // Si tiene hijos, abrimos paréntesis y procesamos subárboles
+        System.out.println(" (");
+        
+        // Procesar subárbol izquierdo
+        parenthesizeRec(node.left, depth + 1);
+        
+        // Procesar subárbol derecho
+        parenthesizeRec(node.right, depth + 1);
+
+        // Cerrar el paréntesis del nivel actual con su respectiva sangría
+        for (int i = 0; i < depth; i++) {
+            System.out.print("    ");
+        }
+        System.out.println(")");
+    }
+    
+    // 04. Verificar si es un BST válido
+    public boolean isValidBST() throws ExceptionIsEmpty {
+        if (isEmpty()) throw new ExceptionIsEmpty("Arbol Vacio");
+
+        StackLink<Node<E>> stack = new StackLink<>();
+        Node<E> current = root;
+        E prevData = null;
+
+        // Lógica DFS Inorden Iterativo (Izquierda - Raíz - Derecha)
+        while (current != null || !stack.isEmpty()) {
+            // 1. Ir todo a la izquierda
+            while (current != null) {
+                stack.push(current);
+                current = current.left;
+            }
+
+            // 2. Procesar el nodo
+            current = stack.pop();
+
+            // Verificamos que el valor actual sea mayor al anterior (Orden Ascendente)
+            if (prevData != null && current.data.compareTo(prevData) <= 0) {
+                return false;
+            }
+            prevData = current.data;
+
+            // 3. Ir a la derecha
+            current = current.right;
+        }
+        return true;
+    }
+
+// ********************************************************************************************************** //
+    // a. Inserción: Utilizado en las actividades
+    
+    // b. searchRange(min, max): Retorna productos en un rango de códigos 
+    public void searchRange(E min, E max) {
+        searchRange(root, min, max);
+        System.out.println();
+    }
+
+    private void searchRange(Node<E> node, E min, E max) {
+        if (node == null) return;
+
+        // Si el dato actual es mayor al mínimo, buscar en la izquierda
+        if (node.data.compareTo(min) > 0) {
+            searchRange(node.left, min, max);
+        }
+
+        // Si está en el rango, procesarlo (imprimirlo)
+        if (node.data.compareTo(min) >= 0 && node.data.compareTo(max) <= 0) {
+            System.out.print(node.data + " ");
+        }
+
+        // Si el dato actual es menor al máximo, buscar en la derecha
+        if (node.data.compareTo(max) < 0) {
+            searchRange(node.right, min, max);
+        }
+    }
+
+    // c. countLeaves(): Cuenta productos en nodos hoja
+    public int countLeaves() {
+        return countLeaves(root);
+    }
+
+    private int countLeaves(Node<E> node) {
+        if (node == null) return 0;
+        if (node.left == null && node.right == null) return 1;
+        return countLeaves(node.left) + countLeaves(node.right);
+    }
+
+    // d. printDescending(): Muestra productos de mayor a menor
+    // Se logra con un InOrder inverso: Derecha - Raíz - Izquierda
+    public void printDescending() {
+        printDescending(root);
+        System.out.println();
+    }
+
+    private void printDescending(Node<E> node) {
+        if (node != null) {
+            printDescending(node.right);
+            System.out.print(node.data + " ");
+            printDescending(node.left);
+        }
     }
     
 }
