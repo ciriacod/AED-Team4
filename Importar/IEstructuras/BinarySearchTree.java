@@ -18,7 +18,7 @@ public interface BinarySearchTree<E extends Comparable<E>> {
     int amplitude();
     int areaBST();
     int countAllNodes();
-    int countNodes();
+    int countInternalNodes();
     int countLeaves();
 
     // Operaciones auxiliares

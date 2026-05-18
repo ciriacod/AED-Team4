@@ -36,6 +36,7 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E> {
         return this.root == null;
     }
 
+    // ==================== INSERT ====================
     @Override
     public void insert(E x) {
         this.root = insertRec(x, this.root);
@@ -45,30 +46,31 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E> {
         if (node == null) {
             return new Node<>(x);
         }
-
-        int cmp = node.data.compareTo(x);
-
+        
+        int cmp = x.compareTo(node.data);
+        
         if (cmp == 0) {
             throw new ItemDuplicated("Elemento duplicado: " + x);
         }
-
+        
         if (cmp < 0) {
-            node.right = insertRec(x, node.right);
-        } else {
             node.left = insertRec(x, node.left);
+        } else {
+            node.right = insertRec(x, node.right);
         }
-
+        
         return node;
     }
 
+    // ==================== SEARCH ====================
     @Override
     public E search(E x) {
         Node<E> result = searchRec(x, root);
-
+        
         if (result == null) {
             throw new ItemNotFound("Elemento no encontrado: " + x);
         }
-
+        
         return result.data;
     }
 
@@ -76,18 +78,19 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E> {
         if (node == null) {
             return null;
         }
-
-        int cmp = node.data.compareTo(x);
-
+        
+        int cmp = x.compareTo(node.data); 
+        
         if (cmp == 0) {
             return node;
         }
-
-        return (cmp < 0)
-                ? searchRec(x, node.right)
-                : searchRec(x, node.left);
+        
+        return (cmp < 0) 
+            ? searchRec(x, node.left)
+            : searchRec(x, node.right);
     }
 
+    // ==================== DELETE ====================
     @Override
     public void delete(E x) {
         this.root = removeRec(x, this.root);
@@ -97,30 +100,23 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E> {
         if (node == null) {
             throw new ItemNotFound("Elemento no encontrado: " + x);
         }
-
-        int cmp = node.data.compareTo(x);
-
+        
+        int cmp = x.compareTo(node.data); 
+        
         if (cmp < 0) {
-            node.right = removeRec(x, node.right);
-        } else if (cmp > 0) {
             node.left = removeRec(x, node.left);
+        } else if (cmp > 0) {
+            node.right = removeRec(x, node.right);
         } else {
-
             if (node.left != null && node.right != null) {
-
                 Node<E> min = findMin(node.right);
-
                 node.data = min.data;
                 node.right = removeRec(min.data, node.right);
-
             } else {
-
-                node = (node.left != null)
-                        ? node.left
-                        : node.right;
+                node = (node.left != null) ? node.left : node.right;
             }
         }
-
+        
         return node;
     }
 
@@ -190,11 +186,11 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E> {
     }
 
     @Override
-    public int countNodes() {
-        return countNodes(root);
+    public int countInternalNodes() {
+        return countInternalNodesRec(root);
     }
 
-    private int countNodes(Node<E> node) {
+    private int countInternalNodesRec(Node<E> node) {
 
         if (node == null) {
             return 0;
@@ -205,8 +201,8 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E> {
         }
 
         return 1
-                + countNodes(node.left)
-                + countNodes(node.right);
+                + countInternalNodesRec(node.left)
+                + countInternalNodesRec(node.right);
     }
 
     @Override

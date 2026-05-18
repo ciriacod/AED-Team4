@@ -202,7 +202,7 @@ public class LinkedBST <E extends Comparable<E>> implements BinarySearchTree<E> 
     }
     
     // Metodo que cuenta el total de Nodos total del Arbol sin contar las Hojas
-    public int countNodes() {
+    public int countInternalNodes() {
         return countNodes(root);        // Llamada al metodo recursivo
     }
     
