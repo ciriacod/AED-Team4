@@ -6,9 +6,9 @@ import Importar.Exceptions.*;
 public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E> {
 
     protected class Node<T> {
-        private T data;
-        private Node<T> left;
-        private Node<T> right;
+        public T data;
+        public Node<T> left;
+        public Node<T> right;
 
         public Node(T data) {
             this(data, null, null);
@@ -42,7 +42,7 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E> {
         this.root = insertRec(x, this.root);
     }
 
-    private Node<E> insertRec(E x, Node<E> node) {
+    protected Node<E> insertRec(E x, Node<E> node) {
         if (node == null) {
             return new Node<>(x);
         }

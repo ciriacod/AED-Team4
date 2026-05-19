@@ -70,7 +70,7 @@ public class Prueba {
             System.out.println(bst.countAllNodes());
 
             System.out.println("\nNODOS NO HOJA:");
-            System.out.println(bst.countNodes());
+            System.out.println(bst.countInternalNodes());
 
             System.out.println("\nNODOS HOJA:");
             System.out.println(bst.countLeaves());
