@@ -22,7 +22,7 @@ public class AVLTree<E extends Comparable<E>> extends LinkedBST<E> {
     }
     // FIN NODO AVL
     
-    // INICIO INSERTAR
+// INICIO INSERTAR--------------------------------------------------------------------------------------------------------------------------------------------
     @Override
     public void insert(E x) throws ItemDuplicated{
         this.changeHeight = false;
@@ -81,9 +81,9 @@ public class AVLTree<E extends Comparable<E>> extends LinkedBST<E> {
         }
     return fat;
     }
-    // FIN INSERTAR
+// FIN INSERTAR--------------------------------------------------------------------------------------------------------------------------------------------
     
-    // INICIO ROTACIONES
+// INICIO ROTACIONES--------------------------------------------------------------------------------------------------------------------------------------------
     private NodeAVL balanceToLeft(NodeAVL node){
         NodeAVL hijo = (NodeAVL) node.right;
         switch (hijo.bf) {
@@ -153,9 +153,9 @@ public class AVLTree<E extends Comparable<E>> extends LinkedBST<E> {
         }
         return node;
     }
-    // FIN ROTACIONES
+// FIN ROTACIONES--------------------------------------------------------------------------------------------------------------------------------------------
 
-    // INICIO AUX ROTACIONES
+// INICIO AUX ROTACIONES--------------------------------------------------------------------------------------------------------------------------------------------
     private NodeAVL rotateSL (NodeAVL node){
         if (node == null || node.right == null) {
             return node;  // no se puede rotar
@@ -177,9 +177,9 @@ public class AVLTree<E extends Comparable<E>> extends LinkedBST<E> {
         node = p;
         return node;
     }
-    // FIN AUX ROTACIONES
+// FIN AUX ROTACIONES--------------------------------------------------------------------------------------------------------------------------------------------
 
-    // INICIO ELIMINACION   -   EJERCICIO 3     -
+// INICIO ELIMINACION   -   EJERCICIO 3     ---------------------------------------------------------------------------------------------------------------------------------------------
 
     @Override
     public void delete(E x) throws ItemNotFound {
@@ -319,9 +319,9 @@ public class AVLTree<E extends Comparable<E>> extends LinkedBST<E> {
         return node;
     }
 
-    // FINAL ELIMINACION
+// FINAL ELIMINACION--------------------------------------------------------------------------------------------------------------------------------------------
 
-    // RECORRIDO POR AMPLITUD RECURSIVO -   EJERCICIO 4     -
+// RECORRIDO POR AMPLITUD RECURSIVO -   EJERCICIO 4     ---------------------------------------------------------------------------------------------------------------------------------------------
     // Método público principal
     public void breadthFirstRecursive() {
         if (this.root == null) {
@@ -363,9 +363,9 @@ public class AVLTree<E extends Comparable<E>> extends LinkedBST<E> {
             printGivenLevel((NodeAVL) node.right, level - 1);
         }
     }
-    // FINAL ELIMINACION RECORRIDO POR AMPLITUD RECURSIVO
+// FINAL RECORRIDO POR AMPLITUD RECURSIVO--------------------------------------------------------------------------------------------------------------------------------------------
 
-    // INICIO RECORRIDO EN PREORDEN ESPECIALIZADO   -   EJERCICIO 6   -
+// INICIO RECORRIDO EN PREORDEN ESPECIALIZADO   -   EJERCICIO 6   ---------------------------------------------------------------------------------------------------------------------------------------------
     @Override
     public void preOrder() {
         if (this.root == null) {
@@ -391,6 +391,6 @@ public class AVLTree<E extends Comparable<E>> extends LinkedBST<E> {
         }
     }
 
-    // FINAL RECORRIDO EN PREORDEN ESPECIALIZADO
+// FINAL RECORRIDO EN PREORDEN ESPECIALIZADO--------------------------------------------------------------------------------------------------------------------------------------------
 
 }
