@@ -1,9 +1,16 @@
 package Semana_8.Ejercicios;
+
+import Importar.Exceptions.ItemDuplicated;
+import Importar.Exceptions.ItemNotFound;
+import Semana_8.avltree.AVLTree;
+
+public class Ejercicio1{
+    public static void main(String[] args) {
   // ============================================ Ejercicio 1 ==========================================================
 
-            System.out.println("======================================================");
+        System.out.println("======================================================");
           
-        }try {
+        try {
         	
         	  System.out.println("   EJERCICIO 1: GESTOR DE TICKETS AVL");
               System.out.println("======================================================\n");
@@ -63,3 +70,5 @@ package Semana_8.Ejercicios;
             } catch (ItemNotFound e) {
                 System.out.println("Error en Ejercicio 1: " + e.getMessage());
             }
+    }
+}
