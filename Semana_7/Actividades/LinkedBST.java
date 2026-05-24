@@ -81,11 +81,11 @@ public class LinkedBST <E extends Comparable<E>> implements BinarySearchTree<E> 
             res.right = removeRec(x, actual.right); // Busca en la derecha
         } else if (cmp > 0) {
             res.left = removeRec(x, actual.left); // Busca en la izquierda 
-        } else { // actual.data == x [cite: 72, 79]
+        } else { // actual.data == x
             if (actual.left != null && actual.right != null) { // Caso: dos hijos
                 // Reemplaza con el mínimo del subárbol derecho (sucesor inorden)
                 res.data = findMin(actual.right).data;
-                actual.right = findMin(actual.right); // Elimina el nodo duplicado
+                actual.right = removeRec(res.data, actual.right);
             } else { // Caso: uno o ningún hijo
                 res = (actual.left != null) ? actual.left : actual.right;
             }

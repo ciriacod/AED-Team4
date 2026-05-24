@@ -99,7 +99,7 @@ public class AVLTree<E extends Comparable<E>> extends LinkedBST<E> {
                 switch (nieto.bf) {
                     case -1:
                         node.bf = 0;
-                        hijo.bf = 1;
+                        hijo.bf = -1;
                         break;
 
                     case 0:
