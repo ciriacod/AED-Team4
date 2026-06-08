@@ -40,9 +40,9 @@ public class BNode <E extends  Comparable <E>>{{
             i++;
         }
         
-        pos[0] = i; // Guardamos la posición donde se quedó
+        pos[0] = i; // Guardamos la posicion donde se quedo
 
-        // Si no se pasó del conteo y es exactamente igual, lo encontró
+        // Si no se paso del conteo y es exactamente igual, lo encontro
         if (i < this.count && this.keys.get(i).equals(bus)) {
             return true;
         }
