@@ -77,7 +77,6 @@ public class Btree<E extends Comparable<E>> {
 
     private void putNode(Bnode<E> current, E c1, Bnode<E> rd, int k) {
         int i;
-
         for (i = current.count - 1; i >= k; i--) {
             current.keys.set(i + 1, current.keys.get(i));
             current.childs.set(i + 2, current.childs.get(i + 1));
@@ -264,13 +263,17 @@ public class Btree<E extends Comparable<E>> {
 
         return remove(current.childs.get(pos[0]), key);
     }
+
     @Override
     public String toString() {
-        if (isEmpty()) {
-            return "BTree is empty...";
-        }
+        String s = "";
 
-        return writeTree(this.root);
+        if (isEmpty())
+            return "BTree is empty...";
+        else
+            s = writeTree(this.root);
+        
+        return s;
     }
 
     private String writeTree(Bnode<E> current) {
