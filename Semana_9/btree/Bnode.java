@@ -1,18 +1,19 @@
 package Semana_9.btree;
-
+package Ejercicio04;
 import java.util.ArrayList;
 
-public class Bnode<E>{
+
+public class BNode<E>{
     protected ArrayList<E> keys;
-    protected ArrayList<Bnode<E>> childs;
+    protected ArrayList<BNode<E>> childs;
     protected int count;
 
     protected static int contGlobalNodes = 0;
     protected int idNode;
 
-    public Bnode(int n){
+    public BNode(int n){
         this.keys = new ArrayList<E>(n);
-        this.childs = new ArrayList<Bnode<E>>(n);
+        this.childs = new ArrayList<BNode<E>>(n);
 
         this.count = 0;
         for(int i = 0 ; i < n ; i++){
