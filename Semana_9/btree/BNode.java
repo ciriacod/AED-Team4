@@ -3,7 +3,7 @@ package Semana_9.btree;
 import java.util.ArrayList;
 
 
-public class BNode<E>{
+public class BNode <E extends  Comparable <E>>{{
     protected ArrayList<E> keys;
     protected ArrayList<BNode<E>> childs;
     protected int count;
