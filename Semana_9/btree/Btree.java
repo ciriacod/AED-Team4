@@ -108,7 +108,7 @@ public class Btree<E extends Comparable<E>> {
             nDes.keys.set(i - posMdna, current.keys.get(i));
             nDes.childs.set(i - posMdna + 1, current.childs.get(i + 1));
 
-            //Limpieza test 1.1
+            // Limpieza test 1.1
             current.keys.set(i, null);
             current.childs.set(i + 1, null);
         }
@@ -126,7 +126,7 @@ public class Btree<E extends Comparable<E>> {
 
         nDes.childs.set(0, current.childs.get(current.count));
         
-        //Limpieza test 1.2
+        // Limpieza test 1.2
         current.keys.set(current.count - 1, null);
         current.childs.set(current.count, null);
         
@@ -260,7 +260,7 @@ public class Btree<E extends Comparable<E>> {
             foundAny[0] = true;
 
             i++;
-        }// 3. No olvidar visitar el último hijo (el que está a la derecha de la última clave procesada)
+        }// 3. No olvidar visitar el ultimo hijo (el que está a la derecha de la última clave procesada)
 
         searchRange(current.childs.get(i), min, max, foundAny);
     }
@@ -283,10 +283,10 @@ public class Btree<E extends Comparable<E>> {
 
         boolean result = delete(this.root, key);
 
-        // Si la raíz quedó completamente vacía tras una fusión, el árbol reduce su altura
+        // Si la raiz quedo completamente vacia tras una fusion, el arbol reduce su altura
         if (this.root != null && this.root.count == 0) {
             if (this.root.childs.get(0) == null) {
-                this.root = null; // El árbol se quedó vacío
+                this.root = null; // El arbol se quedó vacio
             } else {
                 this.root = this.root.childs.get(0); // El primer hijo pasa a ser la nueva raíz
             }
@@ -295,7 +295,7 @@ public class Btree<E extends Comparable<E>> {
         return result;
     }
 
-    // Método recursivo interno para buscar y eliminar la llave
+    // Metodo recursivo interno para buscar y eliminar la llave
     private boolean delete(BNode<E> current, E key) {
         int pos[] = new int[1];
         boolean found = current.searchNode(key, pos);
@@ -311,7 +311,7 @@ public class Btree<E extends Comparable<E>> {
             }
             return true;
         } else {
-            // Si es una hoja y no se encontró, la llave no existe en el árbol
+            // Si es una hoja y no se encontro, la llave no existe en el arbol
             if (current.childs.get(0) == null) {
                 return false;
             }
