@@ -2,6 +2,8 @@ package Ejercicio04;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+import Semana_9.btree.Btree;
+
 
 public class Biblioteca {
 

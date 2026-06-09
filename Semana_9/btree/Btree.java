@@ -142,6 +142,7 @@ public class Btree<E extends Comparable<E>> {
         int pos[] = new int[1];
 
         if (current.searchNode(key, pos)) {
+            System.out.println(key + " se encuentra en el nodo " + current.idNode + " en la posicion " + pos[0]);
             return true;
         }
 
@@ -255,6 +256,8 @@ public class Btree<E extends Comparable<E>> {
         searchRange(current.childs.get(i), min, max, foundAny);
     }
 
+    // ================================== Ejercicio 3 =========================================================
+    
     public void remove(E key) {
         if (delete(key)) {
             size--;
@@ -263,7 +266,7 @@ public class Btree<E extends Comparable<E>> {
             System.out.println("Elemento no encontrado.");
         }
     }
-    // ================================== Ejercicio 3 =========================================================
+
     public boolean delete(E key) {
         if (isEmpty()) {
             return false;
@@ -271,17 +274,184 @@ public class Btree<E extends Comparable<E>> {
 
         boolean result = delete(this.root, key);
 
-        // Si la raiz queda vacia, el arbol reduce su altura
+        // Si la raíz quedó completamente vacía tras una fusión, el árbol reduce su altura
         if (this.root != null && this.root.count == 0) {
             if (this.root.childs.get(0) == null) {
-                this.root = null;
+                this.root = null; // El árbol se quedó vacío
             } else {
-                this.root = this.root.childs.get(0);
+                this.root = this.root.childs.get(0); // El primer hijo pasa a ser la nueva raíz
             }
         }
 
         return result;
     }
+
+    // Método recursivo interno para buscar y eliminar la llave
+    private boolean delete(BNode<E> current, E key) {
+        int pos[] = new int[1];
+        boolean found = current.searchNode(key, pos);
+
+        if (found) {
+            // CASO 1: La llave está en un nodo HOJA
+            if (current.childs.get(0) == null) {
+                removeFromLeaf(current, pos[0]);
+            } 
+            // CASO 2: La llave está en un nodo INTERNO (Tiene hijos)
+            else {
+                removeFromNonLeaf(current, pos[0]);
+            }
+            return true;
+        } else {
+            // Si es una hoja y no se encontró, la llave no existe en el árbol
+            if (current.childs.get(0) == null) {
+                return false;
+            }
+
+            // Descendemos recursivamente por el hijo adecuado
+            boolean deleted = delete(current.childs.get(pos[0]), key);
+
+            // AL REGRESAR DE LA RECURSIÓN: Verificamos si el hijo entró en subocupación (Underflow)
+            int minKeys = (this.orden - 1) / 2;
+            if (deleted && current.childs.get(pos[0]).count < minKeys) {
+                fixUnderflow(current, pos[0]);
+            }
+
+            return deleted;
+        }
+    }
+
+    // Elimina desplazando los elementos a la izquierda en una hoja
+    private void removeFromLeaf(BNode<E> current, int idx) {
+        for (int i = idx; i < current.count - 1; i++) {
+            current.keys.set(i, current.keys.get(i + 1));
+        }
+        current.keys.set(current.count - 1, null);
+        current.count--;
+    }
+
+    // Elimina de un nodo interno buscando su sucesor in-order
+    private void removeFromNonLeaf(BNode<E> current, int idx) {
+        BNode<E> successorNode = current.childs.get(idx + 1);
+        
+        // Viajamos al extremo izquierdo del subárbol derecho (el más pequeño de los mayores)
+        while (successorNode.childs.get(0) != null) {
+            successorNode = successorNode.childs.get(0);
+        }
+
+        E successorKey = successorNode.keys.get(0);
+        current.keys.set(idx, successorKey); // Reemplazamos la llave por su sucesor
+
+        // Borramos el sucesor de la hoja donde se encontraba originalmente
+        delete(current.childs.get(idx + 1), successorKey);
+
+        // Verificamos si el hijo derecho quedó en subocupación tras quitar el sucesor
+        int minKeys = (this.orden - 1) / 2;
+        if (current.childs.get(idx + 1).count < minKeys) {
+            fixUnderflow(current, idx + 1);
+        }
+    }
+
+    // Resuelve la subocupación mediante préstamo o fusión
+    private void fixUnderflow(BNode<E> parent, int idx) {
+        int minKeys = (this.orden - 1) / 2;
+
+        // Opción A: Intentar prestar del hermano izquierdo
+        if (idx > 0 && parent.childs.get(idx - 1).count > minKeys) {
+            borrowFromLeft(parent, idx);
+        }
+        // Opción B: Intentar prestar del hermano derecho
+        else if (idx < parent.count && parent.childs.get(idx + 1).count > minKeys) {
+            borrowFromRight(parent, idx);
+        }
+        // Opción C: No se puede prestar, toca fusionar (Merge)
+        else {
+            if (idx > 0) {
+                mergeNodes(parent, idx - 1); // Fusionar con el hermano izquierdo
+            } else {
+                mergeNodes(parent, idx);     // Fusionar con el hermano derecho
+            }
+        }
+    }
+
+    // Redistribución: Trae una llave del hermano izquierdo a través del padre
+    private void borrowFromLeft(BNode<E> parent, int idx) {
+        BNode<E> child = parent.childs.get(idx);
+        BNode<E> sibling = parent.childs.get(idx - 1);
+
+        // Desplazamos todo en el hijo para hacer espacio en la posición 0
+        for (int i = child.count - 1; i >= 0; i--) {
+            child.keys.set(i + 1, child.keys.get(i));
+            child.childs.set(i + 1, child.childs.get(i));
+        }
+        child.childs.set(child.count + 1, child.childs.get(child.count));
+
+        // Bajamos la llave del padre al hijo en la posición 0
+        child.keys.set(0, parent.keys.get(idx - 1));
+        child.childs.set(0, sibling.childs.get(sibling.count));
+
+        // Subimos la última llave del hermano al padre
+        parent.keys.set(idx - 1, sibling.keys.get(sibling.count - 1));
+
+        sibling.keys.set(sibling.count - 1, null);
+        sibling.childs.set(sibling.count, null);
+
+        child.count++;
+        sibling.count--;
+    }
+
+    // Redistribución: Trae una llave del hermano derecho a través del padre
+    private void borrowFromRight(BNode<E> parent, int idx) {
+        BNode<E> child = parent.childs.get(idx);
+        BNode<E> sibling = parent.childs.get(idx + 1);
+
+        // Bajamos la llave del padre al final del hijo
+        child.keys.set(child.count, parent.keys.get(idx));
+        child.childs.set(child.count + 1, sibling.childs.get(0));
+
+        // Subimos la primera llave del hermano derecho al padre
+        parent.keys.set(idx, sibling.keys.get(0));
+
+        // Desplazamos los elementos del hermano derecho a la izquierda
+        for (int i = 0; i < sibling.count - 1; i++) {
+            sibling.keys.set(i, sibling.keys.get(i + 1));
+            sibling.childs.set(i, sibling.childs.get(i + 1));
+        }
+        sibling.childs.set(sibling.count - 1, sibling.childs.get(sibling.count));
+        
+        sibling.keys.set(sibling.count - 1, null);
+        sibling.childs.set(sibling.count, null);
+
+        child.count++;
+        sibling.count--;
+    }
+
+    // Fusión (Merge): Une el hijo 'idx' con el hijo 'idx+1' y la llave intermedia del padre
+    private void mergeNodes(BNode<E> parent, int idx) {
+        BNode<E> left = parent.childs.get(idx);
+        BNode<E> right = parent.childs.get(idx + 1);
+
+        // Bajamos la llave intermedia del padre al nodo izquierdo
+        left.keys.set(left.count, parent.keys.get(idx));
+        left.count++;
+
+        // Copiamos todas las llaves e hijos del nodo derecho al izquierdo
+        for (int i = 0; i < right.count; i++) {
+            left.keys.set(left.count, right.keys.get(i));
+            left.childs.set(left.count, right.childs.get(i));
+            left.count++;
+        }
+        left.childs.set(left.count, right.childs.get(right.count));
+
+        // Desplazamos las llaves e hijos del padre para rellenar el vacío que dejó la llave bajada
+        for (int i = idx; i < parent.count - 1; i++) {
+            parent.keys.set(i, parent.keys.get(i + 1));
+            parent.childs.set(i + 1, parent.childs.get(i + 2));
+        }
+        parent.keys.set(parent.count - 1, null);
+        parent.childs.set(parent.count, null);
+        parent.count--;
+    }
+//¨********************************************************************************************FIN ELIMINACION******************
 
     @Override
     public String toString() {
