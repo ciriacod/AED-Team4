@@ -50,10 +50,19 @@ public class BNode <E extends  Comparable <E>>{
     }
 
     @Override
-    public String toString(){
-        return "Nodo Id " +
-        this.idNode +
-        ": "+
-        this.keys.toString();
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        
+        // Recorremos SOLO hasta count para ignorar los nulls sobrantes
+        for (int i = 0; i < this.count; i++) {
+            sb.append(this.keys.get(i));
+            if (i < this.count - 1) {
+                sb.append(", ");
+            }
+        }
+        sb.append("]");
+        
+        return "Nodo Id " + this.idNode + ": " + sb.toString();
     }
 }

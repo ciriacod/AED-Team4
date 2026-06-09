@@ -107,6 +107,10 @@ public class Btree<E extends Comparable<E>> {
         for (i = posMdna; i < this.orden - 1; i++) {
             nDes.keys.set(i - posMdna, current.keys.get(i));
             nDes.childs.set(i - posMdna + 1, current.childs.get(i + 1));
+
+            //Limpieza test 1.1
+            current.keys.set(i, null);
+            current.childs.set(i + 1, null);
         }
 
         nDes.count = (this.orden - 1) - posMdna;
@@ -121,6 +125,11 @@ public class Btree<E extends Comparable<E>> {
         E median = current.keys.get(current.count - 1);
 
         nDes.childs.set(0, current.childs.get(current.count));
+        
+        //Limpieza test 1.2
+        current.keys.set(current.count - 1, null);
+        current.childs.set(current.count, null);
+        
         current.count--;
 
         return median;
@@ -455,27 +464,61 @@ public class Btree<E extends Comparable<E>> {
 
     @Override
     public String toString() {
-        String s = "";
-
-        if (isEmpty())
-            return "BTree is empty...";
-        else
-            s = writeTree(this.root);
+        StringBuilder sb = new StringBuilder();
+        // Encabezados de la tabla con tabulaciones para alineación
+        sb.append("Id.Nodo\t\tClaves Nodo\tId.Padre\tId.Hijos\n");
         
-        return s;
+        // Llamamos al método recursivo auxiliar desde la raíz
+        buildTableString(this.root, null, sb);
+        
+        return sb.toString();
     }
 
-    private String writeTree(BNode<E> current) {
+    private void buildTableString(BNode<E> current, BNode<E> parent, StringBuilder sb) {
         if (current == null) {
-            return "";
+            return;
         }
 
-        String s = current.toString() + "\n";
+        // 1. Formatear Id.Nodo
+        sb.append(current.idNode).append("\t\t");
 
+        // 2. Formatear Claves Nodo con paréntesis como la imagen (Ej: (12, 19))
+        sb.append("(");
+        for (int i = 0; i < current.count; i++) {
+            sb.append(current.keys.get(i));
+            if (i < current.count - 1) {
+                sb.append(", ");
+            }
+        }
+        sb.append(")\t\t");
+
+        // 3. Formatear Id.Padre (Si no tiene, pone "--")
+        if (parent == null) {
+            sb.append("--\t\t");
+        } else {
+            sb.append("[").append(parent.idNode).append("]\t\t");
+        }
+
+        // 4. Formatear Id.Hijos (Solo si no es hoja, es decir, si tiene al menos un hijo no nulo)
+        if (current.childs.get(0) != null) {
+            sb.append("[");
+            // En un árbol B válido, si tiene hijos, tiene count + 1 hijos
+            for (int i = 0; i <= current.count; i++) {
+                if (current.childs.get(i) != null) {
+                    sb.append(current.childs.get(i).idNode);
+                    if (i < current.count && current.childs.get(i + 1) != null) {
+                        sb.append(", ");
+                    }
+                }
+            }
+            sb.append("]\n");
+        } else {
+            sb.append("--\n");
+        }
+
+        // 5. Recorrer recursivamente los hijos para seguir armando la tabla
         for (int i = 0; i <= current.count; i++) {
-            s += writeTree(current.childs.get(i));
+            buildTableString(current.childs.get(i), current, sb);
         }
-
-        return s;
     }
 }

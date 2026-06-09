@@ -1,9 +1,11 @@
 package Ejercicio04;
 
+import Semana_9.btree.Bnode;
+import Semana_9.btree.Btree;
 
 public class Main {
     public static void main(String[] args) {
-
+        /*
         Biblioteca biblioteca = new Biblioteca();
 
         biblioteca.cargarDesdeArchivo("biblioteca.txt");
@@ -23,5 +25,16 @@ public class Main {
 
         System.out.println("\nLibros después de eliminar:");
         biblioteca.mostrarLibrosOrdenados();
+        */
+       Btree<Integer> arbol = new Btree<>(3);
+       arbol.insert(10);
+       arbol.insert(20);
+       arbol.insert(30);
+
+       System.out.println(arbol.toString());
+       arbol.search(10);
+
+       arbol.searchPath(40);
+
     }
 }
