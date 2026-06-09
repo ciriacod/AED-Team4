@@ -14,7 +14,7 @@ public class Btree<E extends Comparable<E>> {
         this.root = null;
         this.size = 0;
     }
-    // ================================== Actividad 3 ,4=========================================================
+
     public boolean isEmpty() {
         return this.root == null;
     }
@@ -479,10 +479,10 @@ public class Btree<E extends Comparable<E>> {
             return;
         }
 
-        // 1. Formatear Id.Nodo
+        // Formato Id.Nodo
         sb.append(current.idNode).append("\t\t");
 
-        // 2. Formatear Claves Nodo con paréntesis como la imagen (Ej: (12, 19))
+        // Formato Simple
         sb.append("(");
         for (int i = 0; i < current.count; i++) {
             sb.append(current.keys.get(i));
@@ -492,14 +492,14 @@ public class Btree<E extends Comparable<E>> {
         }
         sb.append(")\t\t");
 
-        // 3. Formatear Id.Padre (Si no tiene, pone "--")
+        // Formato Id.Padre (Si no tiene: "--")
         if (parent == null) {
             sb.append("--\t\t");
         } else {
             sb.append("[").append(parent.idNode).append("]\t\t");
         }
 
-        // 4. Formatear Id.Hijos (Solo si no es hoja, es decir, si tiene al menos un hijo no nulo)
+        // Formato Id.Hijos (Solo si no es hoja)
         if (current.childs.get(0) != null) {
             sb.append("[");
             // En un árbol B válido, si tiene hijos, tiene count + 1 hijos
@@ -516,7 +516,7 @@ public class Btree<E extends Comparable<E>> {
             sb.append("--\n");
         }
 
-        // 5. Recorrer recursivamente los hijos para seguir armando la tabla
+        // Recorrer recursivamente los hijos para seguir armando la tabla
         for (int i = 0; i <= current.count; i++) {
             buildTableString(current.childs.get(i), current, sb);
         }
