@@ -1,4 +1,4 @@
-package Importar;
+package Semana_10.TAD_Graph.listLinked;
 
 public class Node<T> {
     private T dato;
