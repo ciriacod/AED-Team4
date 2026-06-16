@@ -33,4 +33,14 @@ public class Edge<E> {
     public String toString(){
         return destination.toString() + "(" + weight + ")";
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Edge<?> other = (Edge<?>) obj;
+        // Dos aristas son iguales si apuntan al mismo vértice destino
+        return this.destination.getData().equals(other.destination.getData());
+    }
+
 }

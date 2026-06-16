@@ -18,5 +18,13 @@ public class AdjList<E> {
     public ListLinked<Edge<E>> getEdges(){
         return edges;
     }
-    
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        AdjList<?> other = (AdjList<?>) obj;
+        // Dos listas de adyacencia son iguales si le pertenecen al mismo vértice
+        return this.vertex.getData().equals(other.vertex.getData());
+    }
 }
