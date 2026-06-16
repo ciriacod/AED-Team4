@@ -1,4 +1,4 @@
-package Semana_10.Ejercicios;
+package Semana_10.Ejercicios.Ejercicio_3_4;
 
 import Semana_10.TAD_Graph.listLinked.ListLinked;
 

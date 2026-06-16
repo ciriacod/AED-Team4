@@ -1,4 +1,4 @@
-package Semana_10.Ejercicios;
+package Semana_10.Ejercicios.Ejercicio_3_4;
 
 import Importar.Estructuras.LinkedQueue;
 import Importar.Estructuras.PriorityQueueLinkSort;

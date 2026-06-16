@@ -1,4 +1,4 @@
-package Semana_10.Ejercicios;
+package Semana_10.Ejercicios.Ejercicio_2;
 
 import org.jgrapht.Graph;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
