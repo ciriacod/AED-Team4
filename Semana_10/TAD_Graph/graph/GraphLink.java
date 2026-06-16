@@ -10,6 +10,8 @@ public class GraphLink<E> {
     }
 
     public void insertVertex(E data){
+        if (findVertex(data) != null) return;
+
         Vertex<E> vertex = new Vertex<>(data);
         graph.addLast(new AdjList<>(vertex));
     }
@@ -21,7 +23,6 @@ public class GraphLink<E> {
             if(adj.getVertex().getData().equals(data))
                 return adj;
         }
-
         return null;
     }
 
@@ -32,29 +33,27 @@ public class GraphLink<E> {
         if(v1 == null || v2 == null)
             return;
 
+        // Usamos addLast e insertamos en ambos sentidos para que sea No Dirigido
         v1.getEdges().addLast(new Edge<>(v2.getVertex()));
-
         v2.getEdges().addLast(new Edge<>(v1.getVertex()));
     }
 
     @Override
     public String toString(){
-        StringBuilder sb= new StringBuilder();
+        StringBuilder sb = new StringBuilder();
 
         for(int i = 0; i < graph.size(); i++){
             AdjList<E> adj = graph.get(i);
 
-            sb.append(adj.getVertex()).append(" ->");
+            sb.append(adj.getVertex()).append(" -> ");
 
-            for(int j = 0; j < adj.getEdges().size();j ++){
-                sb.append(adj.getEdges().get(i)).append(" ");
+            for(int j = 0; j < adj.getEdges().size(); j++){
+                sb.append(adj.getEdges().get(j).getDestination()).append(" ");
             }
 
             sb.append("\n");
-
         }
 
         return sb.toString();
     }
-
 }

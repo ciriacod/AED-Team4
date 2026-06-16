@@ -1,6 +1,6 @@
 package Semana_10.TAD_Graph.graph;
 
-public class Edge<E> implements Comparable<Edge<E>> {
+public class Edge<E> {
     private Vertex<E> destination;
     private int weight;
 
@@ -31,12 +31,6 @@ public class Edge<E> implements Comparable<Edge<E>> {
 
     @Override
     public String toString(){
-        return destination.toString();
-    }
-
-    @Override
-    public int compareTo(Edge<E> o) {
-        // Comparamos las aristas basándonos en el vértice de destino
-        return this.destination.compareTo(o.getDestination());
+        return destination.toString() + "(" + weight + ")";
     }
 }
