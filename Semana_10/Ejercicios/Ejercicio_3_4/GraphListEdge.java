@@ -1,86 +1,12 @@
 package Semana_10.Ejercicios.Ejercicio_3_4;
 
-import Semana_10.TAD_Graph.graph.*;
-import Semana_10.TAD_Graph.listLinked.*;
 import Importar.Estructuras.LinkedQueue;
+import Semana_10.TAD_Graph.graph.AdjList;
 
-public class GraphListEdge<E> extends GraphAbstract<E> {
-    private ListLinked<AdjList<E>> graph;
+public class GraphListEdge<E> extends GraphLink<E> {
 
     public GraphListEdge(boolean isDirected) {
         super(isDirected);
-        this.graph = new ListLinked<>();
-    }
-
-    @Override
-    public void insertVertex(E data) {
-        if (findVertex(data) != null) return;
-        graph.addLast(new AdjList<>(new Vertex<>(data)));
-    }
-
-    private AdjList<E> findVertex(E data) {
-        for (int i = 0; i < graph.size(); i++) {
-            if (graph.get(i).getVertex().getData().equals(data)) return graph.get(i);
-        }
-        return null;
-    }
-
-    @Override
-    public void insertEdge(E origin, E destination, int weight) {
-        AdjList<E> v1 = findVertex(origin);
-        AdjList<E> v2 = findVertex(destination);
-        if (v1 == null || v2 == null) return;
-
-        v1.getEdges().addLast(new Edge<>(v2.getVertex(), weight));
-        if (!isDirected) {
-            v2.getEdges().addLast(new Edge<>(v1.getVertex(), weight));
-        }
-    }
-
-    @Override
-    public boolean searchVertex(E data) {
-        return findVertex(data) != null;
-    }
-
-    @Override
-    public boolean searchEdge(E origin, E destination) {
-        AdjList<E> v = findVertex(origin);
-        if (v == null) return false;
-        for (int i = 0; i < v.getEdges().size(); i++) {
-            if (v.getEdges().get(i).getDestination().getData().equals(destination)) return true;
-        }
-        return false;
-    }
-
-    @Override
-    public ListLinked<E> adjacentVertices(E data) {
-        ListLinked<E> adjs = new ListLinked<>();
-        AdjList<E> v = findVertex(data);
-        if (v == null) return adjs;
-        for (int i = 0; i < v.getEdges().size(); i++) {
-            adjs.addLast(v.getEdges().get(i).getDestination().getData());
-        }
-        return adjs;
-    }
-
-    @Override
-    public void removeEdge(E origin, E destination) {
-        AdjList<E> v1 = findVertex(origin);
-        if (v1 != null) v1.getEdges().remove(new Edge<>(new Vertex<>(destination)));
-        if (!isDirected) {
-            AdjList<E> v2 = findVertex(destination);
-            if (v2 != null) v2.getEdges().remove(new Edge<>(new Vertex<>(origin)));
-        }
-    }
-
-    @Override
-    public void removeVertex(E data) {
-        AdjList<E> vToRemove = findVertex(data);
-        if (vToRemove == null) return;
-        for (int i = 0; i < graph.size(); i++) {
-            removeEdge(graph.get(i).getVertex().getData(), data);
-        }
-        graph.remove(vToRemove);
     }
 
     // ========================================== ALGORITMOS EJERCICIO 4 ==========================================

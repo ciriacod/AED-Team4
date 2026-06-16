@@ -6,7 +6,7 @@ public class RedCiudadesGraphLink {
     private GraphLink<String> redCiudades;
 
     public RedCiudadesGraphLink() {
-        this.redCiudades = new GraphLink<>();
+        this.redCiudades = new GraphLink<>(false);
     }
 
     public void cargarRedPorDefecto() {
@@ -45,7 +45,7 @@ public class RedCiudadesGraphLink {
     }
 
     public void calcularRutaOptima(String origen, String destino) {
-        System.out.println("\n=== CÁLCULO DE RUTA ÓPTIMA (Tu Dijkstra) ===");
+        System.out.println("\n=== CÁLCULO DE RUTA ÓPTIMA (Dijkstra) ===");
         ListLinked<String> camino = redCiudades.shortPath(origen, destino);
 
         if (camino.size() == 0) {

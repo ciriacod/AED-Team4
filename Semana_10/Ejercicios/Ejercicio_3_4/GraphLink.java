@@ -6,41 +6,39 @@ import Importar.Estructuras.StackLink;
 import Semana_10.TAD_Graph.graph.*;
 import Semana_10.TAD_Graph.listLinked.ListLinked;
 
-public class GraphLink<E> implements Graph<E, Integer> {
-    private ListLinked<AdjList<E>> graph;
+public class GraphLink<E> extends GraphAbstract<E> {
+    protected ListLinked<AdjList<E>> graph;
 
-    public GraphLink(){
-        graph = new ListLinked<>();
+    public GraphLink(boolean isDirected){
+        super(isDirected);
+        this.graph = new ListLinked<>();
     }
 
     @Override
     public void insertVertex(E data){
         if (findVertex(data) != null) return;
-
-        Vertex<E> vertex = new Vertex<>(data);
-        graph.addLast(new AdjList<>(vertex));
+        graph.addLast(new AdjList<>(new Vertex<>(data)));
     }
 
-    private AdjList<E> findVertex(E data){
+    protected AdjList<E> findVertex(E data){
         for(int i = 0; i < graph.size(); i++){
             AdjList<E> adj = graph.get(i);
-
-            if(adj.getVertex().getData().equals(data))
-                return adj;
+            if(adj.getVertex().getData().equals(data)) return adj;
         }
         return null;
     }
 
     @Override
-    public void insertEdge(E origin, E destination){
+    public void insertEdge(E origin, E destination, int weight){
         AdjList<E> v1 = findVertex(origin);
         AdjList<E> v2 = findVertex(destination);
 
-        if(v1 == null || v2 == null)
-            return;
+        if(v1 == null || v2 == null) return;
 
-        v1.getEdges().addLast(new Edge<>(v2.getVertex()));
-        v2.getEdges().addLast(new Edge<>(v1.getVertex()));
+        v1.getEdges().addLast(new Edge<>(v2.getVertex(), weight));
+        if (!isDirected) {
+            v2.getEdges().addLast(new Edge<>(v1.getVertex(), weight));
+        }
     }
 
     @Override
@@ -54,9 +52,7 @@ public class GraphLink<E> implements Graph<E, Integer> {
         if (v1 == null) return false;
 
         for (int i = 0; i < v1.getEdges().size(); i++) {
-            if (v1.getEdges().get(i).getDestination().getData().equals(destination)) {
-                return true;
-            }
+            if (v1.getEdges().get(i).getDestination().getData().equals(destination)) return true;
         }
         return false;
     }
@@ -76,12 +72,11 @@ public class GraphLink<E> implements Graph<E, Integer> {
     @Override
     public void removeEdge(E origin, E destination) {
         AdjList<E> v1 = findVertex(origin);
-        AdjList<E> v2 = findVertex(destination);
-
-        if (v1 == null || v2 == null) return;
-
-        v1.getEdges().remove(new Edge<>(v2.getVertex()));
-        v2.getEdges().remove(new Edge<>(v1.getVertex()));
+        if (v1 != null) v1.getEdges().remove(new Edge<>(new Vertex<>(destination)));
+        if (!isDirected) {
+            AdjList<E> v2 = findVertex(destination);
+            if (v2 != null) v2.getEdges().remove(new Edge<>(new Vertex<>(origin)));
+        }
     }
 
     @Override
@@ -89,11 +84,9 @@ public class GraphLink<E> implements Graph<E, Integer> {
         AdjList<E> vToRemove = findVertex(data);
         if (vToRemove == null) return;
 
-        while (vToRemove.getEdges().size() > 0) {
-            E neighborData = vToRemove.getEdges().get(0).getDestination().getData();
-            removeEdge(data, neighborData);
+        for (int i = 0; i < graph.size(); i++) {
+            removeEdge(graph.get(i).getVertex().getData(), data);
         }
-
         graph.remove(vToRemove);
     }
 
