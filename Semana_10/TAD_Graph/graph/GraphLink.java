@@ -235,7 +235,7 @@ public class GraphLink<E> {
                     if(newDist < dist[v]) {
                         dist[v] = newDist;
                         prev[v] = u;
-                        pq.enqueue(neigh, newDist); // Corregido: prioridad en positivo
+                        pq.enqueue(neigh, newDist);
                     }
                 }
             } catch (Exception e) {
