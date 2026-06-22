@@ -21,6 +21,7 @@ public class ListLinked<T> implements List<T> {
         return size;
     }
 
+    // Inserta al inicio de la lista
     @Override
     public void insert(T data) {
         Node<T> newNodo = new Node<T>(data);
@@ -29,6 +30,7 @@ public class ListLinked<T> implements List<T> {
         size++;
     }
 
+    // Inserta al final de la lista
     @Override
     public void addLast(T data) {
         Node<T> newNodo = new Node<T>(data);
@@ -44,6 +46,7 @@ public class ListLinked<T> implements List<T> {
         size++;
     }
 
+    // Obtiene el elemento en una posición específica (índice base 0)
     @Override
     public T get(int index) {
         if (index < 0 || index >= size) {
@@ -71,12 +74,14 @@ public class ListLinked<T> implements List<T> {
     public void remove(T data) {
         if (isEmpty()) return;
 
+        // Caso 1: El dato está en el primer nodo (root)
         if (root.getData().equals(data)) {
             root = root.getNext();
             size--;
             return;
         }
 
+        // Caso 2: El dato está más adelante
         Node<T> delete = root;
         while (delete.getNext() != null) {
             if (delete.getNext().getData().equals(data)) {

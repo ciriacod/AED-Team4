@@ -1,9 +1,8 @@
-package Semana_10.Ejercicios.Ejercicio_3_4;
+package Importar.Estructuras.graph;
 
 import Importar.Estructuras.LinkedQueue;
 import Importar.Estructuras.PriorityQueueLinkSort;
 import Importar.Estructuras.StackLink;
-import Semana_10.TAD_Graph.graph.*;
 import Semana_10.TAD_Graph.listLinked.ListLinked;
 
 public class GraphLink<E>{

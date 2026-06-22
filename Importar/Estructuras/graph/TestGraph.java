@@ -1,4 +1,4 @@
-package Semana_10.TAD_Graph.graph;
+package Importar.Estructuras.graph;
 
 public class TestGraph {
     public static void main(String[] args) {

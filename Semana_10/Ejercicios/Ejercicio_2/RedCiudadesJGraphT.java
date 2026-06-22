@@ -99,11 +99,6 @@ public class RedCiudadesJGraphT {
         // Sobreescribimos el método para que devuelva el peso (los km) como etiqueta de la arista
         // CONSTRUCCIÓN DE LA INTERFAZ GRÁFICA CON PONDERACIONES
         JGraphXAdapter<String, DefaultWeightedEdge> graphAdapter = new JGraphXAdapter<String, DefaultWeightedEdge>(this.redCiudades) {
-            public String convertEdgeToString(DefaultWeightedEdge edge) {
-                // Usamos directamente tu variable 'redCiudades' para extraer el peso
-                double peso = redCiudades.getEdgeWeight(edge);
-                return String.format("%.0f km", peso);
-            }
         };
 
         // CONFIGURACIÓN ESTÍLICA: Personalizar el diseño de las etiquetas y líneas

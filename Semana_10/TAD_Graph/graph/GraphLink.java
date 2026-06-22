@@ -3,85 +3,88 @@ package Semana_10.TAD_Graph.graph;
 import Importar.Estructuras.LinkedQueue;
 import Importar.Estructuras.PriorityQueueLinkSort;
 import Importar.Estructuras.StackLink;
-import Semana_10.TAD_Graph.listLinked.*;
+import Semana_10.TAD_Graph.listLinked.ListLinked;
 
-public class GraphLink<E> {
-    private ListLinked<AdjList<E>> graph;
-
-    public GraphLink(){
-        graph = new ListLinked<>();
+public class GraphLink<E>{
+    protected ListLinked<AdjList<E>> graph;
+    private boolean isDirected;
+    public GraphLink(boolean isDirected){
+        this.isDirected = isDirected;
+        this.graph = new ListLinked<>();
     }
 
     public void insertVertex(E data){
         if (findVertex(data) != null) return;
-        Vertex<E> vertex = new Vertex<>(data);
-        graph.addLast(new AdjList<>(vertex));
+        graph.addLast(new AdjList<>(new Vertex<>(data)));
     }
 
-    private AdjList<E> findVertex(E data){
+    protected AdjList<E> findVertex(E data){
         for(int i = 0; i < graph.size(); i++){
             AdjList<E> adj = graph.get(i);
-            if(adj.getVertex().getData().equals(data))
-                return adj;
+            if(adj.getVertex().getData().equals(data)) return adj;
         }
         return null;
     }
 
-    public void insertEdge(E origin, E destination){
+    public void insertEdge(E origin, E destination, int weight){
         AdjList<E> v1 = findVertex(origin);
         AdjList<E> v2 = findVertex(destination);
 
         if(v1 == null || v2 == null) return;
 
-        v1.getEdges().addLast(new Edge<>(v2.getVertex()));
-        v2.getEdges().addLast(new Edge<>(v1.getVertex()));
+        v1.getEdges().addLast(new Edge<>(v2.getVertex(), weight));
+        if (!isDirected) {
+            v2.getEdges().addLast(new Edge<>(v1.getVertex(), weight));
+        }
     }
 
-    @Override
-    public String toString(){
-        StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < graph.size(); i++){
-            AdjList<E> adj = graph.get(i);
-            sb.append(adj.getVertex().getData()).append(" -> [");
-            for(int j = 0; j < adj.getEdges().size(); j++){
-                Edge<E> edge = adj.getEdges().get(j);
-                sb.append(edge.getDestination().getData());
-                if (edge.getWeight() > 0) {
-                    sb.append("(").append(edge.getWeight()).append(" km)");
-                }
-                if (j < adj.getEdges().size() - 1) sb.append(", ");
-            }
-            sb.append("]\n");
+    public void insertEdge(E origin, E destination){
+        insertEdge(origin, destination, 1);
+        
+    }
+
+    public boolean searchVertex(E data) {
+        return findVertex(data) != null;
+    }
+
+    public boolean searchEdge(E origin, E destination) {
+        AdjList<E> v1 = findVertex(origin);
+        if (v1 == null) return false;
+
+        for (int i = 0; i < v1.getEdges().size(); i++) {
+            if (v1.getEdges().get(i).getDestination().getData().equals(destination)) return true;
         }
-        return sb.toString();
+        return false;
+    }
+
+    public ListLinked<E> adjacentVertices(E data) {
+        AdjList<E> v = findVertex(data);
+        ListLinked<E> adjacents = new ListLinked<>();
+        if (v == null) return adjacents;
+
+        for (int i = 0; i < v.getEdges().size(); i++) {
+            adjacents.addLast(v.getEdges().get(i).getDestination().getData());
+        }
+        return adjacents;
     }
 
     public void removeEdge(E origin, E destination) {
         AdjList<E> v1 = findVertex(origin);
-        AdjList<E> v2 = findVertex(destination);
-
-        if (v1 == null || v2 == null) return;
-
-        v1.getEdges().remove(new Edge<>(v2.getVertex()));
-        v2.getEdges().remove(new Edge<>(v1.getVertex()));
+        if (v1 != null) v1.getEdges().remove(new Edge<>(new Vertex<>(destination)));
+        if (!isDirected) {
+            AdjList<E> v2 = findVertex(destination);
+            if (v2 != null) v2.getEdges().remove(new Edge<>(new Vertex<>(origin)));
+        }
     }
 
     public void removeVertex(E data) {
         AdjList<E> vToRemove = findVertex(data);
         if (vToRemove == null) return;
 
-        while (vToRemove.getEdges().size() > 0) {
-            E neighborData = vToRemove.getEdges().get(0).getDestination().getData();
-            removeEdge(data, neighborData);
-        }
-
-        // Remoción segura por búsqueda posicional
         for (int i = 0; i < graph.size(); i++) {
-            if (graph.get(i).getVertex().getData().equals(data)) {
-                graph.remove(graph.get(i));
-                break;
-            }
+            removeEdge(graph.get(i).getVertex().getData(), data);
         }
+        graph.remove(vToRemove);
     }
 
     public void bfs(E startData) {
@@ -114,7 +117,7 @@ public class GraphLink<E> {
                     }
                 }
             } catch (Exception e) {
-                System.out.println("\nError en BFS: " + e.getMessage());
+                System.out.println("\nError al procesar la cola: " + e.getMessage());
             }
         }
         System.out.println();
@@ -126,6 +129,7 @@ public class GraphLink<E> {
 
         ListLinked<E> visited = new ListLinked<>();
         System.out.print("Recorrido DFS: ");
+        
         dfsRecursive(startVertex, visited);
         System.out.println();
     }
@@ -147,20 +151,20 @@ public class GraphLink<E> {
         }
     }
 
-    // ==================== EJERCICIO 1 ====================
-    
     public void insertEdgeWeight(E origin, E destination, int weight) {
         AdjList<E> v1 = findVertex(origin);
         AdjList<E> v2 = findVertex(destination);
 
-        if(v1 == null || v2 == null) return;
+        if(v1 == null || v2 == null)
+            return;
 
         v1.getEdges().addLast(new Edge<>(v2.getVertex(), weight));
         v2.getEdges().addLast(new Edge<>(v1.getVertex(), weight));
     }
         
     public boolean isConexo() {
-        if(graph.size() == 0) return true;
+        if(graph.size() == 0)
+            return true;
 
         boolean[] visited = new boolean[graph.size()];
         LinkedQueue<Vertex<E>> queue = new LinkedQueue<>(); 
@@ -212,7 +216,8 @@ public class GraphLink<E> {
         int start = indexOfVertex(origin);
         int end = indexOfVertex(destination);
 
-        if(start == -1 || end == -1) return null;
+        if(start == -1 || end == -1)
+            return null;
 
         dist[start] = 0;
 
@@ -235,7 +240,7 @@ public class GraphLink<E> {
                     if(newDist < dist[v]) {
                         dist[v] = newDist;
                         prev[v] = u;
-                        pq.enqueue(neigh, newDist);
+                        pq.enqueue(neigh, -newDist);
                     }
                 }
             } catch (Exception e) {
@@ -263,7 +268,58 @@ public class GraphLink<E> {
             while(!stack.isEmpty()) {
                 path.addLast(stack.pop());
             }
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
         return path;
+    }
+
+    public boolean isIsomorfo(GraphLink<E> otroGrafo) {
+        if (this.graph.size() != otroGrafo.graph.size()) return false;
+
+        int aristasEste = 0;
+        int aristasOtro = 0;
+        for (int i = 0; i < this.graph.size(); i++) aristasEste += this.graph.get(i).getEdges().size();
+        for (int i = 0; i < otroGrafo.graph.size(); i++) aristasOtro += otroGrafo.graph.get(i).getEdges().size();
+
+        if (aristasEste != aristasOtro) return false;
+
+        int[] gradosEste = obtenerGradosOrdenados();
+        int[] gradosOtro = otroGrafo.obtenerGradosOrdenados();
+
+        for (int i = 0; i < gradosEste.length; i++) {
+            if (gradosEste[i] != gradosOtro[i]) return false;
+        }
+        return true;
+    }
+
+    private int[] obtenerGradosOrdenados() {
+        int[] grados = new int[graph.size()];
+        for (int i = 0; i < graph.size(); i++) {
+            grados[i] = graph.get(i).getEdges().size();
+        }
+        for (int i = 0; i < grados.length - 1; i++) {
+            for (int j = 0; j < grados.length - i - 1; j++) {
+                if (grados[j] > grados[j + 1]) {
+                    int temp = grados[j];
+                    grados[j] = grados[j + 1];
+                    grados[j + 1] = temp;
+                }
+            }
+        }
+        return grados;
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < graph.size(); i++){
+            AdjList<E> adj = graph.get(i);
+            sb.append(adj.getVertex()).append(" -> ");
+            for(int j = 0; j < adj.getEdges().size(); j++){
+                sb.append(adj.getEdges().get(j).getDestination()).append(" ");
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
     }
 }
