@@ -2,11 +2,11 @@ package Semana_11.hash;
 
 import Importar.Estructuras.listLinked.ListLinked;
 
-public class HashO {
+public class HashO<E> {
 
     // En Hash Abierto, el elemento no necesita marca de borrado lógico
     private static class Element implements Comparable<Element> {
-        Register register;
+        Register<?> register;
 
         public Element(Register register) {
             this.register = register;
@@ -26,7 +26,7 @@ public class HashO {
     private ListLinked<Element>[] table; // Arreglo de listas enlazadas
     private int size;                     // Tamaño de la tabla (m)
 
-    @SuppressWarnings("unchecked")
+
     public HashO(int size) {
         this.size = size;
         this.table = (ListLinked<Element>[]) new ListLinked[size];
@@ -56,7 +56,7 @@ public class HashO {
         // Buscar si la clave ya existe en la lista para actualizarla (evita duplicados)
         for (int i = 0; i < list.size(); i++) {
             Element current = list.get(i);
-            if (current.register.getKey() == reg.getKey()) {
+            if (current.register.compareTo(reg) == 0) {
                 current.register = reg; // Actualización de datos
                 return;
             }
