@@ -2,7 +2,7 @@ package Semana_11.hash;
 
 public class HashC<E> {
 
-    // Clase interna que ahora conoce el tipo genérico E del exterior
+    // Clase interna que conoce el tipo genérico E del exterior
     private static class Element<T> {
         Register<T> register;
         int estado; // 0 = EMPTY, 1 = OCCUPIED, -1 = DELETED
@@ -24,29 +24,51 @@ public class HashC<E> {
         this(size, false, 0);
     }
 
-    // Constructor Maestro Genérico
+    // Constructor Maestro Genérico con Inicialización Prima Automática
     @SuppressWarnings("unchecked")
     public HashC(int size, boolean autoRehash, int tipoSondeo) {
-        this.size = size;
+        // MEJORA: Forzamos a que el tamaño inicial de la tabla sea primo desde su nacimiento
+        this.size = isPrime(size) ? size : nextPrime(size);
         this.n = 0;
         this.autoRehash = autoRehash;
         this.tipoSondeo = tipoSondeo;
         
-        // El truco definitivo de Java: Creamos el arreglo crudo y lo casteamos a Element<E>[]
-        // La anotación @SuppressWarnings("unchecked") le dice al compilador que nosotros sabemos lo que hacemos
-        this.table = (Element<E>[]) new Element[size];
+        // Casteo controlado de tipos genéricos
+        this.table = (Element<E>[]) new Element[this.size];
         
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < this.size; i++) {
             table[i] = new Element<E>();
         }
     }
 
+    // Función hash base
     private int hash(int key, int currentSize) {
         int index = key % currentSize;
         return index < 0 ? index + currentSize : index;
     }
 
-    // El valor que entra ahora es de tipo genérico E
+    // Algoritmo auxiliar para encontrar el siguiente número primo
+    private int nextPrime(int min) {
+        int p = min % 2 == 0 ? min + 1 : min; // Empezamos desde un impar
+        while (true) {
+            if (isPrime(p)) return p;
+            p += 2;
+        }
+    }
+
+    // Verifica si un número es primo en tiempo O(sqrt(p))
+    private boolean isPrime(int num) {
+        if (num <= 1) return false;
+        if (num == 2 || num == 3) return true;
+        if (num % 2 == 0 || num % 3 == 0) return false;
+        for (int i = 5; i * i <= num; i += 6) {
+            if (num % i == 0 || num % (i + 2) == 0) return false;
+        }
+        return true;
+    }
+
+//------------------------------Insert---------------------------------
+
     public void insert(int key, E value) {
         if (autoRehash) {
             double alphaFuturo = (double) (n + 1) / size;
@@ -64,44 +86,46 @@ public class HashC<E> {
 
         do {
             if (table[index].estado == 0) {
-                break;
+                break; // Espacio completamente vacío encontrado
             }
 
             if (table[index].estado == -1) {
                 if (firstDeletedIndex == -1) {
-                    firstDeletedIndex = index;
+                    firstDeletedIndex = index; // Guardamos el primer hueco borrado para reciclar
                 }
             } else if (table[index].estado == 1 && table[index].register.getKey() == key) {
-                table[index].register = reg; // Actualiza duplicado
+                table[index].register = reg; // Actualiza clave duplicada
                 return;
             }
 
             i++;
             if (tipoSondeo == 1) {
-                index = (homeIndex + (i * i)) % size;
+                index = (homeIndex + (i * i)) % size; // Sondeo Cuadrático
             } else {
-                index = (homeIndex + i) % size;
+                index = (homeIndex + i) % size; // Sondeo Lineal
             }
 
             if (i >= size) {
-                System.out.println("Error: Bucle infinito por Sondeo Cuadrático.");
+                System.out.println("Error: Bucle infinito en la exploración de colisiones.");
                 return;
             }
         } while (index != homeIndex);
 
+        // Si encontramos una casilla borrada lógicamente antes, reciclamos ese índice
         int targetIndex = (firstDeletedIndex != -1) ? firstDeletedIndex : index;
 
         if (table[targetIndex].estado == 0 || table[targetIndex].estado == -1) {
             table[targetIndex].register = reg;
             table[targetIndex].estado = 1;
             n++;
-            System.out.println("Clave " + key + " -> Índice " + targetIndex + " (Saltos: " + i + ")");
+            System.out.println("Clave " + key + " -> Índice " + targetIndex + " (Saltos/Colisiones solucionadas: " + i + ")");
         } else {
             System.out.println("Error: Tabla Hash llena.");
         }
     }
 
-    // Devuelve el Register<E> genérico completo
+//------------------------------Search---------------------------------
+
     public Register<E> search(int key) {
         int homeIndex = hash(key, size);
         int index = homeIndex;
@@ -109,11 +133,11 @@ public class HashC<E> {
 
         do {
             if (table[index].estado == 0) {
-                return null;
+                return null; // Si es vacío, la clave definitivamente no existe
             }
 
             if (table[index].estado == 1 && table[index].register.getKey() == key) {
-                return table[index].register;
+                return table[index].register; // Encontrado
             }
 
             i++;
@@ -127,6 +151,8 @@ public class HashC<E> {
         return null;
     }
 
+//------------------------------Delete---------------------------------
+
     public void delete(int key) {
         int homeIndex = hash(key, size);
         int index = homeIndex;
@@ -139,8 +165,8 @@ public class HashC<E> {
             }
 
             if (table[index].estado == 1 && table[index].register.getKey() == key) {
-                table[index].estado = -1;
-                table[index].register = null;
+                table[index].estado = -1; // Marcado lógico como DELETED
+                table[index].register = null; // Liberamos memoria del objeto anterior
                 n--;
                 System.out.println("Clave " + key + " eliminada lógicamente.");
                 return;
@@ -155,26 +181,33 @@ public class HashC<E> {
         } while (index != homeIndex && i < size);
     }
 
+//------------------------------Rehashing Dinámico Primo----------------
+
     @SuppressWarnings("unchecked")
     private void rehashing() {
         int oldSize = size;
         Element<E>[] oldTable = table;
 
-        this.size = 17;
-        this.n = 0;
-        this.table = (Element<E>[]) new Element[size]; // Nuevo casteo para la tabla expandida
+        // MEJORA: Duplica el tamaño actual y busca dinámicamente el siguiente primo
+        this.size = nextPrime(oldSize * 2);
+        this.n = 0; // Se recalcula desde cero durante la reinserción en cascada
+        
+        System.out.println("--- Migrando datos de tabla tamaño " + oldSize + " a nueva tabla prima dinámica tamaño " + size + " ---");
+
+        this.table = (Element<E>[]) new Element[size]; 
         for (int i = 0; i < size; i++) {
             table[i] = new Element<E>();
         }
 
-        System.out.println("--- Migrando datos de tabla tamaño " + oldSize + " a nueva tabla tamaño " + size + " ---");
-
+        // Recuperamos los elementos activos de la estructura anterior
         for (int i = 0; i < oldSize; i++) {
             if (oldTable[i].estado == 1) {
                 insert(oldTable[i].register.getKey(), oldTable[i].register.getValue());
             }
         }
     }
+
+//------------------------------Print---------------------------------
 
     public void printTable() {
         System.out.println("Índice\tEstado\tContenido");
