@@ -1,134 +1,119 @@
 package Semana_11.hash;
 
-import java.util.ArrayList;
+public class HashC {
 
-public class HashC<E extends Comparable<E>> {
-    // Clase interna para representar una celda de la tabla hash
-    private class Element {
-        int mark; // 0: Vacío, 1: Ocupado, 2: Eliminado
-        Register<E> reg;
-        
-        public Element(int mark, Register<E> reg) {
-            this.mark = mark; 
-            this.reg = reg;
+    private static class Element {
+        Register<String> register;
+        int estado; // 0 = EMPTY, 1 = OCCUPIED, -1 = DELETED
+
+        public Element() {
+            this.register = null;
+            this.estado = 0; // Inicialmente vacía (EMPTY)
         }
     }
-    
-    private ArrayList<Element> table; // Cambiado a ArrayList
-    protected int m; // Tamaño de la tabla
-    
-    public HashC (int n) {
-        this.m = n; // Calcular el primo cercano a n
-        this.table = new ArrayList<Element>(m);
-        
-        // Inicializamos el ArrayList con elementos vacíos para poder acceder por índice
-        for (int i = 0; i < m; i++) {
-            this.table.add(new Element(0, null));
+
+    private Element[] table;
+    private int size;
+
+    public HashC(int size) {
+        this.size = size;
+        this.table = new Element[size];
+        for (int i = 0; i < size; i++) {
+            table[i] = new Element();
         }
     }
-    
-    // Funcion hash para calcular el indice a partir de la clave
-    private int functionHash(int key) {
-        return key % m;
+
+    private int hash(int key) {
+        return key % size;
     }
-    
-    // Método de exploración lineal
-    private int linearProbing(int dressHash, int key) {
-        // Retorna la siguiente posición de manera circular
-        return (dressHash + 1) % m;
-    }
-    
-    /* 
-     * Metodo para insertar un nuevo registro en la tabla hash
-     * Utiliza sondeo lineal para encontrar una celda disponible
-     * Si la tabla esta llena, muestra un mensaje de error.
-    */
-    public void insert(int key, E reg) {
-        int homeIndex = functionHash(key);
+
+    public void insert(int key, String value) {
+        Register<String> reg = new Register<>(key, value);
+        int homeIndex = hash(key);
         int index = homeIndex;
-        
-        // Buscamos una celda libre (0 o -1) recorriendo mientras esté ocupada
-        while (table.get(index).mark == 1) {
-            // Evitar duplicados de claves si ya existe
-            if (table.get(index).reg.getKey() == key) {
-                table.get(index).reg = new Register<E>(key, reg);
-                return;
-            }
-            index = linearProbing(index, key);
-            
-            if (index == homeIndex) {
-                System.out.println("Error: Tabla Hash llena.");
-                return;
-            }
-        }
-        
-        // Insertamos el nuevo registro en la posición hallada
-        table.get(index).reg = new Register<E>(key, reg);
-        table.get(index).mark = 1; // Ocupado
-    }
-    
-    /*
-     * Metodo para buscar un registro en la table por su clave
-     * Debe recorrer usando sondeo lineal hasta encontrar la clave o determinar que no esta
-    */
-    public E search(int key) {
-        int homeIndex = functionHash(key);
-        int index = homeIndex;
-        
-        // Se detiene solo si encuentra una posición totalmente vacía (mark == 0)
-        while (table.get(index).mark != 0) {
-            // Si está ocupado (1) y coincide la clave, lo encontramos
-            if (table.get(index).mark == 1 && table.get(index).reg.getKey() == key) {
-                return table.get(index).reg.getValue();
-            }
-            index = linearProbing(index, key);
-            
-            if (index == homeIndex) {
+        int firstDeletedIndex = -1;
+
+        do {
+            // Si encontramos una celda limpia (EMPTY), terminamos la búsqueda de la secuencia
+            if (table[index].estado == 0) {
                 break;
             }
+
+            // Si encontramos una celda borrada (DELETED), recordamos la primera para reutilizarla
+            if (table[index].estado == -1) {
+                if (firstDeletedIndex == -1) {
+                    firstDeletedIndex = index;
+                }
+            } 
+            // Si está ocupada, verificamos duplicados para actualizar
+            else if (table[index].estado == 1 && table[index].register.getKey() == key) {
+                table[index].register = reg;
+                return;
+            }
+
+            index = (index + 1) % size;
+        } while (index != homeIndex);
+
+        // Priorizamos la reutilización del espacio DELETED
+        int targetIndex = (firstDeletedIndex != -1) ? firstDeletedIndex : index;
+
+        if (table[targetIndex].estado == 0 || table[targetIndex].estado == -1) {
+            table[targetIndex].register = reg;
+            table[targetIndex].estado = 1; // Cambia a OCCUPIED
+        } else {
+            System.out.println("Error: Tabla Hash llena.");
         }
-        return null; // No encontrado
     }
-    
-    /*
-     * Metodo para eliminar un registro de forma logica
-     * Marcar la celda como disponible sin eliminar el objeto Element
-    */
+
+    public Register<String> search(int key) {
+        int homeIndex = hash(key);
+        int index = homeIndex;
+
+        do {
+            // Si la celda está EMPTY (0), la cadena de colisión se rompió: no existe
+            if (table[index].estado == 0) {
+                return null;
+            }
+
+            // Si está OCCUPIED (1) y coincide la clave, se encontró
+            if (table[index].estado == 1 && table[index].register.getKey() == key) {
+                return table[index].register;
+            }
+
+            // Si está DELETED (-1), ignoramos el registro inerte y continuamos el sondeo lineal
+            index = (index + 1) % size;
+        } while (index != homeIndex);
+
+        return null;
+    }
+
     public void delete(int key) {
-        int homeIndex = functionHash(key);
+        int homeIndex = hash(key);
         int index = homeIndex;
-        
-        while (table.get(index).mark != 0) {
-            if (table.get(index).mark == 1 && table.get(index).reg.getKey() == key) {
-                table.get(index).mark = -1; // -1 significa "posición eliminada"
-                table.get(index).reg = null; 
+
+        do {
+            if (table[index].estado == 0) {
+                System.out.println("Clave " + key + " no encontrada.");
                 return;
             }
-            index = linearProbing(index, key);
-            if (index == homeIndex) {
-                break;
+
+            if (table[index].estado == 1 && table[index].register.getKey() == key) {
+                table[index].estado = -1; // Marcamos como DELETED lógica
+                System.out.println("Clave " + key + " eliminada lógicamente (Estado: -1).");
+                return;
             }
-        }
+
+            index = (index + 1) % size;
+        } while (index != homeIndex);
     }
-    
-    /*
-     * Metodo para imprimir el estado actual de la tabla hash
-     * Debe recorrer la tabla e imprimir cada indice con su contenido
-    */
-    @Override
-    public String toString() {
-        StringBuilder s = new StringBuilder("D. Real\tD. Hash\tRegister\n");
-        for (int i = 0; i < m; i++) {
-            Element item = table.get(i);
-            s.append(i).append("\t");
-            
-            if (item.mark == 1) {
-                int homeHash = functionHash(item.reg.getKey());
-                s.append(homeHash).append("\t").append(item.reg.toString()).append("\n");
-            } else {
-                s.append("\tempty\n");
-            }
+
+    public void printTable() {
+        System.out.println("D. Real\tEstado Num\tSignificado\tContenido");
+        System.out.println("---------------------------------------------------------");
+        for (int i = 0; i < size; i++) {
+            String estStr = table[i].estado == 0 ? "EMPTY" : (table[i].estado == 1 ? "OCCUPIED" : "DELETED");
+            String regStr = table[i].register == null ? "empty" : table[i].register.toString();
+            System.out.println(i + "\t" + table[i].estado + "\t\t[" + estStr + "]\t" + regStr);
         }
-        return s.toString();
     }
 }

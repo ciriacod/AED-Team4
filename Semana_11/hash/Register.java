@@ -26,13 +26,4 @@ public class Register<E> implements Comparable<Register<E>> {
     public int compareTo(Register<E> r) {
         return this.key - r.key;
     }
-    
-    @Override
-    public boolean equals(Object o) {
-        if (o instanceof Register) {
-            Register<E> r = (Register<E>)o;
-            return r.key == this.key;
-        }
-        return false;
-    }
 }
