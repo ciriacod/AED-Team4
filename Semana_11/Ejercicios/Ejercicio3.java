@@ -6,7 +6,7 @@ import Semana_11.hash.Register;
 public class Ejercicio3 {
     public static void main(String[] args) {
         System.out.println("=== EJERCICIO 3: TABLA HASH ABIERTA ===");
-        HashO tabla = new HashO(7);
+        HashO<String> tabla = new HashO<>(7);
 
         tabla.insert(10, "Juan");
         tabla.insert(17, "Ana");

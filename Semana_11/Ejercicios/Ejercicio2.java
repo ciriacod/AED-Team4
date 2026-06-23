@@ -8,7 +8,7 @@ public class Ejercicio2 {
 
         // 1. Instanciamos HashC configurando Sondeo Lineal (tipo 0)
         System.out.println("=== PRUEBA UTILIZANDO HASHC: SONDEO LINEAL ===");
-        HashC tablaLineal = new HashC(7, false, 0);
+        HashC<String> tablaLineal = new HashC<>(7, false, 0);
         for (int val : valores) {
             tablaLineal.insert(val, "Val_" + val);
         }
@@ -17,7 +17,7 @@ public class Ejercicio2 {
 
         // 2. Instanciamos HashC configurando Sondeo Cuadrático (tipo 1)
         System.out.println("\n=== PRUEBA UTILIZANDO HASHC: SONDEO CUADRÁTICO ===");
-        HashC tablaCuadratica = new HashC(7, false, 1);
+        HashC<String> tablaCuadratica = new HashC<>(7, false, 1);
         for (int val : valores) {
             tablaCuadratica.insert(val, "Val_" + val);
         }

@@ -8,7 +8,7 @@ public class Ejercicio4 {
         System.out.println("=== EJERCICIO 4: ELIMINACIÓN LÓGICA POR ESTADOS (0, 1, -1) ===");
         
         // Tabla hash de tamaño 7
-        HashC tabla = new HashC(7);
+        HashC<String> tabla = new HashC<>(7);
 
         // Inserción inicial de claves: 5, 12, 19, 26
         tabla.insert(5, "Cinco");

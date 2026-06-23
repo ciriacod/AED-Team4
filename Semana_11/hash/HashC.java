@@ -1,9 +1,10 @@
 package Semana_11.hash;
 
-public class HashC {
+public class HashC<E> {
 
-    private static class Element {
-        Register<String> register;
+    // Clase interna que ahora conoce el tipo genérico E del exterior
+    private static class Element<T> {
+        Register<T> register;
         int estado; // 0 = EMPTY, 1 = OCCUPIED, -1 = DELETED
 
         public Element() {
@@ -12,31 +13,31 @@ public class HashC {
         }
     }
 
-    private Element[] table;
+    private Element<E>[] table; // Arreglo estático parametrizado con <E>
     private int size;
     private int n;
     private boolean autoRehash;
     private int tipoSondeo; // 0 = Lineal, 1 = Cuadrático
 
-    // Constructor estándar por defecto (Lineal, sin rehash)
+    // Constructor estándar
     public HashC(int size) {
         this(size, false, 0);
     }
 
-    // Constructor estándar por defecto (Lineal, rehash)
-    public HashC(int size, boolean autoRehash) {
-        this(size, autoRehash, 0);
-    }
-
-    // Constructor flexible para los Ejercicios
+    // Constructor Maestro Genérico
+    @SuppressWarnings("unchecked")
     public HashC(int size, boolean autoRehash, int tipoSondeo) {
         this.size = size;
         this.n = 0;
         this.autoRehash = autoRehash;
-        this.tipoSondeo = tipoSondeo; // 0: Lineal, 1: Cuadrático
-        this.table = new Element[size];
+        this.tipoSondeo = tipoSondeo;
+        
+        // El truco definitivo de Java: Creamos el arreglo crudo y lo casteamos a Element<E>[]
+        // La anotación @SuppressWarnings("unchecked") le dice al compilador que nosotros sabemos lo que hacemos
+        this.table = (Element<E>[]) new Element[size];
+        
         for (int i = 0; i < size; i++) {
-            table[i] = new Element();
+            table[i] = new Element<E>();
         }
     }
 
@@ -45,7 +46,8 @@ public class HashC {
         return index < 0 ? index + currentSize : index;
     }
 
-    public void insert(int key, String value) {
+    // El valor que entra ahora es de tipo genérico E
+    public void insert(int key, E value) {
         if (autoRehash) {
             double alphaFuturo = (double) (n + 1) / size;
             if (alphaFuturo > 0.75) {
@@ -54,11 +56,11 @@ public class HashC {
             }
         }
 
-        Register<String> reg = new Register<>(key, value);
+        Register<E> reg = new Register<>(key, value);
         int homeIndex = hash(key, size);
         int index = homeIndex;
         int firstDeletedIndex = -1;
-        int i = 0; // Contador de saltos/intentos
+        int i = 0;
 
         do {
             if (table[index].estado == 0) {
@@ -70,20 +72,19 @@ public class HashC {
                     firstDeletedIndex = index;
                 }
             } else if (table[index].estado == 1 && table[index].register.getKey() == key) {
-                table[index].register = reg;
+                table[index].register = reg; // Actualiza duplicado
                 return;
             }
 
             i++;
-            // APLICACIÓN DE LA FÓRMULA DE SONDEO
             if (tipoSondeo == 1) {
-                index = (homeIndex + (i * i)) % size; // Cuadrático: h(x) + i²
+                index = (homeIndex + (i * i)) % size;
             } else {
-                index = (homeIndex + i) % size;         // Lineal: h(x) + i
+                index = (homeIndex + i) % size;
             }
 
-            if (i >= size) { // Control preventivo de bucle infinito
-                System.out.println("Error: No se pudo insertar " + key + " debido a un bucle infinito por Sondeo Cuadrático.");
+            if (i >= size) {
+                System.out.println("Error: Bucle infinito por Sondeo Cuadrático.");
                 return;
             }
         } while (index != homeIndex);
@@ -100,7 +101,8 @@ public class HashC {
         }
     }
 
-    public Register<String> search(int key) {
+    // Devuelve el Register<E> genérico completo
+    public Register<E> search(int key) {
         int homeIndex = hash(key, size);
         int index = homeIndex;
         int i = 0;
@@ -153,16 +155,19 @@ public class HashC {
         } while (index != homeIndex && i < size);
     }
 
+    @SuppressWarnings("unchecked")
     private void rehashing() {
         int oldSize = size;
-        Element[] oldTable = table;
+        Element<E>[] oldTable = table;
 
         this.size = 17;
         this.n = 0;
-        this.table = new Element[size];
+        this.table = (Element<E>[]) new Element[size]; // Nuevo casteo para la tabla expandida
         for (int i = 0; i < size; i++) {
-            table[i] = new Element();
+            table[i] = new Element<E>();
         }
+
+        System.out.println("--- Migrando datos de tabla tamaño " + oldSize + " a nueva tabla tamaño " + size + " ---");
 
         for (int i = 0; i < oldSize; i++) {
             if (oldTable[i].estado == 1) {

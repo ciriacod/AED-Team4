@@ -7,7 +7,7 @@ public class Ejercicio1 {
         System.out.println("=== EJERCICIO 1: ANALISIS DE FUNCIÓN HASH USANDO HASHC ===");
         
         // Instanciamos tu estructura oficial de dispersión cerrada con tamaño 11
-        HashC tabla = new HashC(11);
+        HashC<String> tabla = new HashC<>(11);
         
         // Las claves indicadas en el enunciado de la guía
         int[] claves = {3, 14, 25, 36, 47, 58};

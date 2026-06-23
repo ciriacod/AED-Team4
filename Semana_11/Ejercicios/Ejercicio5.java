@@ -7,7 +7,7 @@ public class Ejercicio5 {
         System.out.println("=== EJERCICIO 5: FACTOR DE CARGA Y REHASHING DESDE HASHC ===");
         
         // Inicializamos HashC con tamaño 7 y pasamos 'true' para activar el autoRehash preventivo
-        HashC tablaConRehash = new HashC(7, true);
+        HashC<String> tablaConRehash = new HashC<String>(7, true, 0);
 
         // Insertamos los valores requeridos uno por uno
         tablaConRehash.insert(2, "Dos");
