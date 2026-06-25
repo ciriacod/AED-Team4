@@ -1,4 +1,4 @@
-package Ejercicio04;
+package Semana_9.Ejercicios.Ejercicio04;
 
 public class Libro implements Comparable<Libro> {
     private String isbn;

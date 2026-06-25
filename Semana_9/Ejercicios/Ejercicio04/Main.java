@@ -1,4 +1,4 @@
-package Ejercicio04;
+package Semana_9.Ejercicios.Ejercicio04;
 
 import Semana_9.btree.Btree;
 
