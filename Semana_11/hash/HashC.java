@@ -14,8 +14,8 @@ public class HashC<E> {
     }
 
     private Element<E>[] table; // Arreglo estático parametrizado con <E>
-    private int size;
-    private int n;
+    private int size;   // tamaño
+    private int n;      // elementos en la tabla
     private boolean autoRehash;
     private int tipoSondeo; // 0 = Lineal, 1 = Cuadrático
 
@@ -27,7 +27,7 @@ public class HashC<E> {
     // Constructor Maestro Genérico con Inicialización Prima Automática
     @SuppressWarnings("unchecked")
     public HashC(int size, boolean autoRehash, int tipoSondeo) {
-        // MEJORA: Forzamos a que el tamaño inicial de la tabla sea primo desde su nacimiento
+        // Forzamos a que el tamaño inicial de la tabla sea primo desde su nacimiento
         this.size = isPrime(size) ? size : nextPrime(size);
         this.n = 0;
         this.autoRehash = autoRehash;
@@ -56,15 +56,21 @@ public class HashC<E> {
         }
     }
 
-    // Verifica si un número es primo en tiempo O(sqrt(p))
+    // Verifica si un número es primo
     private boolean isPrime(int num) {
-        if (num <= 1) return false;
-        if (num == 2 || num == 3) return true;
-        if (num % 2 == 0 || num % 3 == 0) return false;
-        for (int i = 5; i * i <= num; i += 6) {
-            if (num % i == 0 || num % (i + 2) == 0) return false;
+        // Los números menores o iguales a 1 no son primos
+        if (num <= 1) {
+            return false;
         }
-        return true;
+        
+        // Probamos si algún número desde 2 hasta la raíz cuadrada de 'num' lo divide
+        for (int i = 2; i <= num / i; i++) {
+            if (num % i == 0) {
+                return false; // Si el residuo es 0, no es primo
+            }
+        }
+        
+        return true; // Si salimos del bucle sin divisiones exactas, es primo
     }
 
 //------------------------------Insert---------------------------------
@@ -188,7 +194,7 @@ public class HashC<E> {
         int oldSize = size;
         Element<E>[] oldTable = table;
 
-        // MEJORA: Duplica el tamaño actual y busca dinámicamente el siguiente primo
+        // Duplica el tamaño actual y busca dinámicamente el siguiente primo
         this.size = nextPrime(oldSize * 2);
         this.n = 0; // Se recalcula desde cero durante la reinserción en cascada
         
