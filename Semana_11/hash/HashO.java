@@ -52,13 +52,13 @@ public class HashO<E> {
         return true; 
     }
 
-//------------------------------Insert---------------------------------
+    //------------------------------Insert---------------------------------
 
     public void insert(Register<E> reg) {
         if (autoRehash) {
             double alphaFuturo = (double) (n + 1) / size;
             if (alphaFuturo > 0.75) {
-                System.out.println("\n[ALERTA] En HashO, alpha superará 0.75 (" + String.format("%.2f", alphaFuturo) + "). Ejecutando REHASHING PRIMO...");
+                System.out.println("\n[ALERTA] En HashO, alpha superará 0.75...");
                 rehashing();
             }
         }
@@ -66,22 +66,16 @@ public class HashO<E> {
         int index = hash(reg.getKey(), size);
         ListLinked<Register<E>> list = table[index];
 
-        Node<Register<E>> current = list.root;
-        while (current != null) {
-            if (current.getData().getKey() == reg.getKey()) {
-                current.setData(reg); 
-                return;
-            }
-            current = current.getNext();
+        // 1. Usamos el método search() de ListLinked
+        if (list.search(reg)) {
+            // Si Existe, Lista repetida se Reemplaza el mismo.
+            list.remove(reg);
+            list.insert(reg);
+        } else {
+            // Si no existe, se inserta normalmente
+            list.insert(reg); 
+            n++; 
         }
-
-        list.insert(reg); 
-        n++; 
-    }
-
-    public void insert(int key, E value) {
-        Register<E> nuevoRegistro = new Register<>(key, value);
-        this.insert(nuevoRegistro);
     }
 
 //------------------------------Search---------------------------------
